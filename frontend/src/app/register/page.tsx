@@ -8,12 +8,19 @@ export default function Register() {
     const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
         e.preventDefault();
         const formData = new FormData(e.currentTarget);
+        const password = formData.get('password') as string;
+        const confirmPassword = formData.get('confirmPassword') as string;
+        
+        if (password !== confirmPassword) {
+            setError('Les mots de passe ne correspondent pas');
+            return;
+        }
         
         try {
             await register(
                 formData.get('username') as string,
                 formData.get('email') as string,
-                formData.get('password') as string
+                password
             );
             window.location.href = '/login';
         } catch {
@@ -34,6 +41,9 @@ export default function Register() {
                 </div>
                 <div>
                     <input name="password" type="password" placeholder="Password" required />
+                </div>
+                <div>
+                    <input name="confirmPassword" type="password" placeholder="Confirmer le mot de passe" required />
                 </div>
                 <button type="submit">S&apos;inscrire</button>
             </form>
