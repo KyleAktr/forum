@@ -1,0 +1,54 @@
+.login {
+  height: 100vh;
+}
+.logo {
+  letter-spacing: 5px;
+}
+
+.login .login-container {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: #dcdcdc;
+  height: 70vh;
+  width: 50%;
+  margin: auto;
+  flex-direction: column;
+  margin-top: 50px;
+  border-radius: 20px;
+
+  form {
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    margin-top: 1.5rem;
+    background-color: #dcdcdc;
+
+    input {
+      width: 20rem;
+      height: 2rem;
+      margin: 0.5rem;
+      padding: 0.5rem 1.5rem;
+      border: 1px solid rgb(183, 183, 183);
+      border-radius: 20px;
+    }
+
+    button {
+      width: 10rem;
+      height: 2rem;
+      margin: 0.5rem;
+      padding: 0.5rem;
+      border: 1px solid rgb(183, 183, 183);
+      border-radius: 20px;
+      background-color: #f0f0f0;
+      margin-top: 1rem;
+      cursor: pointer;
+    }
+
+    .google {
+      margin-top: 20px;
+    }
+  }
+}

@@ -1,0 +1,25 @@
+.navbar nav {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  padding: 1rem 2rem;
+}
+
+.logo a {
+  text-decoration: none;
+  color: black;
+  font-size: 1.2rem;
+}
+
+.ancres {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  width: 20rem;
+
+  a {
+    text-decoration: none;
+    text-transform: uppercase;
+    color: black;
+  }
+}
