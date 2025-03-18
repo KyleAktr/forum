@@ -15,11 +15,22 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
-  width: 20rem;
+  // width: 25rem;
 
   a {
     text-decoration: none;
     text-transform: uppercase;
     color: black;
+    margin-left: 20px;
   }
+}
+
+button {
+  margin-left: 20px;
+  padding: 10px 15px;
+  border-radius: 18px;
+  border: 1px solid rgb(137, 137, 137);
+  background-color: rgb(255, 255, 255);
+  cursor: pointer;
+  font-weight: 300;
 }
