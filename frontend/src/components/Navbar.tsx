@@ -28,6 +28,7 @@ export default function Navbar() {
             <a href="/categories">Catégories</a>
             <a href="/articles">Explorer</a>
             <a href="/contact">Contact</a>
+            <a href="/profil">Profil</a>
             <button onClick={logout}>Déconnexion</button>
           </div>
         </nav>
