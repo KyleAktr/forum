@@ -8,7 +8,7 @@ type Comment struct {
 	UserID    uint      `json:"user_id" gorm:"not null"`
 	Content   string    `json:"content" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at"`
-	UpdateAt  time.Time `json:"updated_at"`
+	UpdatedAt time.Time `json:"updated_at"`
 	Post      Post      `json:"post" gorm:"foreignKey:PostID"`
 	User      User      `json:"user" gorm:"foreignKey:UserID"`
 }
