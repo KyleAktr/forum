@@ -9,4 +9,6 @@ type Comment struct {
 	Content   string    `json:"content" gorm:"not null"`
 	CreatedAt time.Time `json:"created_at"`
 	UpdateAt  time.Time `json:"updated_at"`
+	Post      Post      `json:"post" gorm:"foreignKey:PostID"`
+	User      User      `json:"user" gorm:"foreignKey:UserID"`
 }
