@@ -76,7 +76,9 @@ export default function Home() {
             <h4>Travail hybride et télétravail</h4>
             <div className="card-footer">
               <p>26 discussions</p>
-              <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              <a href="/categories/teletravail">
+                <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              </a>
             </div>
           </div>
 
@@ -85,7 +87,9 @@ export default function Home() {
             <h4>Minimalisme et frugalité</h4>
             <div className="card-footer">
               <p>14 discussions</p>
-              <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              <a href="/categories/minimalisme">
+                <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              </a>
             </div>
           </div>
 
@@ -94,7 +98,9 @@ export default function Home() {
             <h4>Santé mentale et digitale</h4>
             <div className="card-footer">
               <p>19 discussions</p>
-              <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              <a href="/categories/santeDigitale">
+                <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              </a>
             </div>
           </div>
 
@@ -103,7 +109,9 @@ export default function Home() {
             <h4>Lifestyle durable</h4>
             <div className="card-footer">
               <p>37 discussions</p>
-              <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              <a href="/categories/lifestyle">
+                <FaArrowAltCircleRight size={30} className="arrow-icon" />
+              </a>
             </div>
           </div>
         </div>

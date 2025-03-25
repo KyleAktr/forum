@@ -1,0 +1,23 @@
+.create-article-categories-card {
+  width: 550px;
+  height: 70px;
+  display: flex;
+  align-items: center;
+  margin-bottom: 20px;
+
+  .create-article-img {
+    border-radius: 25px;
+    width: 550px;
+    height: 70px;
+    position: absolute;
+    object-fit: cover;
+  }
+
+  h4 {
+    position: relative;
+    margin: 0 auto;
+    color: whitesmoke;
+    font-size: 2rem;
+    letter-spacing: 3px;
+  }
+}

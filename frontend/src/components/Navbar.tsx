@@ -27,6 +27,7 @@ export default function Navbar() {
           <div className="ancres">
             <a href="/categories">Catégories</a>
             <a href="/articles">Explorer</a>
+            <a href="/creation-article">Créer</a>
             <a href="/contact">Contact</a>
             <a href="/profil">Profil</a>
             <button onClick={logout}>Déconnexion</button>
