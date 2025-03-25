@@ -24,7 +24,7 @@ func Connect() {
 	}
 
 	// Migration automatique des schémas
-	err = db.AutoMigrate(&models.User{})
+	err = db.AutoMigrate(&models.User{}, &models.Post{}, &models.Comment{}, &models.Category{}, &models.Reaction{})
 	if err != nil {
 		log.Printf("Attention lors de la migration: %v", err)
 		// On continue l'exécution car l'erreur peut être due à des contraintes existantes
