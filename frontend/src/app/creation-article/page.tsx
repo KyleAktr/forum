@@ -20,6 +20,10 @@ export default function page() {
     setImage(null);
   };
 
+  const handleSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+  };
+
   return (
     <div>
       <Navbar />
@@ -28,7 +32,7 @@ export default function page() {
       </header>
       <body>
         <form action="">
-          <label htmlFor="">Titre</label>
+          <label htmlFor="">Titre : </label>
           <input type="text" name="" id="" placeholder="titre de l'article" />
           <br />
           <label htmlFor="">Catégorie :</label>

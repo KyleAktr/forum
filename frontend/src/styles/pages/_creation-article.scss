@@ -1,3 +1,23 @@
+header {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+body {
+  margin-left: 50px;
+
+  input {
+    margin-bottom: 20px;
+    border: none;
+  }
+}
+
+.create-article-categories-cards {
+  margin-top: 20px;
+}
+
 .create-article-categories-card {
   width: 550px;
   height: 70px;

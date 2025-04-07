@@ -44,7 +44,21 @@ func main() {
 			auth.POST("/register", controllers.Register)
 			auth.POST("/login", controllers.Login)
 		}
-	}
 
-	log.Fatal(r.Run(":8080"))
+		//routes des posts
+		posts := api.Group("/posts")
+		{
+			posts.GET("/", controllers.GetPosts)
+			posts.POST("/", controllers.CreatePost)
+			// Routes à implémenter :
+			// posts.GET("/:id", controllers.GetPost)
+			// posts.PUT("/:id", controllers.UpdatePost)
+			// posts.DELETE("/:id", controllers.DeletePost)
+			// posts.POST("/:id/reactions", controllers.CreateReaction)
+			// posts.POST("/:id/comments", controllers.CreateComment)
+			// posts.GET("/:id/comments", controllers.GetComments)
+		}
+
+		log.Fatal(r.Run(":8080"))
+	}
 }
