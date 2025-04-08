@@ -6,6 +6,7 @@ import (
 	"forum/models"
 	"forum/utils"
 	"net/http"
+	"os"
 	"path/filepath"
 	"strings"
 	"time"
@@ -195,6 +196,21 @@ func UploadProfilePicture(c *gin.Context) {
 		return
 	}
 
+	// Vérifier s'il a déjà une photo de profil
+	var user models.User
+	if err := database.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Utilisateur non trouvé"})
+		return
+	}
+
+	// Supprimer ancienne photo de profil
+	if user.ProfilePicture != "" {
+		oldFilePath := filepath.Join(".", user.ProfilePicture)
+		if err := os.Remove(oldFilePath); err != nil {
+			fmt.Printf("Erreur lors de la suppression de l'ancienne photo: %v\n", err)
+		}
+	}
+
 	// Générer un nom de fichier unique
 	ext := filepath.Ext(file.Filename)
 	filename := fmt.Sprintf("profile_%v_%d%s", userID, time.Now().Unix(), ext)
@@ -204,15 +220,12 @@ func UploadProfilePicture(c *gin.Context) {
 		return
 	}
 
-	// Mettre à jour l'URL de la photo de profil dans la base de données
-	var user models.User
-	if err := database.DB.First(&user, userID).Error; err != nil {
-		c.JSON(http.StatusNotFound, gin.H{"error": "Utilisateur non trouvé"})
-		return
-	}
-
 	user.ProfilePicture = "/uploads/profiles/" + filename
 	if err := database.DB.Save(&user).Error; err != nil {
+		// Si la mise à jour de la base de données échoue, on supprime le fichier qu'on vient d'uploader
+		if err := os.Remove("uploads/profiles/" + filename); err != nil {
+			fmt.Printf("Erreur lors de la suppression du fichier uploadé: %v\n", err)
+		}
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la mise à jour du profil"})
 		return
 	}
