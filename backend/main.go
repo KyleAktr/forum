@@ -35,7 +35,8 @@ func main() {
 
 	// Configuration CORS
 	config := cors.DefaultConfig()
-	config.AllowOrigins = []string{"http://localhost:3000"}
+	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:8080"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 
@@ -69,8 +70,8 @@ func main() {
 		// Routes des posts
 		posts := api.Group("/posts")
 		{
-			posts.GET("/", controllers.GetPosts)
-			posts.POST("/", controllers.CreatePost)
+			posts.GET("", controllers.GetPosts)
+			posts.POST("", middleware.AuthMiddleware(), controllers.CreatePost)
 			// Routes à implémenter :
 			// posts.GET("/:id", controllers.GetPost)
 			// posts.PUT("/:id", controllers.UpdatePost)
