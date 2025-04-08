@@ -57,7 +57,7 @@ export default function Page() {
       setProfile(updatedUser);
       setIsEditing(false);
       setError("");
-      setEditForm(prev => ({ ...prev, password: "" }));
+      setEditForm((prev) => ({ ...prev, password: "" }));
     } catch (error: unknown) {
       if (error instanceof Error) {
         setError(error.message);
@@ -73,7 +73,9 @@ export default function Page() {
 
     try {
       const pictureUrl = await uploadProfilePicture(file);
-      setProfile(prev => prev ? {...prev, profilePicture: pictureUrl} : null);
+      setProfile((prev) =>
+        prev ? { ...prev, profilePicture: pictureUrl } : null
+      );
     } catch (error) {
       if (error instanceof Error) {
         setError(error.message);
@@ -99,9 +101,8 @@ export default function Page() {
     <div>
       <Navbar />
       <div className="profile-container">
-        <h1>Profil</h1>
         {error && <p className="error-message">{error}</p>}
-        
+
         <div className="profile-picture-container">
           <div className="profile-picture-wrapper">
             {profile.profilePicture ? (
@@ -130,33 +131,39 @@ export default function Page() {
             <label htmlFor="profile-picture" className="upload-button">
               Changer la photo
             </label>
+
+            <h3>{profile.username}</h3>
           </div>
         </div>
 
         <div className="profile-info">
           {!isEditing ? (
             <>
+              <h2>Infos</h2>
               <div className="info-group">
-                <h3>Pseudo</h3>
-                <p>{profile.username}</p>
+                <h3>
+                  Email : <span>{profile.email}</span>
+                </h3>
               </div>
               <div className="info-group">
-                <h3>Email</h3>
-                <p>{profile.email}</p>
+                <h3>
+                  Ville : <span>{profile.city || "Non renseigné"}</span>
+                </h3>
               </div>
               <div className="info-group">
-                <h3>Ville</h3>
-                <p>{profile.city || "Non renseigné"}</p>
+                <h3>
+                  Âge : <span>{profile.age || "Non renseigné"}</span>
+                </h3>
               </div>
               <div className="info-group">
-                <h3>Âge</h3>
-                <p>{profile.age || "Non renseigné"}</p>
+                <h3>
+                  Bio : <span>{profile.bio || "Non renseigné"}</span>
+                </h3>
               </div>
-              <div className="info-group">
-                <h3>Bio</h3>
-                <p>{profile.bio || "Non renseigné"}</p>
-              </div>
-              <button className="edit-button" onClick={() => setIsEditing(true)}>
+              <button
+                // className="edit-button"
+                onClick={() => setIsEditing(true)}
+              >
                 Modifier le profil
               </button>
             </>
@@ -168,7 +175,9 @@ export default function Page() {
                   type="text"
                   id="username"
                   value={editForm.username}
-                  onChange={(e) => setEditForm({ ...editForm, username: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, username: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -177,16 +186,22 @@ export default function Page() {
                   type="email"
                   id="email"
                   value={editForm.email}
-                  onChange={(e) => setEditForm({ ...editForm, email: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, email: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
-                <label htmlFor="password">Nouveau mot de passe (laisser vide pour ne pas changer)</label>
+                <label htmlFor="password">
+                  Nouveau mot de passe (laisser vide pour ne pas changer)
+                </label>
                 <input
                   type="password"
                   id="password"
                   value={editForm.password}
-                  onChange={(e) => setEditForm({ ...editForm, password: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, password: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -195,7 +210,9 @@ export default function Page() {
                   type="text"
                   id="city"
                   value={editForm.city}
-                  onChange={(e) => setEditForm({ ...editForm, city: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, city: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -204,7 +221,9 @@ export default function Page() {
                   type="number"
                   id="age"
                   value={editForm.age}
-                  onChange={(e) => setEditForm({ ...editForm, age: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, age: e.target.value })
+                  }
                 />
               </div>
               <div className="form-group">
@@ -212,25 +231,30 @@ export default function Page() {
                 <textarea
                   id="bio"
                   value={editForm.bio}
-                  onChange={(e) => setEditForm({ ...editForm, bio: e.target.value })}
+                  onChange={(e) =>
+                    setEditForm({ ...editForm, bio: e.target.value })
+                  }
                   rows={4}
                 />
               </div>
               <div className="form-buttons">
                 <button type="submit">Enregistrer</button>
-                <button type="button" onClick={() => {
-                  setIsEditing(false);
-                  if (profile) {
-                    setEditForm({
-                      username: profile.username,
-                      email: profile.email,
-                      password: "",
-                      city: profile.city || "",
-                      age: profile.age?.toString() || "",
-                      bio: profile.bio || "",
-                    });
-                  }
-                }}>
+                <button
+                  type="button"
+                  onClick={() => {
+                    setIsEditing(false);
+                    if (profile) {
+                      setEditForm({
+                        username: profile.username,
+                        email: profile.email,
+                        password: "",
+                        city: profile.city || "",
+                        age: profile.age?.toString() || "",
+                        bio: profile.bio || "",
+                      });
+                    }
+                  }}
+                >
                   Annuler
                 </button>
               </div>
