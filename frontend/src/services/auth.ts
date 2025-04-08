@@ -2,11 +2,20 @@ interface User {
     id: number;
     username: string;
     email: string;
+    city?: string;
+    age?: number;
+    bio?: string;
 }
 
 interface AuthResponse {
     token: string;
     user: User;
+}
+
+interface UpdateProfileData {
+    city: string;
+    age: number;
+    bio: string;
 }
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
@@ -60,4 +69,28 @@ export const getUser = (): User | null => {
 
 export const isAuthenticated = (): boolean => {
     return !!getToken();
-}; 
+};
+
+export const updateProfile = async (data: UpdateProfileData): Promise<User> => {
+    const token = getToken();
+    if (!token) {
+        throw new Error('Non authentifié');
+    }
+
+    const res = await fetch('http://localhost:8080/api/user/profile', {
+        method: 'PUT',
+        headers: {
+            'Content-Type': 'application/json',
+            'Authorization': `Bearer ${token}`
+        },
+        body: JSON.stringify(data)
+    });
+
+    if (!res.ok) {
+        throw new Error('Erreur lors de la mise à jour du profil');
+    }
+
+    const updatedUser = await res.json();
+    localStorage.setItem('user', JSON.stringify(updatedUser));
+    return updatedUser;
+};

@@ -28,6 +28,7 @@ func main() {
 	config.AllowOrigins = []string{"http://localhost:3000", "http://localhost:8080"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
+	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
 	r.Use(cors.New(config))
 
 	// Routes
@@ -47,7 +48,14 @@ func main() {
 			auth.POST("/login", controllers.Login)
 		}
 
-		//routes des posts
+		// Routes utilisateur
+		user := api.Group("/user")
+		user.Use(middleware.AuthMiddleware())
+		{
+			user.PUT("/profile", controllers.UpdateProfile)
+		}
+
+		// Routes des posts
 		posts := api.Group("/posts")
 		{
 			posts.GET("", controllers.GetPosts)
@@ -60,7 +68,8 @@ func main() {
 			// posts.POST("/:id/comments", controllers.CreateComment)
 			// posts.GET("/:id/comments", controllers.GetComments)
 		}
-
-		log.Fatal(r.Run(":8080"))
 	}
+
+	// Démarrage du serveur
+	log.Fatal(r.Run(":8080"))
 }

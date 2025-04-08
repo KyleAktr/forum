@@ -90,3 +90,35 @@ func Login(c *gin.Context) {
 		},
 	})
 }
+
+func UpdateProfile(c *gin.Context) {
+	var input models.UpdateProfileInput
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": err.Error()})
+		return
+	}
+
+	// Récupérer l'ID de l'utilisateur
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+
+	var user models.User
+	if err := database.DB.First(&user, userID).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Utilisateur non trouvé"})
+		return
+	}
+
+	user.City = input.City
+	user.Age = input.Age
+	user.Bio = input.Bio
+
+	if err := database.DB.Save(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la mise à jour du profil"})
+		return
+	}
+
+	c.JSON(http.StatusOK, user)
+}
