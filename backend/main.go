@@ -6,6 +6,8 @@ import (
 	"forum/middleware"
 	"log"
 	"net/http"
+	"os"
+	"path/filepath"
 
 	"github.com/gin-contrib/cors"
 	"github.com/gin-gonic/gin"
@@ -21,13 +23,22 @@ func main() {
 	// Connexion à la base de données
 	database.Connect()
 
+	uploadsPath := filepath.Join("uploads", "profiles")
+	err := os.MkdirAll(uploadsPath, os.ModePerm)
+	if err != nil {
+		log.Fatal("Erreur lors de la création du dossier uploads:", err)
+	}
+
 	r := gin.Default()
+
+	r.Static("/uploads", "./uploads")
 
 	// Configuration CORS
 	config := cors.DefaultConfig()
 	config.AllowOrigins = []string{"http://localhost:3000"}
 	config.AllowHeaders = []string{"Origin", "Content-Type", "Accept", "Authorization"}
 	config.AllowMethods = []string{"GET", "POST", "PUT", "DELETE", "OPTIONS"}
+
 	r.Use(cors.New(config))
 
 	// Routes
@@ -52,6 +63,7 @@ func main() {
 		user.Use(middleware.AuthMiddleware())
 		{
 			user.PUT("/profile", controllers.UpdateProfile)
+			user.POST("/profile-picture", controllers.UploadProfilePicture)
 		}
 
 		// Routes des posts

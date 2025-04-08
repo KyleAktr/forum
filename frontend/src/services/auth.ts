@@ -13,6 +13,9 @@ interface AuthResponse {
 }
 
 interface UpdateProfileData {
+    username?: string;
+    email?: string;
+    password?: string;
     city: string;
     age: number;
     bio: string;
@@ -93,4 +96,35 @@ export const updateProfile = async (data: UpdateProfileData): Promise<User> => {
     const updatedUser = await res.json();
     localStorage.setItem('user', JSON.stringify(updatedUser));
     return updatedUser;
+};
+
+export const uploadProfilePicture = async (file: File): Promise<string> => {
+    const token = getToken();
+    if (!token) {
+        throw new Error('Non authentifié');
+    }
+
+    const formData = new FormData();
+    formData.append('file', file);
+
+    const res = await fetch('http://localhost:8080/api/user/profile-picture', {
+        method: 'POST',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        },
+        body: formData
+    });
+
+    if (!res.ok) {
+        throw new Error('Erreur lors de l\'upload de l\'image');
+    }
+
+    const data = await res.json();
+    
+    // Mettre à jour le user dans le localStorage avec la nouvelle photo
+    const user = JSON.parse(localStorage.getItem('user') || '{}');
+    user.profilePicture = data.profilePicture;
+    localStorage.setItem('user', JSON.stringify(user));
+    
+    return data.profilePicture;
 };
