@@ -51,12 +51,13 @@ func Register(c *gin.Context) {
 	c.JSON(http.StatusCreated, gin.H{
 		"token": token,
 		"user": gin.H{
-			"id":       user.ID,
-			"username": user.Username,
-			"email":    user.Email,
-			"city":     user.City,
-			"age":      user.Age,
-			"bio":      user.Bio,
+			"id":             user.ID,
+			"username":       user.Username,
+			"email":          user.Email,
+			"city":           user.City,
+			"age":            user.Age,
+			"bio":            user.Bio,
+			"profilePicture": user.ProfilePicture,
 		},
 	})
 }
@@ -91,12 +92,13 @@ func Login(c *gin.Context) {
 	c.JSON(http.StatusOK, gin.H{
 		"token": token,
 		"user": gin.H{
-			"id":       user.ID,
-			"username": user.Username,
-			"email":    user.Email,
-			"city":     user.City,
-			"age":      user.Age,
-			"bio":      user.Bio,
+			"id":             user.ID,
+			"username":       user.Username,
+			"email":          user.Email,
+			"city":           user.City,
+			"age":            user.Age,
+			"bio":            user.Bio,
+			"profilePicture": user.ProfilePicture,
 		},
 	})
 }
