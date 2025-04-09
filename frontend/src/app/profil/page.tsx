@@ -1,10 +1,11 @@
 "use client";
 
-import { useEffect, useState } from "react";
+import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import { getUser, updateProfile, uploadProfilePicture } from "@/services/auth";
 import Image from "next/image";
-import { getMyPosts } from "@/services/post";
+import { getMyPosts, Post } from "@/services/post";
+
 
 interface UserProfile {
   id: number;
@@ -19,7 +20,7 @@ interface UserProfile {
 export default function Page() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
-  const [myPosts, setMyPosts] = useState([]);
+  const [myPosts, setMyPosts] = useState<Post[]>([]);
   const [editForm, setEditForm] = useState({
     username: "",
     email: "",
@@ -29,6 +30,19 @@ export default function Page() {
     bio: "",
   });
   const [error, setError] = useState("");
+
+  const fetchUserPosts = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token || !profile) return;
+
+    try {
+      const posts = await getMyPosts(token);
+      setMyPosts(posts);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des articles:", err);
+      setError("Impossible de charger vos articles");
+    }
+  }, [profile]);
 
   useEffect(() => {
     const user = getUser();
@@ -42,16 +56,14 @@ export default function Page() {
         age: user.age?.toString() || "",
         bio: user.bio || "",
       });
-
-      // Récupération des posts
-      const token = localStorage.getItem("token");
-      if (token) {
-        getMyPosts(token)
-          .then(setMyPosts)
-          .catch(() => console.error("Erreur lors du fetch des posts"));
-      }
     }
   }, []);
+
+  useEffect(() => {
+    if (profile) {
+      fetchUserPosts();
+    }
+  }, [profile, fetchUserPosts]);
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -275,10 +287,10 @@ export default function Page() {
       <div className="user-posts">
         <h2>Mes publications</h2>
         {myPosts.length === 0 ? (
-          <p>Vous n'avez pas encore publié d'article.</p>
+          <p>Vous n&apos;avez pas encore publié d&apos;article.</p>
         ) : (
           <ul className="post-list">
-            {myPosts.map((post: any) => (
+            {myPosts.map((post: Post) => (
               <li key={post.id} className="post-card">
                 <h3>{post.title}</h3>
                 <p>{post.content.slice(0, 100)}...</p>
