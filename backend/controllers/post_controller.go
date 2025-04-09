@@ -49,6 +49,8 @@ func GetPosts(c *gin.Context) {
 	})
 }
 
+// -----------CreatePost-----------
+
 func CreatePost(c *gin.Context) {
 	var input models.Post
 
@@ -94,4 +96,45 @@ func CreatePost(c *gin.Context) {
 	database.DB.Preload("User").Preload("Category").First(&post, post.ID)
 
 	c.JSON(http.StatusCreated, gin.H{"data": post})
+}
+
+// -----------GetUserPosts-----------
+
+func GetUserPosts(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+
+	var posts []models.Post
+	query := database.DB.
+		Where("user_id = ?", userID).
+		Preload("User").
+		Preload("Category").
+		Preload("Comments").
+		Preload("Reactions")
+
+	// Pagination (optionnelle)
+	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	offset := (page - 1) * limit
+
+	if err := query.Offset(offset).Limit(limit).Find(&posts).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la récupération des posts"})
+		return
+	}
+
+	var total int64
+	query.Count(&total)
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": posts,
+		"meta": gin.H{
+			"total":     total,
+			"page":      page,
+			"limit":     limit,
+			"last_page": (int(total) + limit - 1) / limit,
+		},
+	})
 }

@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import Navbar from "@/components/Navbar";
 import { getUser, updateProfile, uploadProfilePicture } from "@/services/auth";
 import Image from "next/image";
+import { getMyPosts } from "@/services/post";
 
 interface UserProfile {
   id: number;
@@ -18,6 +19,7 @@ interface UserProfile {
 export default function Page() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
+  const [myPosts, setMyPosts] = useState([]);
   const [editForm, setEditForm] = useState({
     username: "",
     email: "",
@@ -40,6 +42,14 @@ export default function Page() {
         age: user.age?.toString() || "",
         bio: user.bio || "",
       });
+
+      // Récupération des posts
+      const token = localStorage.getItem("token");
+      if (token) {
+        getMyPosts(token)
+          .then(setMyPosts)
+          .catch(() => console.error("Erreur lors du fetch des posts"));
+      }
     }
   }, []);
 
@@ -261,6 +271,24 @@ export default function Page() {
             </form>
           )}
         </div>
+      </div>
+      <div className="user-posts">
+        <h2>Mes publications</h2>
+        {myPosts.length === 0 ? (
+          <p>Vous n'avez pas encore publié d'article.</p>
+        ) : (
+          <ul className="post-list">
+            {myPosts.map((post: any) => (
+              <li key={post.id} className="post-card">
+                <h3>{post.title}</h3>
+                <p>{post.content.slice(0, 100)}...</p>
+                <p className="meta">
+                  Posté le {new Date(post.created_at).toLocaleDateString()}
+                </p>
+              </li>
+            ))}
+          </ul>
+        )}
       </div>
     </div>
   );

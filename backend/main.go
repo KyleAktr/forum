@@ -65,6 +65,7 @@ func main() {
 		{
 			user.PUT("/profile", controllers.UpdateProfile)
 			user.POST("/profile-picture", controllers.UploadProfilePicture)
+			user.GET("/posts", controllers.GetUserPosts)
 		}
 
 		// Routes des posts

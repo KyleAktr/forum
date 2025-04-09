@@ -65,3 +65,18 @@ export const createPost = async (data: CreatePostInput): Promise<Post> => {
     throw new Error("Erreur réseau ou serveur");
   }
 };
+
+export async function getMyPosts(token: string) {
+  const res = await fetch("http://localhost:8080/api/posts", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+
+  if (!res.ok) {
+    throw new Error("Impossible de récupérer les posts");
+  }
+
+  const data = await res.json();
+  return data.data; // tableau de posts
+}
