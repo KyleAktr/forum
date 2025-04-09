@@ -45,42 +45,28 @@ func main() {
 	// Routes
 	api := r.Group("/api")
 	{
-		// Route de test
 		api.GET("/health", func(c *gin.Context) {
 			c.JSON(http.StatusOK, gin.H{
 				"status": "ok",
 			})
 		})
 
-		// Routes d'authentification
 		auth := api.Group("/auth")
 		{
 			auth.POST("/register", controllers.Register)
 			auth.POST("/login", controllers.Login)
 		}
 
-		// Routes utilisateur
-		user := api.Group("/user")
-		user.Use(middleware.AuthMiddleware())
-		{
-			user.PUT("/profile", controllers.UpdateProfile)
-			user.POST("/profile-picture", controllers.UploadProfilePicture)
-			user.GET("/posts", controllers.GetUserPosts)
-		}
-
-		// Routes des posts
 		posts := api.Group("/posts")
-		{
-			posts.GET("", controllers.GetPosts)
-			posts.POST("", middleware.AuthMiddleware(), controllers.CreatePost)
-			// Routes à implémenter :
-			// posts.GET("/:id", controllers.GetPost)
-			// posts.PUT("/:id", controllers.UpdatePost)
-			// posts.DELETE("/:id", controllers.DeletePost)
-			// posts.POST("/:id/reactions", controllers.CreateReaction)
-			// posts.POST("/:id/comments", controllers.CreateComment)
-			// posts.GET("/:id/comments", controllers.GetComments)
-		}
+		posts.GET("", controllers.GetPosts)
+
+		user := api.Group("/user", middleware.AuthMiddleware())
+		user.PUT("/profile", controllers.UpdateProfile)
+		user.POST("/profile-picture", controllers.UploadProfilePicture)
+
+		userPosts := user.Group("/posts")
+		userPosts.GET("", controllers.GetUserPosts)
+		userPosts.POST("", controllers.CreatePost)
 	}
 
 	// Démarrage du serveur

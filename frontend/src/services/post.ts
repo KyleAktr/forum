@@ -32,7 +32,7 @@ export const createPost = async (data: CreatePostInput): Promise<Post> => {
   }
 
   try {
-    const response = await fetch("http://localhost:8080/api/posts", {
+    const response = await fetch("http://localhost:8080/api/user/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
@@ -67,11 +67,22 @@ export const createPost = async (data: CreatePostInput): Promise<Post> => {
 };
 
 export async function getMyPosts(token: string) {
-  const res = await fetch("http://localhost:8080/api/posts", {
+  const res = await fetch("http://localhost:8080/api/user/posts", {
     headers: {
       Authorization: `Bearer ${token}`,
     },
   });
+
+  if (!res.ok) {
+    throw new Error("Impossible de récupérer les posts");
+  }
+
+  const data = await res.json();
+  return data.data; // tableau de posts
+}
+
+export async function getPosts() {
+  const res = await fetch("http://localhost:8080/api/posts", {});
 
   if (!res.ok) {
     throw new Error("Impossible de récupérer les posts");

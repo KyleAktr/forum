@@ -15,7 +15,7 @@ func GetPosts(c *gin.Context) {
 
 	// Pagination
 	page, _ := strconv.Atoi(c.DefaultQuery("page", "1"))
-	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "10"))
+	limit, _ := strconv.Atoi(c.DefaultQuery("limit", "100"))
 	offset := (page - 1) * limit
 
 	// Filtrage par catégorie
