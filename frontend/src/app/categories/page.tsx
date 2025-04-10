@@ -18,6 +18,7 @@ export default function categories() {
               alt="Image"
               className="categorie-card-image"
             />
+            <p className="categorie-text">Travail hybride et télétravail</p>
           </div>
         </Link>
         <Link href="/categories/minimalisme">
@@ -27,7 +28,7 @@ export default function categories() {
               className="categorie-card-image"
               alt="Image"
             />
-            <p className="categorie-text">minimalisme</p>
+            <p className="categorie-text">Minimalisme et frugalité</p>
           </div>
         </Link>
         <Link href="/categories/santeDigitale">
@@ -37,6 +38,7 @@ export default function categories() {
               alt="Image"
               className="categorie-card-image"
             />
+            <p className="categorie-text">Santé mentale et digitale</p>
           </div>
         </Link>
         <Link href="/categories/lifestyle">
@@ -46,6 +48,7 @@ export default function categories() {
               alt="Image"
               className="categorie-card-image"
             />
+            <p className="categorie-text">Lifestyle durable</p>
           </div>
         </Link>
       </div>
