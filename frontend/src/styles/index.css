@@ -1,4 +1,8 @@
 @charset "UTF-8";
+@font-face {
+  font-family: "brightglamore";
+  src: url(../static/fonts/brightglamore-italic.otf);
+}
 html,
 body,
 div,
@@ -41,6 +45,12 @@ button {
   background-color: rgb(255, 255, 255);
   cursor: pointer;
   font-weight: 300;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  transition: all 0.2s ease-in-out;
+}
+button:hover {
+  color: rgb(255, 255, 255);
+  background-color: black;
 }
 
 .login {
@@ -196,6 +206,10 @@ button {
   cursor: pointer;
 }
 
+@font-face {
+  font-family: "brightglamore";
+  src: url(../../static/fonts/brightglamore-italic.otf);
+}
 .categories-cards {
   margin: 0 auto;
   display: grid;
@@ -250,22 +264,21 @@ button {
 }
 
 .categorie-text {
+  font-family: "brightglamore", sans-serif;
+  max-width: 80%;
   position: absolute;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  text-transform: uppercase;
+  color: rgb(247, 235, 145);
+  font-size: 3rem;
+  font-weight: 100;
   letter-spacing: 0.1rem;
   z-index: 1;
   text-align: center;
-  transition: opacity 0.3s ease, visibility 0s 0.3s;
+  visibility: hidden;
 }
 
-.categorie-text:hover {
-  visibility: visible;
+.categorie-card:hover .categorie-text {
   opacity: 1;
-  transition: opacity 0.3s ease, visibility 0s;
-  z-index: 2;
+  visibility: visible;
 }
 
 .header-categorie {
@@ -277,6 +290,17 @@ button {
   overflow: hidden;
   color: white;
 }
+.header-categorie h1 {
+  font-family: "brightglamore";
+  display: flex;
+  align-items: center;
+  font-size: 4rem;
+  letter-spacing: 0.7rem;
+  max-width: èàù;
+  color: rgb(247, 235, 145);
+  text-align: center;
+  z-index: 1;
+}
 
 .header-categorie-img {
   position: absolute;
@@ -285,6 +309,22 @@ button {
   z-index: -1;
   -o-object-fit: cover;
      object-fit: cover;
+}
+
+header {
+  display: flex;
+  justify-content: center;
+  font-size: 2rem;
+  margin-bottom: 20px;
+}
+
+body input {
+  margin-bottom: 20px;
+  border: none;
+}
+
+.create-article-categories-cards {
+  margin-top: 20px;
 }
 
 .create-article-categories-card {
@@ -308,4 +348,78 @@ button {
   color: whitesmoke;
   font-size: 2rem;
   letter-spacing: 3px;
+}
+
+.profile-container {
+  display: flex;
+  justify-content: space-around;
+  margin-top: 50px;
+}
+
+.profile-picture-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 2rem;
+  justify-content: center;
+}
+.profile-picture-container h3 {
+  display: flex;
+  justify-content: center;
+  letter-spacing: 3px;
+  margin-top: 2rem;
+  text-transform: uppercase;
+}
+.profile-picture-container .profile-picture-wrapper {
+  width: 150px;
+  height: 150px;
+  border-radius: 50%;
+  overflow: hidden;
+  margin-bottom: 2rem;
+  background-color: #f0f0f0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  font-size: 3rem;
+  color: #666;
+}
+.profile-picture-container .profile-picture-wrapper .profile-picture {
+  width: 100%;
+  height: 100%;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.profile-picture-container .profile-picture-upload .upload-button {
+  background-color: #ffffff;
+  border: 1px solid black;
+  padding: 10px 20px;
+  border-radius: 20px;
+  cursor: pointer;
+  transform: matrix(1, 0, 0, 1, 0, 0);
+  transition: all 0.1s ease-in-out;
+}
+.profile-picture-container .profile-picture-upload .upload-button:hover {
+  background-color: black;
+  color: white;
+}
+.profile-picture-container .profile-picture-upload .hidden {
+  display: none;
+}
+
+.profile-info {
+  background-color: #eeeeee;
+  padding: 30px 60px;
+  border-radius: 20px;
+  max-width: 40%;
+  min-width: 30%;
+}
+.profile-info h2 {
+  display: flex;
+  justify-content: center;
+  letter-spacing: 3px;
+  margin-bottom: 30px;
+}
+.profile-info span {
+  font-weight: 100;
+  font-size: 1rem;
 }/*# sourceMappingURL=index.css.map */

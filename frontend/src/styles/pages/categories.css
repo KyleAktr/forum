@@ -1,4 +1,8 @@
 @charset "UTF-8";
+@font-face {
+  font-family: "brightglamore";
+  src: url(../../static/fonts/brightglamore-italic.otf);
+}
 .categories-cards {
   margin: 0 auto;
   display: grid;
@@ -53,20 +57,19 @@
 }
 
 .categorie-text {
+  font-family: "brightglamore", sans-serif;
+  max-width: 80%;
   position: absolute;
-  color: white;
-  font-size: 2rem;
-  font-weight: 700;
-  text-transform: uppercase;
+  color: rgb(247, 235, 145);
+  font-size: 3rem;
+  font-weight: 100;
   letter-spacing: 0.1rem;
   z-index: 1;
   text-align: center;
-  transition: opacity 0.3s ease, visibility 0s 0.3s;
+  visibility: hidden;
 }
 
-.categorie-text:hover {
-  visibility: visible;
+.categorie-card:hover .categorie-text {
   opacity: 1;
-  transition: opacity 0.3s ease, visibility 0s;
-  z-index: 2;
+  visibility: visible;
 }/*# sourceMappingURL=categories.css.map */
