@@ -6,6 +6,18 @@
   border-radius: 20px;
   overflow: hidden;
   color: white;
+
+  h1 {
+    font-family: "brightglamore";
+    display: flex;
+    align-items: center;
+    font-size: 4rem;
+    letter-spacing: 0.7rem;
+    max-width: èàù;
+    color: rgb(247, 235, 145);
+    text-align: center;
+    z-index: 1;
+  }
 }
 
 .header-categorie-img {
