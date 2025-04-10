@@ -129,7 +129,9 @@ export default function Page() {
           <div className="profile-picture-wrapper">
             {profile.profilePicture ? (
               <Image
-                src={`http://localhost:8080${profile.profilePicture}`}
+                src={profile.profilePicture.startsWith('http') 
+                    ? profile.profilePicture 
+                    : `http://localhost:8080${profile.profilePicture}`}
                 alt="Photo de profil"
                 width={150}
                 height={150}

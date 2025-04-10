@@ -17,7 +17,7 @@ export default function Login() {
         formData.get("password") as string
       );
       window.location.href = "/";
-    } catch (err) {
+    } catch {
       setError("Email ou mot de passe incorrect");
     }
   };
@@ -43,7 +43,9 @@ export default function Login() {
           </div>
           <button type="submit">Se connecter</button>
           <div className="google">
-            <FcGoogle size={30} />
+            <a href="http://localhost:8080/api/auth/google" className="google-btn">
+              <FcGoogle size={30} />
+            </a>
           </div>
         </form>
       </div>

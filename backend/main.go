@@ -17,12 +17,12 @@ import (
 func main() {
 	// Chargement des variables d'environnement
 	if err := godotenv.Load(); err != nil {
-		log.Fatal("Erreur lors du chargement du fichier .env")
+		log.Printf("Warning: Erreur lors du chargement du fichier .env: %v", err)
 	}
 
-	// Connexion à la base de données
 	database.Connect()
 
+	controllers.InitGoogleOAuth()
 	uploadsPath := filepath.Join("uploads", "profiles")
 	err := os.MkdirAll(uploadsPath, os.ModePerm)
 	if err != nil {
@@ -55,18 +55,22 @@ func main() {
 		{
 			auth.POST("/register", controllers.Register)
 			auth.POST("/login", controllers.Login)
+			auth.GET("/google", controllers.GoogleLogin)
+			auth.GET("/google/callback", controllers.GoogleCallback)
 		}
 
 		posts := api.Group("/posts")
 		posts.GET("", controllers.GetPosts)
 
 		user := api.Group("/user", middleware.AuthMiddleware())
-		user.PUT("/profile", controllers.UpdateProfile)
-		user.POST("/profile-picture", controllers.UploadProfilePicture)
+		{
+			user.PUT("/profile", controllers.UpdateProfile)
+			user.POST("/profile-picture", controllers.UploadProfilePicture)
 
-		userPosts := user.Group("/posts")
-		userPosts.GET("", controllers.GetUserPosts)
-		userPosts.POST("", controllers.CreatePost)
+			userPosts := user.Group("/posts")
+			userPosts.GET("", controllers.GetUserPosts)
+			userPosts.POST("", controllers.CreatePost)
+		}
 	}
 
 	// Démarrage du serveur

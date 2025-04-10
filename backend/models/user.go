@@ -16,22 +16,20 @@ type User struct {
 	Posts          []Post     `json:"posts" gorm:"foreignKey:UserID"`
 	Comments       []Comment  `json:"comments" gorm:"foreignKey:UserID"`
 	Reactions      []Reaction `json:"reactions" gorm:"foreignKey:UserID"`
+	GoogleID       string     `json:"google_id" gorm:"unique"`
 }
 
-// Structure pour la création d'un utilisateur
 type CreateUserInput struct {
 	Username string `json:"username" binding:"required"`
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required,min=6"`
 }
 
-// Structure pour la connexion
 type LoginInput struct {
 	Email    string `json:"email" binding:"required,email"`
 	Password string `json:"password" binding:"required"`
 }
 
-// Structure pour la mise à jour du profil
 type UpdateProfileInput struct {
 	Username string `json:"username"`
 	Email    string `json:"email"`
@@ -39,4 +37,11 @@ type UpdateProfileInput struct {
 	City     string `json:"city"`
 	Age      int    `json:"age"`
 	Bio      string `json:"bio"`
+}
+
+type GoogleUser struct {
+	ID      string `json:"id"`
+	Email   string `json:"email"`
+	Name    string `json:"name"`
+	Picture string `json:"picture"`
 }

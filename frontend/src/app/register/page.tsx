@@ -52,7 +52,9 @@ export default function Register() {
           </div>
           <button type="submit">S&apos;inscrire</button>
           <div className="google">
-            <FcGoogle size={30} />
+            <a href="http://localhost:8080/api/auth/google" className="google-btn">
+              <FcGoogle size={30} />
+            </a>
           </div>
         </form>
       </div>
