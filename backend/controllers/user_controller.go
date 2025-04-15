@@ -43,6 +43,19 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	// Vérifier si le nom d'utilisateur existe déjà
+	var existingUser models.User
+	if err := database.DB.Where("username = ?", input.Username).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Ce nom d'utilisateur est déjà utilisé"})
+		return
+	}
+
+	// Vérifier si l'email existe déjà
+	if err := database.DB.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Cet email est déjà utilisé"})
+		return
+	}
+
 	// Hash du mot de passe
 	hashedPassword, err := bcrypt.GenerateFromPassword([]byte(input.Password), bcrypt.DefaultCost)
 	if err != nil {
@@ -56,9 +69,8 @@ func Register(c *gin.Context) {
 		Password: string(hashedPassword),
 	}
 
-	result := database.DB.Create(&user)
-	if result.Error != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "L'email ou le nom d'utilisateur existe déjà"})
+	if err := database.DB.Create(&user).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la création de l'utilisateur"})
 		return
 	}
 

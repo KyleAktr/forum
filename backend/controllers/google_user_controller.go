@@ -56,7 +56,7 @@ func GoogleCallback(c *gin.Context) {
 	var user models.User
 	if err := database.DB.Where("google_id = ?", googleUser.ID).First(&user).Error; err != nil {
 		user = models.User{
-			GoogleID:       googleUser.ID,
+			GoogleID:       &googleUser.ID,
 			Username:       googleUser.Name,
 			Email:          googleUser.Email,
 			ProfilePicture: googleUser.Picture,

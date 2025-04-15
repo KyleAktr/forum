@@ -16,7 +16,7 @@ type User struct {
 	Posts          []Post     `json:"posts" gorm:"foreignKey:UserID"`
 	Comments       []Comment  `json:"comments" gorm:"foreignKey:UserID"`
 	Reactions      []Reaction `json:"reactions" gorm:"foreignKey:UserID"`
-	GoogleID       string     `json:"google_id" gorm:"unique"`
+	GoogleID       *string    `json:"google_id" gorm:"unique"`
 }
 
 type CreateUserInput struct {
