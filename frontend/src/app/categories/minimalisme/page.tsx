@@ -29,14 +29,24 @@ export default function page() {
         />
         <h1>Minimalisme et frugalité</h1>
       </header>
-      <ul>
-        {posts.map((post: any) => (
-          <li key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="body-categorie">
+        <div className="filtres">
+          <h2>Filtres</h2>
+          <ul className="filtres-list">
+            <li>Filtres 1</li>
+            <li>Filtres 2</li>
+            <li>Filtres 3</li>
+          </ul>
+        </div>
+        <ul className="posts-list">
+          {posts.map((post: any) => (
+            <li key={post.id} className="post-item">
+              <h3>{post.title}</h3>
+              <p>{post.content}</p>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }

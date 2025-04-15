@@ -78,3 +78,26 @@
   visibility: visible;
   // transition: opacity 0.3s ease, visibility 0s;
 }
+
+.body-categorie {
+  display: flex;
+
+  .filtres {
+    border: 1px solid #afafaf;
+    border-radius: 20px;
+    margin: 50px 0 auto 50px;
+    padding: 60px;
+  }
+
+  .posts-list {
+    list-style: none;
+
+    .post-item {
+      border: 1px solid #afafaf;
+      border-radius: 20px;
+      margin: 50px 0 auto 50px;
+      min-width: 300px;
+      padding: 10px;
+    }
+  }
+}

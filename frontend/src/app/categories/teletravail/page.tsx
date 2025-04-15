@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import teletravailHeader from "../../../static/img/bg-1.jpg";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function page() {
   const [posts, setPosts] = useState([]);
@@ -29,14 +30,27 @@ export default function page() {
         />
         <h1>Travail hybride et télétravail</h1>
       </header>
-      <ul>
-        {posts.map((post: any) => (
-          <li key={post.id}>
-            <h3>{post.title}</h3>
-            <p>{post.content}</p>
-          </li>
-        ))}
-      </ul>
+      <div className="body-categorie">
+        <div className="filtres">
+          <h2>Filtres</h2>
+          <ul className="filtres-list">
+            <li>Filtres 1</li>
+            <li>Filtres 2</li>
+            <li>Filtres 3</li>
+          </ul>
+        </div>
+        <ul className="posts-list">
+          {posts.map((post: any) => (
+            <li key={post.id} className="post-item">
+              <h3>{post.title}</h3>
+              <p>{post.content}</p>
+              <Link href={`/article/${post.id}`}>
+                <button className="view-article-button">Voir l'article</button>
+              </Link>
+            </li>
+          ))}
+        </ul>
+      </div>
     </div>
   );
 }
