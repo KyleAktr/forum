@@ -1,35 +1,57 @@
 "use client";
 
 import { useEffect, useState } from "react";
-import { useRouter } from "next/navigation";
+import { getArticleById } from "@/services/article";
 
-export default function ArticlePage({ params }: { params: { id: string } }) {
+type Props = {
+  params: { id: string };
+};
+
+export default function ArticlePage({ params }: Props) {
   const [article, setArticle] = useState<any>(null);
-  const router = useRouter();
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState<string | null>(null);
 
   useEffect(() => {
     const fetchArticle = async () => {
-      const res = await fetch(`http://localhost:8080/api/posts/${params.id}`);
-      if (!res.ok) {
-        console.error("Erreur lors de la récupération de l'article");
-        return;
+      try {
+        setLoading(true);
+        const data = await getArticleById(params.id);
+        setArticle(data);
+      } catch (err) {
+        console.error("Erreur lors de la récupération de l'article :", err);
+        setError("Impossible de charger l'article.");
+      } finally {
+        setLoading(false);
       }
-      const data = await res.json();
-      setArticle(data);
     };
 
+    console.log("hello");
+
     fetchArticle();
-  }, [params.id]);
+  }, []);
+
+  if (loading) {
+    return <p>Chargement...</p>;
+  }
+
+  if (error) {
+    return <p>{error}</p>;
+  }
 
   if (!article) {
-    return <p>Chargement...</p>;
+    return <p>Aucun article trouvé.</p>;
   }
 
   return (
     <div>
-      <h1>{article.title}</h1>
+      <h1>Article ID: {params.id}</h1>
+      <h2>{article.title}</h2>
       <p>{article.content}</p>
-      <button onClick={() => router.back()}>Retour</button>
+      <p>
+        Date de création : {new Date(article.created_at).toLocaleDateString()}
+      </p>
+      <p>Auteur : {article.user ? article.user.username : "Inconnu"}</p>
     </div>
   );
 }

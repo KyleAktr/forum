@@ -61,6 +61,7 @@ func main() {
 
 		posts := api.Group("/posts")
 		posts.GET("", controllers.GetPosts)
+		posts.GET("/:id", controllers.GetPostByID)
 
 		user := api.Group("/user", middleware.AuthMiddleware())
 		{

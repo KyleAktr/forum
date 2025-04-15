@@ -31,15 +31,14 @@ export const createPost = async (data: CreatePostInput): Promise<Post> => {
   }
 
   try {
-       const response = await fetch("http://localhost:8080/api/user/posts", {
+    const response = await fetch("http://localhost:8080/api/user/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        "Authorization": `Bearer ${token}`
+        Authorization: `Bearer ${token}`,
       },
       body: JSON.stringify(data),
     });
-
 
     if (!response.ok) {
       const errorText = await response.text();
@@ -59,9 +58,9 @@ export const createPost = async (data: CreatePostInput): Promise<Post> => {
 export async function getMyPosts(token: string) {
   const res = await fetch("http://localhost:8080/api/user/posts", {
     headers: {
-      'Authorization': `Bearer ${token}`,
-      'Content-Type': 'application/json'
-    }
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
   });
 
   if (!res.ok) {

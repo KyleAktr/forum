@@ -138,3 +138,17 @@ func GetUserPosts(c *gin.Context) {
 		},
 	})
 }
+
+// -----------GetPostByID-----------
+
+func GetPostByID(c *gin.Context) {
+	id := c.Param("id")
+	var post models.Post
+
+	if err := database.DB.Preload("User").Preload("Category").Preload("Comments").Preload("Reactions").First(&post, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Post non trouvé"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": post})
+}
