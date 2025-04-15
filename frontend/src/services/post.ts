@@ -82,5 +82,5 @@ export async function getPosts() {
   }
 
   const data = await res.json();
-  return data.data; // tableau de posts
+  return data.data; // tableau de post
 }
