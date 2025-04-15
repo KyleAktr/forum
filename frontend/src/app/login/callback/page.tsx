@@ -15,7 +15,13 @@ export default function CallbackPage() {
         }
 
         try {
-            const data = JSON.parse(tokenAndUser);
+            const decoded = decodeURIComponent(tokenAndUser);
+            const data = JSON.parse(decoded);
+            
+            if (!data.token) {
+                throw new Error('No token in response');
+            }
+
             localStorage.setItem('token', data.token);
             localStorage.setItem('user', JSON.stringify(data.user));
             router.push('/');

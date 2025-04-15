@@ -86,7 +86,7 @@ func CreatePost(c *gin.Context) {
 		return
 	}
 
-	// Création du post
+	// Création du post avec les relations
 	if err := database.DB.Create(&post).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la création du post"})
 		return

@@ -1,20 +1,25 @@
 "use client";
 
 import Navbar from "@/components/Navbar";
-import { useState } from "react";
-// import { Upload, X } from "lucide-react";
+import { useState, useEffect } from "react";
 import { useRouter } from "next/navigation";
 import { createPost } from "@/services/post";
+import { isAuthenticated } from "@/services/auth";
 
 export default function Page() {
   const router = useRouter();
-
-  const [image, setImage] = useState<string | null>(null);
+  const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
     content: "",
     category: 1,
   });
+
+  useEffect(() => {
+    if (!isAuthenticated()) {
+      router.push('/login');
+    }
+  }, [router]);
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -28,19 +33,8 @@ export default function Page() {
       router.push(`/`);
     } catch (err) {
       console.error("Erreur lors de la création du post", err);
+      setError("Erreur lors de la création de l'article. Veuillez réessayer.");
     }
-  };
-
-  const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
-    const file = event.target.files?.[0];
-    if (file) {
-      const imageUrl = URL.createObjectURL(file);
-      setImage(imageUrl);
-    }
-  };
-
-  const removeImage = () => {
-    setImage(null);
   };
 
   return (
@@ -52,6 +46,8 @@ export default function Page() {
 
       <div>
         <form onSubmit={handleSubmit}>
+          {error && <div className="error-message">{error}</div>}
+          
           <label htmlFor="title">Titre :</label>
           <input
             type="text"
@@ -82,39 +78,7 @@ export default function Page() {
             <option value="4">Lifestyle durable</option>
           </select>
 
-          {/* <div>
-            <label htmlFor="banner-image" className="cursor-pointer">
-              <Upload className="inline-block mr-2" />
-              Choisir une image pour la bannière de l'article
-            </label>
-            <br />
-            <input
-              id="banner-image"
-              type="file"
-              accept="image/*"
-              onChange={handleImageUpload}
-              style={{ display: "none" }}
-            />
-
-            {image && (
-              <div className="relative">
-                <img
-                  src={image}
-                  alt="Aperçu"
-                  className="mt-2 w-full max-w-md"
-                />
-                <button
-                  type="button"
-                  onClick={removeImage}
-                  className="absolute top-0 right-0 p-1"
-                >
-                  <X className="w-4 h-4 text-red-500" />
-                </button>
-              </div>
-            )}
-          </div> */}
-
-          <label htmlFor="content">Contenu de l'article</label>
+          <label htmlFor="content">Contenu de l&apos;article</label>
           <br />
           <textarea
             name="content"
@@ -129,7 +93,7 @@ export default function Page() {
           ></textarea>
           <br />
 
-          <button type="submit">Publier l'article</button>
+          <button type="submit">Publier l&apos;article</button>
         </form>
       </div>
     </div>

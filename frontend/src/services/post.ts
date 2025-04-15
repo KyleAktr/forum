@@ -26,59 +26,52 @@ interface CreatePostInput {
 
 export const createPost = async (data: CreatePostInput): Promise<Post> => {
   const token = localStorage.getItem("token");
-  console.log("Token envoyé:", token);
   if (!token) {
     throw new Error("Utilisateur non authentifié");
   }
 
   try {
-    const response = await fetch("http://localhost:8080/api/user/posts", {
+       const response = await fetch("http://localhost:8080/api/user/posts", {
       method: "POST",
       headers: {
         "Content-Type": "application/json",
-        Authorization: `Bearer ${token}`,
+        "Authorization": `Bearer ${token}`
       },
       body: JSON.stringify(data),
     });
 
-    // Vérifie si la réponse est au format JSON
-    const contentType = response.headers.get("Content-Type");
 
     if (!response.ok) {
-      // Si la réponse n'est pas OK, afficher un message d'erreur.
-      const errorText = await response.text(); // Récupère le corps brut de la réponse
-      console.error("Erreur serveur : ", errorText);
+      const errorText = await response.text();
+      console.error("Erreur serveur:", errorText);
       throw new Error(errorText || "Erreur lors de la création du post");
     }
 
-    if (contentType && contentType.includes("application/json")) {
-      // Si la réponse est JSON, la parser
-      return await response.json();
-    } else {
-      // Si ce n'est pas du JSON, afficher l'erreur
-      const errorText = await response.text();
-      console.error("La réponse n'est pas du JSON : ", errorText);
-      throw new Error("La réponse n'est pas au format JSON.");
-    }
+    const result = await response.json();
+    console.log("Réponse reçue:", result);
+    return result.data;
   } catch (err) {
-    console.error("Erreur lors de la requête:", err);
-    throw new Error("Erreur réseau ou serveur");
+    console.error("Erreur détaillée:", err);
+    throw err;
   }
 };
 
 export async function getMyPosts(token: string) {
   const res = await fetch("http://localhost:8080/api/user/posts", {
     headers: {
-      Authorization: `Bearer ${token}`,
-    },
+      'Authorization': `Bearer ${token}`,
+      'Content-Type': 'application/json'
+    }
   });
 
   if (!res.ok) {
+    const errorText = await res.text();
+    console.error("Erreur serveur:", errorText);
     throw new Error("Impossible de récupérer les posts");
   }
 
   const data = await res.json();
-  return data.data; // tableau de posts
+  return data.data;
 }
 
 export async function getPosts() {

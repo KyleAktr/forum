@@ -2,7 +2,6 @@ package utils
 
 import (
 	"errors"
-	"fmt"
 	"os"
 	"time"
 
@@ -31,7 +30,6 @@ func GenerateToken(userID uint, username string) (string, error) {
 }
 
 func ValidateToken(tokenString string) (*JWTClaim, error) {
-	fmt.Println("Clé secrète utilisée pour la validation:", os.Getenv("JWT_SECRET"))
 	token, err := jwt.ParseWithClaims(tokenString, &JWTClaim{}, func(token *jwt.Token) (interface{}, error) {
 		return []byte(os.Getenv("JWT_SECRET")), nil
 	})
