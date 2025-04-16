@@ -63,6 +63,12 @@ func main() {
 		posts.GET("", controllers.GetPosts)
 		posts.GET("/:id", controllers.GetPostByID)
 
+		postsAuth := posts.Group("/", middleware.AuthMiddleware())
+		{
+			postsAuth.POST("/:id/reactions", controllers.AddReaction)
+			postsAuth.DELETE("/:id/reactions/:reactionId", controllers.RemoveReaction)
+		}
+
 		user := api.Group("/user", middleware.AuthMiddleware())
 		{
 			user.PUT("/profile", controllers.UpdateProfile)
@@ -72,7 +78,6 @@ func main() {
 			userPosts := user.Group("/posts")
 			userPosts.GET("", controllers.GetUserPosts)
 			userPosts.POST("", controllers.CreatePost)
-
 		}
 	}
 

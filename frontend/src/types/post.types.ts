@@ -29,6 +29,8 @@ interface Comment {
 
 interface Reaction {
     id: number;
-    type: 'like' | 'dislike';
     user_id: number;
+    post_id: number;
+    like: boolean;
+    created_at: string;
 }
