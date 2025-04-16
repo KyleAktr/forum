@@ -4,8 +4,8 @@ import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import { getUser, updateProfile, uploadProfilePicture } from "@/services/auth";
 import Image from "next/image";
-import { getMyPosts, Post } from "@/services/post";
-
+import { getMyPosts } from "@/services/post";
+import { Post } from "@/types";
 
 interface UserProfile {
   id: number;

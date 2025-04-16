@@ -1,22 +1,4 @@
-export interface Post {
-  id: number;
-  title: string;
-  content: string;
-  category_id: number;
-  user_id: number;
-  created_at: string;
-  updated_at: string;
-  user: {
-    id: number;
-    username: string;
-  };
-  category: {
-    id: number;
-    name: string;
-  };
-  comments: any[];
-  reactions: any[];
-}
+import { Post } from '../types';
 
 interface CreatePostInput {
   title: string;

@@ -1,25 +1,4 @@
-interface User {
-    id: number;
-    username: string;
-    email: string;
-    city?: string;
-    age?: number;
-    bio?: string;
-}
-
-interface AuthResponse {
-    token: string;
-    user: User;
-}
-
-interface UpdateProfileData {
-    username?: string;
-    email?: string;
-    password?: string;
-    city: string;
-    age: number;
-    bio: string;
-}
+import { User, AuthResponse, UpdateProfileData } from '../types';
 
 export const login = async (email: string, password: string): Promise<AuthResponse> => {
     const res = await fetch('http://localhost:8080/api/auth/login', {
