@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import { getArticleById } from "@/services/article";
 import Link from "next/link";
+import Navbar from "@/components/Navbar";
 
 type Props = {
   params: { id: string };
@@ -46,6 +47,7 @@ export default function ArticlePage({ params }: Props) {
 
   return (
     <div>
+      <Navbar />
       <h1>Article ID: {params.id}</h1>
       <h2>{article.title}</h2>
       <p>{article.content}</p>
