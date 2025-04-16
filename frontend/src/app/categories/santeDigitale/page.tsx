@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import teletravailHeader from "../../../static/img/bg-2.jpg";
 import { useEffect, useState } from "react";
+import Link from "next/link";
 
 export default function page() {
   const [posts, setPosts] = useState([]);
@@ -42,6 +43,9 @@ export default function page() {
             <li key={post.id} className="post-item">
               <h3>{post.title}</h3>
               <p>{post.content}</p>
+              <Link href={`/article/${post.id}`}>
+                <button className="view-article-button">Voir l'article</button>
+              </Link>
             </li>
           ))}
         </ul>
