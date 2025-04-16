@@ -4,6 +4,7 @@ import { useEffect, useState } from "react";
 import { getArticleById } from "@/services/article";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
+import Image from "next/image";
 
 type Props = {
   params: { id: string };
@@ -48,19 +49,35 @@ export default function ArticlePage({ params }: Props) {
   return (
     <div>
       <Navbar />
-      <h1>Article ID: {params.id}</h1>
-      <h2>{article.title}</h2>
-      <p>{article.content}</p>
-      <p>
-        Date de création : {new Date(article.created_at).toLocaleDateString()}
-      </p>
-      <p>Auteur : {article.user ? article.user.username : "Inconnu"}</p>
+      <div className="article">
+        <p className="author">
+          <Image
+            src={
+              article.user.profilePicture.startsWith("http")
+                ? article.user.profilePicture
+                : `http://localhost:8080${article.user.profilePicture}`
+            }
+            alt="Photo de profil"
+            width={150}
+            height={150}
+            className="profile-picture"
+            unoptimized
+          />
+          {article.user && (
+            <Link href={`/profil/${article.user.id}`} className="author-link">
+              {article.user ? article.user.username : "Inconnu"}{" "}
+            </Link>
+          )}{" "}
+          {new Date(article.created_at).toLocaleDateString("fr-FR", {
+            year: "numeric",
+            month: "long",
+            day: "numeric",
+          })}
+        </p>
 
-      {article.user && (
-        <Link href={`/profil/${article.user.id}`}>
-          Voir le profil de l'auteur
-        </Link>
-      )}
+        <h2>{article.title}</h2>
+        <p>{article.content}</p>
+      </div>
     </div>
   );
 }

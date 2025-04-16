@@ -442,4 +442,26 @@ body input {
 .profile-info span {
   font-weight: 100;
   font-size: 1rem;
+}
+
+.article {
+  width: 80%;
+  margin: 0 auto;
+}
+.article .author {
+  display: flex;
+  align-items: center;
+  color: gray;
+}
+.article .author .profile-picture {
+  width: 40px;
+  height: 40px;
+  border-radius: 50%;
+  margin-right: 10px;
+  -o-object-fit: cover;
+     object-fit: cover;
+}
+.article .author .author-link {
+  color: gray;
+  margin-right: 10px;
 }/*# sourceMappingURL=index.css.map */
