@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getArticleById } from "@/services/article";
+import Link from "next/link";
 
 type Props = {
   params: { id: string };
@@ -52,6 +53,12 @@ export default function ArticlePage({ params }: Props) {
         Date de création : {new Date(article.created_at).toLocaleDateString()}
       </p>
       <p>Auteur : {article.user ? article.user.username : "Inconnu"}</p>
+
+      {article.user && (
+        <Link href={`/profil/${article.user.id}`}>
+          Voir le profil de l'auteur
+        </Link>
+      )}
     </div>
   );
 }

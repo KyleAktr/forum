@@ -67,10 +67,12 @@ func main() {
 		{
 			user.PUT("/profile", controllers.UpdateProfile)
 			user.POST("/profile-picture", controllers.UploadProfilePicture)
+			user.GET("/:id", controllers.GetUserByID)
 
 			userPosts := user.Group("/posts")
 			userPosts.GET("", controllers.GetUserPosts)
 			userPosts.POST("", controllers.CreatePost)
+
 		}
 	}
 

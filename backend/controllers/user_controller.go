@@ -266,3 +266,15 @@ func UploadProfilePicture(c *gin.Context) {
 		"profilePicture": user.ProfilePicture,
 	})
 }
+
+func GetUserByID(c *gin.Context) {
+	id := c.Param("id")
+	var user models.User
+
+	if err := database.DB.First(&user, id).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Utilisateur non trouvé"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": user})
+}

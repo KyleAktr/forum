@@ -281,6 +281,26 @@ button:hover {
   visibility: visible;
 }
 
+.body-categorie {
+  display: flex;
+}
+.body-categorie .filtres {
+  border: 1px solid #afafaf;
+  border-radius: 20px;
+  margin: 50px 0 auto 50px;
+  padding: 60px;
+}
+.body-categorie .posts-list {
+  list-style: none;
+}
+.body-categorie .posts-list .post-item {
+  border: 1px solid #afafaf;
+  border-radius: 20px;
+  margin: 50px 0 auto 50px;
+  min-width: 300px;
+  padding: 10px;
+}
+
 .header-categorie {
   position: relative;
   width: 95%;
