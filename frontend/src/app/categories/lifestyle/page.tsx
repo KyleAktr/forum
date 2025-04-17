@@ -5,6 +5,9 @@ import Image from "next/image";
 import teletravailHeader from "../../../static/img/bg-4.jpg";
 import { useEffect, useState } from "react";
 import Link from "next/link";
+import { getPosts } from "@/services/post";
+import { Post } from "@/types";
+import LikeButton from "@/components/LikeButton";
 
 export default function page() {
   const [posts, setPosts] = useState([]);
@@ -18,6 +21,18 @@ export default function page() {
 
     fetchPosts();
   }, []);
+
+  useEffect(() => {
+    getPosts()
+      .then(setPosts)
+      .catch((err) => console.error("Erreur lors du fetch des posts", err));
+  }, []);
+
+  const handlePostUpdate = (updatedPost: Post) => {
+    setPosts(
+      posts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
+    );
+  };
 
   return (
     <div>
@@ -43,10 +58,38 @@ export default function page() {
           {posts.map((post: any) => (
             <li key={post.id} className="post-item">
               <h3>{post.title}</h3>
-              <p>{post.content}</p>
-              <Link href={`/article/${post.id}`}>
-                <button className="view-article-button">Voir l'article</button>
-              </Link>
+              <p>{post.content.slice(0, 100)}...</p>
+              <p className="meta">
+                Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
+                {post.user && (
+                  <Link
+                    href={`/profil/${post.user.id}`}
+                    className="author-link"
+                  >
+                    {post.user ? post.user.username : "Inconnu"}{" "}
+                  </Link>
+                )}
+                <Image
+                  src={
+                    post.user.profilePicture.startsWith("http")
+                      ? post.user.profilePicture
+                      : `http://localhost:8080${post.user.profilePicture}`
+                  }
+                  alt="Photo de profil"
+                  width={150}
+                  height={150}
+                  className="profile-picture"
+                  unoptimized
+                />
+              </p>
+              <div className="post-actions">
+                <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
+                <Link href={`/article/${post.id}`}>
+                  <button className="view-article-button">
+                    Voir l'article
+                  </button>
+                </Link>
+              </div>
             </li>
           ))}
         </ul>
