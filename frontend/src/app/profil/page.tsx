@@ -8,6 +8,7 @@ import { getMyPosts } from "@/services/post";
 import { Post } from "@/types";
 import LikeButton from "@/components/LikeButton";
 import { getPosts } from "@/services/post";
+import Link from "next/link";
 
 interface UserProfile {
   id: number;
@@ -307,15 +308,42 @@ export default function Page() {
         {myPosts.length === 0 ? (
           <p>Vous n&apos;avez pas encore publié d&apos;article.</p>
         ) : (
-          <ul className="post-list">
-            {myPosts.map((post: Post) => (
-              <li key={post.id} className="post-card">
+          <ul className="posts-list">
+            {myPosts.map((post: any) => (
+              <li key={post.id} className="post-item">
                 <h3>{post.title}</h3>
                 <p>{post.content.slice(0, 100)}...</p>
                 <p className="meta">
-                  Posté le {new Date(post.created_at).toLocaleDateString()}
+                  Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
+                  {post.user && (
+                    <Link
+                      href={`/profil/${post.user.id}`}
+                      className="author-link"
+                    >
+                      {post.user ? post.user.username : "Inconnu"}{" "}
+                    </Link>
+                  )}
+                  <Image
+                    src={
+                      post.user.profilePicture.startsWith("http")
+                        ? post.user.profilePicture
+                        : `http://localhost:8080${post.user.profilePicture}`
+                    }
+                    alt="Photo de profil"
+                    width={150}
+                    height={150}
+                    className="profile-picture"
+                    unoptimized
+                  />
                 </p>
-                <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
+                <div className="post-actions">
+                  <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
+                  <Link href={`/article/${post.id}`}>
+                    <button className="view-article-button">
+                      Voir l'article
+                    </button>
+                  </Link>
+                </div>
               </li>
             ))}
           </ul>

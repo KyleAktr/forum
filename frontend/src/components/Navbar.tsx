@@ -22,7 +22,7 @@ export default function Navbar() {
       {authenticated ? (
         <nav>
           <div className="logo">
-            <a href="/">Island°</a>
+            <a href="/">Haven°</a>
           </div>
           <div className="ancres">
             <a href="/categories">Catégories</a>
@@ -36,7 +36,7 @@ export default function Navbar() {
       ) : (
         <nav>
           <div className="logo">
-            <a href="/">Island°</a>
+            <a href="/">Haven°</a>
           </div>
           <div className="ancres">
             <a href="/contact">Contact</a>

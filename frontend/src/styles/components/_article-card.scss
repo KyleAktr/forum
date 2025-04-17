@@ -1,0 +1,41 @@
+.posts-list {
+  width: 60%;
+  list-style: none;
+
+  .post-item {
+    border: 1px solid #afafaf4c;
+    border-radius: 20px;
+    margin: 50px 0 auto 50px;
+    min-width: 300px;
+    padding: 10px;
+
+    .meta {
+      color: grey;
+      display: flex;
+      align-items: center;
+
+      .author-link {
+        color: gray;
+        margin-left: 5px;
+      }
+
+      .profile-picture {
+        width: 30px;
+        height: 30px;
+        border-radius: 50%;
+        margin-right: 10px;
+        object-fit: cover;
+        margin-left: 10px;
+      }
+    }
+
+    .post-actions {
+      display: flex;
+      justify-content: space-between;
+
+      button {
+        margin-left: 0;
+      }
+    }
+  }
+}

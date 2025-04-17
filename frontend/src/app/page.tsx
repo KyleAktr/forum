@@ -10,6 +10,7 @@ import { TfiWrite } from "react-icons/tfi";
 import { FaRegCommentDots } from "react-icons/fa";
 import { FaRegLightbulb } from "react-icons/fa";
 import { FaArrowAltCircleRight } from "react-icons/fa";
+import Footer from "@/components/Footer";
 
 export const metadata: Metadata = {
   title: "Forum - Accueil",
@@ -33,10 +34,8 @@ export default function Home() {
 
         {/* Contenu au-dessus de l'image */}
         <div className="header-content">
-          <h1>Island°</h1>
-          <h2>Faites vivre vos pensées</h2>
-          <p>Exprimez-vous, réagissez, inspirez-vous</p>
-          <button>Commencer</button>
+          <h1>Haven°</h1>
+          <h2>Un souffle nouveau sur nos manières de vivre.</h2>
         </div>
       </header>
       <div className="body">
@@ -116,6 +115,7 @@ export default function Home() {
           </div>
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

@@ -1,5 +1,7 @@
 @import "./globals";
 @import "./components/navbar";
+@import "./components/article-card";
+@import "./components/footer";
 @import "./pages/login";
 @import "./pages/home";
 @import "./pages/categories";
@@ -7,3 +9,4 @@
 @import "./pages/creation-article";
 @import "./pages/profil";
 @import "./pages/article";
+@import "./pages/rgpd";
