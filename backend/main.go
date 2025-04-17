@@ -62,11 +62,13 @@ func main() {
 		posts := api.Group("/posts")
 		posts.GET("", controllers.GetPosts)
 		posts.GET("/:id", controllers.GetPostByID)
+		posts.GET("/:id/comments", controllers.GetComments)
 
 		postsAuth := posts.Group("/", middleware.AuthMiddleware())
 		{
 			postsAuth.POST("/:id/reactions", controllers.AddReaction)
 			postsAuth.DELETE("/:id/reactions/:reactionId", controllers.RemoveReaction)
+			postsAuth.POST("/:id/comments", controllers.AddComment)
 		}
 
 		user := api.Group("/user", middleware.AuthMiddleware())
