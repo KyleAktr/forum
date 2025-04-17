@@ -6,6 +6,8 @@ import { getUser, updateProfile, uploadProfilePicture } from "@/services/auth";
 import Image from "next/image";
 import { getMyPosts } from "@/services/post";
 import { Post } from "@/types";
+import LikeButton from "@/components/LikeButton";
+import { getPosts } from "@/services/post";
 
 interface UserProfile {
   id: number;
@@ -107,6 +109,18 @@ export default function Page() {
     }
   };
 
+  useEffect(() => {
+    getPosts()
+      .then(setMyPosts)
+      .catch((err) => console.error("Erreur lors du fetch des posts", err));
+  }, []);
+
+  const handlePostUpdate = (updatedPost: Post) => {
+    setMyPosts(
+      myPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
+    );
+  };
+
   if (!profile) {
     return (
       <div>
@@ -129,9 +143,11 @@ export default function Page() {
           <div className="profile-picture-wrapper">
             {profile.profilePicture ? (
               <Image
-                src={profile.profilePicture.startsWith('http') 
-                    ? profile.profilePicture 
-                    : `http://localhost:8080${profile.profilePicture}`}
+                src={
+                  profile.profilePicture.startsWith("http")
+                    ? profile.profilePicture
+                    : `http://localhost:8080${profile.profilePicture}`
+                }
                 alt="Photo de profil"
                 width={150}
                 height={150}
@@ -299,6 +315,7 @@ export default function Page() {
                 <p className="meta">
                   Posté le {new Date(post.created_at).toLocaleDateString()}
                 </p>
+                <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
               </li>
             ))}
           </ul>
