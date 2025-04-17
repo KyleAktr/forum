@@ -9,6 +9,7 @@ import CommentList from "@/components/CommentList";
 import CommentForm from "@/components/CommentForm";
 import LikeButton from "@/components/LikeButton";
 import { Post } from "@/types";
+import Footer from "@/components/Footer";
 
 type Props = {
   params: { id: string };
@@ -39,7 +40,7 @@ export default function ArticlePage({ params }: Props) {
 
   const handleCommentAdded = () => {
     // Déclencher le rechargement des commentaires en changeant la clé
-    setCommentsRefreshKey(prevKey => prevKey + 1);
+    setCommentsRefreshKey((prevKey) => prevKey + 1);
   };
 
   const handlePostUpdate = (updatedPost: Post) => {
@@ -67,7 +68,7 @@ export default function ArticlePage({ params }: Props) {
             src={
               article.user.profilePicture?.startsWith("http")
                 ? article.user.profilePicture
-                : `http://localhost:8080${article.user.profilePicture || ''}`
+                : `http://localhost:8080${article.user.profilePicture || ""}`
             }
             alt="Photo de profil"
             width={150}
@@ -89,26 +90,18 @@ export default function ArticlePage({ params }: Props) {
 
         <h2>{article.title}</h2>
         <p>{article.content}</p>
-        
+
         <div className="article-actions">
-          <LikeButton 
-            post={article} 
-            onReactionUpdate={handlePostUpdate} 
-          />
+          <LikeButton post={article} onReactionUpdate={handlePostUpdate} />
         </div>
-        
+
         <div className="comments-container">
-          <CommentForm 
-            postId={params.id} 
-            onCommentAdded={handleCommentAdded} 
-          />
-          
-          <CommentList 
-            key={commentsRefreshKey} 
-            postId={params.id} 
-          />
+          <CommentForm postId={params.id} onCommentAdded={handleCommentAdded} />
+
+          <CommentList key={commentsRefreshKey} postId={params.id} />
         </div>
       </div>
+      <Footer />
     </div>
   );
 }

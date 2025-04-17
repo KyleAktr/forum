@@ -9,6 +9,7 @@ import { Post } from "@/types";
 import LikeButton from "@/components/LikeButton";
 import { getPosts } from "@/services/post";
 import Link from "next/link";
+import Footer from "@/components/Footer";
 
 interface UserProfile {
   id: number;
@@ -349,6 +350,7 @@ export default function Page() {
           </ul>
         )}
       </div>
+      <Footer />
     </div>
   );
 }
