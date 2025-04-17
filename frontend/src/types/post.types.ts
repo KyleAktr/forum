@@ -20,14 +20,14 @@ export interface Category {
     description?: string;
 }
 
-interface Comment {
+export interface Comment {
     id: number;
     content: string;
     user: User;
     created_at: string;
 }
 
-interface Reaction {
+export interface Reaction {
     id: number;
     user_id: number;
     post_id: number;

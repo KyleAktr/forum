@@ -5,15 +5,20 @@ import { getArticleById } from "@/services/article";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
+import CommentList from "@/components/CommentList";
+import CommentForm from "@/components/CommentForm";
+import LikeButton from "@/components/LikeButton";
+import { Post } from "@/types";
 
 type Props = {
   params: { id: string };
 };
 
 export default function ArticlePage({ params }: Props) {
-  const [article, setArticle] = useState<any>(null);
+  const [article, setArticle] = useState<Post | null>(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
+  const [commentsRefreshKey, setCommentsRefreshKey] = useState(0);
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -29,10 +34,17 @@ export default function ArticlePage({ params }: Props) {
       }
     };
 
-    console.log("hello");
-
     fetchArticle();
-  }, []);
+  }, [params.id]);
+
+  const handleCommentAdded = () => {
+    // Déclencher le rechargement des commentaires en changeant la clé
+    setCommentsRefreshKey(prevKey => prevKey + 1);
+  };
+
+  const handlePostUpdate = (updatedPost: Post) => {
+    setArticle(updatedPost);
+  };
 
   if (loading) {
     return <p>Chargement...</p>;
@@ -53,9 +65,9 @@ export default function ArticlePage({ params }: Props) {
         <p className="author">
           <Image
             src={
-              article.user.profilePicture.startsWith("http")
+              article.user.profilePicture?.startsWith("http")
                 ? article.user.profilePicture
-                : `http://localhost:8080${article.user.profilePicture}`
+                : `http://localhost:8080${article.user.profilePicture || ''}`
             }
             alt="Photo de profil"
             width={150}
@@ -77,6 +89,25 @@ export default function ArticlePage({ params }: Props) {
 
         <h2>{article.title}</h2>
         <p>{article.content}</p>
+        
+        <div className="article-actions">
+          <LikeButton 
+            post={article} 
+            onReactionUpdate={handlePostUpdate} 
+          />
+        </div>
+        
+        <div className="comments-container">
+          <CommentForm 
+            postId={params.id} 
+            onCommentAdded={handleCommentAdded} 
+          />
+          
+          <CommentList 
+            key={commentsRefreshKey} 
+            postId={params.id} 
+          />
+        </div>
       </div>
     </div>
   );
