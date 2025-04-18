@@ -14,7 +14,7 @@ export default function Page() {
     title: "",
     category: 1,
   });
-  const [content, setContent] = useState(""); // Contenu venant de Tiptap
+  const [content, setContent] = useState("");
 
   useEffect(() => {
     if (!isAuthenticated()) {
@@ -26,9 +26,9 @@ export default function Page() {
     e.preventDefault();
 
     try {
-      const newPost = await createPost({
+      await createPost({
         title: formData.title,
-        content: content, // On utilise le contenu de l'éditeur
+        content,
         category_id: formData.category,
       });
       router.push(`/`);
@@ -81,7 +81,9 @@ export default function Page() {
 
           <br />
           <label>Contenu de l&apos;article :</label>
-          <TiptapEditor content={content} onChange={setContent} />
+          <div className="creation-article-content">
+            <TiptapEditor content={content} onChange={setContent} />
+          </div>
           <br />
 
           <button type="submit">Publier l&apos;article</button>
