@@ -51,17 +51,17 @@ export default function TiptapEditor({ content, onChange }: Props) {
         </button>
         <button
           onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 1 }).run()
+            editor.chain().focus().toggleHeading({ level: 2 }).run()
           }
-          className={editor.isActive("heading", { level: 1 }) ? "active" : ""}
+          className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
         >
           <Heading2 size={18} />
         </button>
         <button
           onClick={() =>
-            editor.chain().focus().toggleHeading({ level: 2 }).run()
+            editor.chain().focus().toggleHeading({ level: 3 }).run()
           }
-          className={editor.isActive("heading", { level: 2 }) ? "active" : ""}
+          className={editor.isActive("heading", { level: 3 }) ? "active" : ""}
         >
           <Heading3 size={18} />
         </button>

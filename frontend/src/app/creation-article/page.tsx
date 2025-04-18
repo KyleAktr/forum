@@ -6,13 +6,14 @@ import { useRouter } from "next/navigation";
 import { createPost } from "@/services/post";
 import { isAuthenticated } from "@/services/auth";
 import TiptapEditor from "@/components/TiptapEditor";
+import Footer from "@/components/Footer";
 
 export default function Page() {
   const router = useRouter();
   const [error, setError] = useState("");
   const [formData, setFormData] = useState({
     title: "",
-    category: 1,
+    category: 0,
   });
   const [content, setContent] = useState("");
 
@@ -41,15 +42,34 @@ export default function Page() {
   return (
     <div>
       <Navbar />
-      <header>
-        <h1>Créer un article</h1>
+      <header className="header-creation-article">
+        <h1>Espace Création</h1>
+        <p>
+          Cet espace est conçu pour vous permettre de vous exprimer librement et
+          de partager vos idées de manière claire et structurée. L’objectif ici
+          est de créer des articles bien organisés, intéressants et faciles à
+          lire. <br />
+          <br />
+          Que vous soyez novice ou expérimenté, vous trouverez tous les outils
+          nécessaires pour structurer vos textes de manière optimale : vous
+          pouvez ajouter des titres, des sous-titres, organiser vos idées sous
+          forme de listes et bien plus encore. La mise en forme est facilitée
+          pour que vous puissiez mettre en évidence vos points importants, que
+          ce soit en utilisant le gras, l’italique ou d'autres options de style.{" "}
+          <br />
+          <br />
+          N’oubliez pas, un article bien structuré est un article qui capte
+          l’attention de son lecteur et lui permet de comprendre facilement vos
+          idées. Prenez votre temps, soyez créatif, et laissez parler votre
+          plume !
+        </p>
       </header>
 
       <div>
         <form onSubmit={handleSubmit}>
           {error && <div className="error-message">{error}</div>}
 
-          <label htmlFor="title">Titre :</label>
+          <label htmlFor="title"></label>
           <input
             type="text"
             name="title"
@@ -63,16 +83,19 @@ export default function Page() {
           />
           <br />
 
-          <label htmlFor="category_id">Catégorie :</label>
+          <label htmlFor="category_id"></label>
           <select
             id="category_id"
             name="category_id"
-            value={formData.category}
+            value={formData.category || ""}
             onChange={(e) =>
               setFormData({ ...formData, category: Number(e.target.value) })
             }
             required
           >
+            <option value="" disabled>
+              Veuillez sélectionner une catégorie
+            </option>
             <option value="1">Travail hybride et télétravail</option>
             <option value="2">Minimalisme et frugalité</option>
             <option value="3">Santé mentale et digitale</option>
@@ -80,15 +103,17 @@ export default function Page() {
           </select>
 
           <br />
-          <label>Contenu de l&apos;article :</label>
           <div className="creation-article-content">
             <TiptapEditor content={content} onChange={setContent} />
           </div>
           <br />
 
-          <button type="submit">Publier l&apos;article</button>
+          <button className="submit" type="submit">
+            Publier l&apos;article
+          </button>
         </form>
       </div>
+      <Footer />
     </div>
   );
 }
