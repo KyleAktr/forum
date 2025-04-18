@@ -89,7 +89,10 @@ export default function ArticlePage({ params }: Props) {
         </p>
 
         <h2>{article.title}</h2>
-        <p>{article.content}</p>
+        <div
+          className="article-content"
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
 
         <div className="article-actions">
           <LikeButton post={article} onReactionUpdate={handlePostUpdate} />
