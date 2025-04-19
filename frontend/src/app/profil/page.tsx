@@ -10,6 +10,7 @@ import LikeButton from "@/components/LikeButton";
 import { getPosts } from "@/services/post";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import TiptapEditor from "@/components/TiptapEditor";
 
 interface UserProfile {
   id: number;
@@ -134,6 +135,14 @@ export default function Page() {
       </div>
     );
   }
+
+  const getFirstBlockFromHTML = (htmlString: string) => {
+    if (typeof window === "undefined") return ""; // sécurité SSR
+    const parser = new DOMParser();
+    const doc = parser.parseFromString(htmlString, "text/html");
+    const firstBlock = doc.body.firstElementChild;
+    return firstBlock ? firstBlock.outerHTML : "";
+  };
 
   return (
     <div>
@@ -313,7 +322,12 @@ export default function Page() {
             {myPosts.map((post: any) => (
               <li key={post.id} className="post-item">
                 <h3>{post.title}</h3>
-                <p>{post.content.slice(0, 100)}...</p>
+                <div
+                  className="article-content"
+                  dangerouslySetInnerHTML={{
+                    __html: getFirstBlockFromHTML(post.content),
+                  }}
+                />
                 <p className="meta">
                   Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
                   {post.user && (
