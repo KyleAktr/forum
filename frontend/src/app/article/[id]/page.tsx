@@ -63,6 +63,12 @@ export default function ArticlePage({ params }: Props) {
     <div>
       <Navbar />
       <div className="article">
+        <h1>{article.title}</h1>
+        <div
+          className="article-content"
+          dangerouslySetInnerHTML={{ __html: article.content }}
+        />
+
         <p className="author">
           <Image
             src={
@@ -87,12 +93,6 @@ export default function ArticlePage({ params }: Props) {
             day: "numeric",
           })}
         </p>
-
-        <h2>{article.title}</h2>
-        <div
-          className="article-content"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
 
         <div className="article-actions">
           <LikeButton post={article} onReactionUpdate={handlePostUpdate} />

@@ -12,7 +12,17 @@ h1 {
   padding: 0;
 }
 
-.navbar nav {
+.navbar {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  z-index: 1000;
+  background-color: white;
+  box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
@@ -53,8 +63,159 @@ button:hover {
   background-color: black;
 }
 
+.posts-list {
+  width: 60%;
+  list-style: none;
+}
+.posts-list .post-item {
+  border: 1px solid rgba(175, 175, 175, 0.2980392157);
+  border-radius: 20px;
+  margin: 50px 0 auto 50px;
+  min-width: 300px;
+  padding: 10px;
+}
+.posts-list .post-item .meta {
+  color: grey;
+  display: flex;
+  align-items: center;
+}
+.posts-list .post-item .meta .author-link {
+  color: gray;
+  margin-left: 5px;
+}
+.posts-list .post-item .meta .profile-picture {
+  width: 30px;
+  height: 30px;
+  border-radius: 50%;
+  margin-right: 10px;
+  -o-object-fit: cover;
+     object-fit: cover;
+  margin-left: 10px;
+}
+.posts-list .post-item .post-actions {
+  display: flex;
+  justify-content: space-between;
+}
+.posts-list .post-item .post-actions button {
+  margin-left: 0;
+}
+
+footer {
+  background-color: rgb(238, 238, 238);
+  font-family: "brightglamore";
+  margin-top: 50px;
+}
+footer .footer-content {
+  display: flex;
+  justify-content: space-between;
+  width: 90%;
+  margin: 0 auto;
+  padding: 30px 0;
+}
+footer .footer-content .footer-logo a {
+  text-decoration: none;
+  color: black;
+  font-size: 2rem;
+  letter-spacing: 7px;
+}
+footer .footer-content .footer-logo p {
+  margin: 20px 0;
+  color: grey;
+}
+footer .footer-content .footer-links {
+  display: flex;
+  gap: 100px;
+}
+footer .footer-content .footer-links a {
+  display: flex;
+  text-decoration: none;
+  color: grey;
+  margin-top: 10px;
+}
+
+.toolbar {
+  display: flex;
+  gap: 10px;
+  width: 400px;
+  margin: 10px auto 0 10px;
+  padding: 8px 12px;
+  background-color: white;
+  border: 1px solid #989898;
+  border-radius: 12px;
+  margin-bottom: 12px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
+  position: sticky;
+  top: 0;
+  z-index: 10;
+}
+
+.toolbar button {
+  background: none;
+  border: none;
+  cursor: pointer;
+  padding: 6px;
+  border-radius: 6px;
+  transition: background-color 0.2s ease;
+  display: flex;
+  align-items: center;
+  color: #333;
+}
+
+.toolbar button:hover {
+  background-color: #f2f2f2;
+}
+
+.toolbar button.active {
+  background-color: #e0e7ff;
+  color: #1d4ed8;
+}
+
+.creation-article-content {
+  width: 70%;
+  border: 1px solid #989898;
+  border-radius: 20px;
+  min-height: 300px;
+  margin-bottom: 30px;
+}
+.creation-article-content .tiptap {
+  width: 100%;
+  height: 100%;
+  min-height: 250px;
+  outline: none;
+  padding: 20px 40px;
+}
+
+.comment-form {
+  align-items: baseline;
+}
+.comment-form textarea {
+  width: 500px;
+  height: 150px;
+  resize: none;
+  border-radius: 10px;
+  border: 1px solid grey;
+  padding: 15px;
+}
+.comment-form button {
+  margin-left: 0;
+  margin-top: 20px;
+}
+
+.comment-list li {
+  list-style: none;
+  border: 1px solid gray;
+  max-width: 60%;
+  margin-bottom: 20px;
+  border-radius: 10px;
+  padding: 0 10px;
+}
+.comment-list li .comment-content {
+  margin-left: 30px;
+}
+
 .login {
   height: 100vh;
+  overflow: hidden;
 }
 
 .logo {
@@ -70,7 +231,7 @@ button:hover {
   width: 50%;
   margin: auto;
   flex-direction: column;
-  margin-top: 50px;
+  margin-top: 100px;
   border-radius: 20px;
 }
 .login .login-container form {
@@ -113,6 +274,7 @@ button:hover {
   border-radius: 20px;
   overflow: hidden;
   color: white;
+  margin-top: 100px;
 }
 
 .header-img {
@@ -130,16 +292,24 @@ button:hover {
 .header-content h1 {
   font-size: 7rem;
   letter-spacing: 1.5rem;
+  width: -moz-fit-content;
+  width: fit-content;
+  color: rgb(255, 255, 255);
+  background-color: rgba(227, 227, 227, 0.75);
 }
 .header-content h2 {
   font-size: 6rem;
   font-weight: 300;
   margin: 0;
+  width: -moz-fit-content;
+  width: fit-content;
+  background-color: rgba(227, 227, 227, 0.75);
 }
 .header-content p {
   margin: 0;
   font-size: 2rem;
   letter-spacing: 0.3rem;
+  background-color: rgba(227, 227, 227, 0.75);
 }
 .header-content button {
   margin-top: 60px;
@@ -210,6 +380,11 @@ button:hover {
   font-family: "brightglamore";
   src: url(../../static/fonts/brightglamore-italic.otf);
 }
+.categories {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .categories-cards {
   margin: 0 auto;
   display: grid;
@@ -217,6 +392,7 @@ button:hover {
   gap: 10px;
   max-width: 600px;
   width: 100%;
+  margin-top: 100px;
 }
 
 .categorie-card {
@@ -281,26 +457,6 @@ button:hover {
   visibility: visible;
 }
 
-.body-categorie {
-  display: flex;
-}
-.body-categorie .filtres {
-  border: 1px solid #afafaf;
-  border-radius: 20px;
-  margin: 50px 0 auto 50px;
-  padding: 60px;
-}
-.body-categorie .posts-list {
-  list-style: none;
-}
-.body-categorie .posts-list .post-item {
-  border: 1px solid #afafaf;
-  border-radius: 20px;
-  margin: 50px 0 auto 50px;
-  min-width: 300px;
-  padding: 10px;
-}
-
 .header-categorie {
   position: relative;
   width: 95%;
@@ -309,11 +465,15 @@ button:hover {
   border-radius: 20px;
   overflow: hidden;
   color: white;
+  margin-top: 100px;
+  display: flex;
 }
 .header-categorie h1 {
   font-family: "brightglamore";
   display: flex;
   align-items: center;
+  justify-content: center;
+  margin: 0 auto;
   font-size: 4rem;
   letter-spacing: 0.7rem;
   max-width: èàù;
@@ -331,16 +491,70 @@ button:hover {
      object-fit: cover;
 }
 
-header {
+.body-categorie {
   display: flex;
+}
+.body-categorie .filtres {
+  width: 15%;
+  border: 1px solid #afafaf;
+  border-radius: 20px;
+  margin: 50px 0 auto 50px;
+  padding: 60px 20px;
+}
+.body-categorie .filtres li {
+  list-style: none;
+}
+
+.posts-list {
+  width: 60%;
+  margin-top: 0;
+}
+.posts-list .post-item p {
+  margin: 0;
+}
+
+@font-face {
+  font-family: "brightglamore";
+  src: url(../../static/fonts/brightglamore-italic.otf);
+}
+.header-creation-article {
+  display: flex;
+  flex-direction: column;
   justify-content: center;
-  font-size: 2rem;
   margin-bottom: 20px;
+  margin-top: 100px;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 100px;
+  align-items: center;
+}
+.header-creation-article h1 {
+  font-family: "brightglamore", sans-serif;
+  letter-spacing: 5px;
+  font-size: 4rem;
+}
+.header-creation-article p {
+  text-align: center;
+  letter-spacing: 1px;
 }
 
 body input {
-  margin-bottom: 20px;
-  border: none;
+  text-align: center;
+  margin-top: 30px;
+  margin-bottom: 30px;
+  border: 1px solid #989898;
+  border-radius: 20px;
+  padding: 10px 20px;
+  min-width: 400px;
+  max-width: 600px;
+  font-size: 1rem;
+}
+body select {
+  margin-bottom: 30px;
+  padding: 10px 20px;
+  border: 1px solid #989898;
+  border-radius: 20px;
+  cursor: pointer;
 }
 
 .create-article-categories-cards {
@@ -370,10 +584,27 @@ body input {
   letter-spacing: 3px;
 }
 
+form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  margin-top: 20px;
+  margin: 0 auto;
+}
+form .submit {
+  margin-bottom: 30px;
+}
+
+@font-face {
+  font-family: "brightglamore";
+  src: url(../../static/fonts/brightglamore-italic.otf);
+}
 .profile-container {
   display: flex;
   justify-content: space-around;
-  margin-top: 50px;
+  margin-top: 100px;
 }
 
 .profile-picture-container {
@@ -443,10 +674,78 @@ body input {
   font-weight: 100;
   font-size: 1rem;
 }
+.profile-info .edit-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  margin-top: 2rem;
+}
+.profile-info .edit-form .form-group {
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 1rem;
+  width: 100%;
+}
+.profile-info .edit-form .form-group label {
+  font-weight: bold;
+  margin-bottom: 0.5rem;
+  text-align: center;
+}
+.profile-info .edit-form .form-group input {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-top: 10px;
+}
+.profile-info .edit-form .form-group textarea {
+  padding: 10px;
+  border-radius: 5px;
+  border: 1px solid #ccc;
+  width: 100%;
+  margin-top: 10px;
+}
+.profile-info .edit-form .submit-button {
+  background-color: #007bff;
+  color: white;
+  padding: 10px 20px;
+  border-radius: 5px;
+  border: none;
+  cursor: pointer;
+}
+.profile-info .edit-form .submit-button:hover {
+  background-color: #0056b3;
+}
+
+.user-posts h2 {
+  font-family: "brightglamore", sans-serif;
+  display: flex;
+  justify-content: center;
+  letter-spacing: 3px;
+  font-size: 3rem;
+  margin-top: 4rem;
+}
+.user-posts .posts-list {
+  margin: 0 auto;
+}
+.user-posts .posts-list .post-item {
+  margin-left: 0;
+  margin: 50px 0;
+}
 
 .article {
   width: 80%;
   margin: 0 auto;
+  margin-top: 100px;
+}
+.article h1 {
+  display: flex;
+  justify-content: center;
+}
+.article h2,
+.article h3 {
+  margin-left: 20px;
 }
 .article .author {
   display: flex;
@@ -464,4 +763,19 @@ body input {
 .article .author .author-link {
   color: gray;
   margin-right: 10px;
+}
+.article .reaction-buttons button {
+  margin-left: 0;
+}
+
+.rgpd {
+  background-color: rgb(54, 54, 54);
+  color: rgb(216, 216, 216);
+}
+
+.rgpd-content {
+  display: flex;
+  flex-direction: column;
+  width: 80%;
+  margin: 0 auto;
 }/*# sourceMappingURL=index.css.map */

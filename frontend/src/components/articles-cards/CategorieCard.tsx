@@ -54,44 +54,55 @@ export default function CategorieCard({ categoryId }: Props) {
         </ul>
       </div>
       <ul className="posts-list">
-        {posts.map((post: any) => (
-          <li key={post.id} className="post-item">
-            <h3>{post.title}</h3>
+        {[...posts]
+          .sort(
+            (a, b) =>
+              new Date(b.created_at).getTime() -
+              new Date(a.created_at).getTime()
+          )
+          .map((post: any) => (
+            <li key={post.id} className="post-item">
+              <h3>{post.title}</h3>
 
-            <div
-              className="article-content"
-              dangerouslySetInnerHTML={{
-                __html: getFirstBlockFromHTML(post.content),
-              }}
-            />
-            <p className="meta">
-              Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
-              {post.user && (
-                <Link href={`/profil/${post.user.id}`} className="author-link">
-                  {post.user ? post.user.username : "Inconnu"}{" "}
-                </Link>
-              )}
-              <Image
-                src={
-                  post.user.profilePicture.startsWith("http")
-                    ? post.user.profilePicture
-                    : `http://localhost:8080${post.user.profilePicture}`
-                }
-                alt="Photo de profil"
-                width={150}
-                height={150}
-                className="profile-picture"
-                unoptimized
+              <div
+                className="article-content"
+                dangerouslySetInnerHTML={{
+                  __html: getFirstBlockFromHTML(post.content),
+                }}
               />
-            </p>
-            <div className="post-actions">
-              <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
-              <Link href={`/article/${post.id}`}>
-                <button className="view-article-button">Voir l'article</button>
-              </Link>
-            </div>
-          </li>
-        ))}
+              <p className="meta">
+                Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
+                {post.user && (
+                  <Link
+                    href={`/profil/${post.user.id}`}
+                    className="author-link"
+                  >
+                    {post.user ? post.user.username : "Inconnu"}{" "}
+                  </Link>
+                )}
+                <Image
+                  src={
+                    post.user.profilePicture.startsWith("http")
+                      ? post.user.profilePicture
+                      : `http://localhost:8080${post.user.profilePicture}`
+                  }
+                  alt="Photo de profil"
+                  width={150}
+                  height={150}
+                  className="profile-picture"
+                  unoptimized
+                />
+              </p>
+              <div className="post-actions">
+                <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
+                <Link href={`/article/${post.id}`}>
+                  <button className="view-article-button">
+                    Voir l'article
+                  </button>
+                </Link>
+              </div>
+            </li>
+          ))}
       </ul>
     </div>
   );

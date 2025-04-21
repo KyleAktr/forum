@@ -1,7 +1,8 @@
-import { useEffect, useState } from 'react';
-import { Comment } from '@/types/post.types';
-import { getComments } from '@/services/comments';
-import Image from 'next/image';
+import { useEffect, useState } from "react";
+import { Comment } from "@/types/post.types";
+import { getComments } from "@/services/comments";
+import Image from "next/image";
+import Link from "next/link";
 
 interface CommentListProps {
   postId: string | number;
@@ -48,37 +49,40 @@ export default function CommentList({ postId }: CommentListProps) {
         {comments.map((comment) => (
           <li key={comment.id} className="comment-item">
             <div className="comment-header">
-              <div className="comment-author">
-                {comment.user.profilePicture ? (
-                  <Image
-                    src={comment.user.profilePicture.startsWith('http') 
-                        ? comment.user.profilePicture 
-                        : `http://localhost:8080${comment.user.profilePicture}`}
-                    alt="Photo de profil"
-                    width={40}
-                    height={40}
-                    className="commenter-picture"
-                    unoptimized
-                  />
-                ) : (
-                  <div className="commenter-placeholder">
-                    {comment.user.username[0].toUpperCase()}
-                  </div>
-                )}
-                <span className="commenter-name">{comment.user.username}</span>
-              </div>
-              <span className="comment-date">
-                {new Date(comment.created_at).toLocaleDateString('fr-FR', {
-                  year: 'numeric',
-                  month: 'long',
-                  day: 'numeric',
+              <p className="comment-content">{comment.content}</p>
+              <p className="author">
+                <Image
+                  src={
+                    comment.user.profilePicture?.startsWith("http")
+                      ? comment.user.profilePicture
+                      : `http://localhost:8080${
+                          comment.user.profilePicture || ""
+                        }`
+                  }
+                  alt="Photo de profil"
+                  width={150}
+                  height={150}
+                  className="profile-picture"
+                  unoptimized
+                />
+                {comment.user && (
+                  <Link
+                    href={`/profil/${comment.user.id}`}
+                    className="author-link"
+                  >
+                    {comment.user ? comment.user.username : "Inconnu"}{" "}
+                  </Link>
+                )}{" "}
+                {new Date(comment.created_at).toLocaleDateString("fr-FR", {
+                  year: "numeric",
+                  month: "long",
+                  day: "numeric",
                 })}
-              </span>
+              </p>
             </div>
-            <p className="comment-content">{comment.content}</p>
           </li>
         ))}
       </ul>
     </div>
   );
-} 
+}

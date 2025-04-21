@@ -1,0 +1,15 @@
+.comment-list {
+  li {
+    list-style: none;
+    border: 1px solid rgb(209, 209, 209);
+    width: 70%;
+    margin-bottom: 20px;
+    border-radius: 10px;
+    padding: 0 10px;
+    padding-right: 30px;
+
+    .comment-content {
+      margin-left: 30px;
+    }
+  }
+}

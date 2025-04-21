@@ -3,6 +3,11 @@
   font-family: "brightglamore";
   src: url(../../static/fonts/brightglamore-italic.otf);
 }
+.categories {
+  height: 100vh;
+  overflow: hidden;
+}
+
 .categories-cards {
   margin: 0 auto;
   display: grid;
@@ -10,6 +15,7 @@
   gap: 10px;
   max-width: 600px;
   width: 100%;
+  margin-top: 100px;
 }
 
 .categorie-card {
@@ -72,24 +78,4 @@
 .categorie-card:hover .categorie-text {
   opacity: 1;
   visibility: visible;
-}
-
-.body-categorie {
-  display: flex;
-}
-.body-categorie .filtres {
-  border: 1px solid #afafaf;
-  border-radius: 20px;
-  margin: 50px 0 auto 50px;
-  padding: 60px;
-}
-.body-categorie .posts-list {
-  list-style: none;
-}
-.body-categorie .posts-list .post-item {
-  border: 1px solid #afafaf;
-  border-radius: 20px;
-  margin: 50px 0 auto 50px;
-  min-width: 300px;
-  padding: 10px;
 }/*# sourceMappingURL=categories.css.map */
