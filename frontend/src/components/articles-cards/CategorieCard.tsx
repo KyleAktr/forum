@@ -14,21 +14,19 @@ export default function CategorieCard({ categoryId }: Props) {
 
   useEffect(() => {
     const fetchPosts = async () => {
-      const res = await fetch(
-        `http://localhost:8080/api/posts?category_id=${categoryId}`
-      );
-      const data = await res.json();
-      setPosts(data.data);
+      try {
+        const res = await fetch(
+          `http://localhost:8080/api/posts?category_id=${categoryId}`
+        );
+        const data = await res.json();
+        setPosts(data.data);
+      } catch (err) {
+        console.error("Erreur lors du fetch des posts par catégorie", err);
+      }
     };
 
     fetchPosts();
   }, [categoryId]);
-
-  useEffect(() => {
-    getPosts()
-      .then(setPosts)
-      .catch((err) => console.error("Erreur lors du fetch des posts", err));
-  }, []);
 
   const handlePostUpdate = (updatedPost: Post) => {
     setPosts(

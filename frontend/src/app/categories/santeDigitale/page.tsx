@@ -4,6 +4,7 @@ import Navbar from "@/components/Navbar";
 import Image from "next/image";
 import teletravailHeader from "../../../static/img/bg-2.jpg";
 import CategorieCard from "@/components/articles-cards/CategorieCard";
+import Footer from "@/components/Footer";
 
 export default function page() {
   return (
@@ -18,6 +19,7 @@ export default function page() {
         <h1>Santé mentale et digitale</h1>
       </header>
       <CategorieCard categoryId={3} />
+      <Footer />
     </div>
   );
 }
