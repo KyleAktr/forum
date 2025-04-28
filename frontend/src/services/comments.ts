@@ -64,3 +64,16 @@ export const updateComment = async (commentId: number, content: string) => {
   if (!response.ok) throw new Error(await response.text());
   return (await response.json()).data;
 };
+
+export const deleteComment = async (commentId: number) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("Utilisateur non authentifié");
+  const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
+    method: "DELETE",
+    headers: {
+      Authorization: `Bearer ${token}`,
+    },
+  });
+  if (!response.ok) throw new Error(await response.text());
+  return (await response.json()).message;
+};

@@ -91,6 +91,7 @@ func main() {
 		comments := api.Group("/comments")
 		{
 			comments.PUT("/:id", middleware.AuthMiddleware(), controllers.UpdateComment)
+			comments.DELETE("/:id", middleware.AuthMiddleware(), controllers.DeleteComment)
 		}
 	}
 
