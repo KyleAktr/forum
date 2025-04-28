@@ -99,3 +99,29 @@ export async function updatePost(postId: number, data: {
     throw err;
   }
 }
+
+export const deletePost = async (postId: number): Promise<void> => {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Utilisateur non authentifié");
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/user/posts/${postId}`, {
+      method: "DELETE",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Erreur serveur:", errorText);
+      throw new Error(errorText || "Erreur lors de la suppression du post");
+    }
+  } catch (err) {
+    console.error("Erreur détaillée:", err);
+    throw err;
+  }
+};

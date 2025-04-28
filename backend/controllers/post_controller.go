@@ -202,3 +202,43 @@ func UpdatePost(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
+
+// -----------DeletePost-----------
+
+func DeletePost(c *gin.Context) {
+	db := database.DB
+	postID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de post invalide"})
+		return
+	}
+
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+
+	var post models.Post
+	if err := db.Where("id = ? AND user_id = ?", postID, userID).First(&post).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Post non trouvé ou vous n'êtes pas autorisé à le supprimer"})
+		return
+	}
+
+	if err := db.Where("post_id = ?", postID).Delete(&models.Reaction{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression des réactions"})
+		return
+	}
+
+	if err := db.Where("post_id = ?", postID).Delete(&models.Comment{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression des commentaires"})
+		return
+	}
+
+	if err := db.Delete(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression du post"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Post supprimé avec succès"})
+}

@@ -81,6 +81,7 @@ func main() {
 			userPosts := user.Group("/posts")
 			userPosts.GET("", controllers.GetUserPosts)
 			userPosts.POST("", controllers.CreatePost)
+			userPosts.DELETE("/:id", controllers.DeletePost)
 		}
 	}
 

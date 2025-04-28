@@ -2,7 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getArticleById } from "@/services/article";
-import { updatePost } from "@/services/post";
+import { updatePost, deletePost } from "@/services/post";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
@@ -13,6 +13,7 @@ import { Post } from "@/types";
 import Footer from "@/components/Footer";
 import { getUser } from "@/services/auth";
 import TiptapEditor from "@/components/TiptapEditor";
+import { useRouter } from "next/navigation";
 
 type Props = {
   params: { id: string };
@@ -33,6 +34,7 @@ export default function ArticlePage({ params }: Props) {
   const [isSaving, setIsSaving] = useState(false);
   
   const currentUser = getUser();
+  const router = useRouter();
   
   useEffect(() => {
     const fetchArticle = async () => {
@@ -95,6 +97,20 @@ export default function ArticlePage({ params }: Props) {
       setError("Impossible de sauvegarder les modifications.");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleDelete = async () => {
+    if (!article) return;
+    
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
+      try {
+        await deletePost(article.id);
+        router.push('/');
+      } catch (err) {
+        console.error("Erreur lors de la suppression de l'article :", err);
+        setError("Impossible de supprimer l'article.");
+      }
     }
   };
 
@@ -210,12 +226,20 @@ export default function ArticlePage({ params }: Props) {
           />
           
           {isAuthor && !isEditing && (
-            <button 
-              className="edit-button"
-              onClick={handleEdit}
-            >
-              Modifier
-            </button>
+            <div className="author-actions">
+              <button 
+                className="edit-button"
+                onClick={handleEdit}
+              >
+                Modifier
+              </button>
+              <button 
+                className="delete-button"
+                onClick={handleDelete}
+              >
+                Supprimer
+              </button>
+            </div>
           )}
         </div>
         
