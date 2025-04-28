@@ -4,13 +4,11 @@ import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
 import { getUser, updateProfile, uploadProfilePicture } from "@/services/auth";
 import Image from "next/image";
-import { getMyPosts } from "@/services/post";
+import { getMyPosts, deletePost } from "@/services/post";
 import { Post } from "@/types";
 import LikeButton from "@/components/LikeButton";
-import { getPosts } from "@/services/post";
 import Link from "next/link";
 import Footer from "@/components/Footer";
-import TiptapEditor from "@/components/TiptapEditor";
 
 interface UserProfile {
   id: number;
@@ -320,7 +318,7 @@ export default function Page() {
                   new Date(b.created_at).getTime() -
                   new Date(a.created_at).getTime()
               )
-              .map((post: any) => (
+              .map((post: Post) => (
                 <li key={post.id} className="post-item">
                   <h3>{post.title}</h3>
 
@@ -343,9 +341,11 @@ export default function Page() {
                     )}
                     <Image
                       src={
-                        post.user.profilePicture.startsWith("http")
+                        post.user?.profilePicture?.startsWith("http")
                           ? post.user.profilePicture
-                          : `http://localhost:8080${post.user.profilePicture}`
+                          : post.user?.profilePicture
+                          ? `http://localhost:8080${post.user.profilePicture}`
+                          : "/default-avatar.png"
                       }
                       alt="Photo de profil"
                       width={150}
@@ -361,9 +361,54 @@ export default function Page() {
                     />
                     <Link href={`/article/${post.id}`}>
                       <button className="view-article-button">
-                        Voir l'article
+                        Voir l&apos;article
                       </button>
-                    </Link>           
+                    </Link>
+                    <button 
+                      className="edit-article-button"
+                      onClick={() => {
+                        // Utilisation du localStorage pour passer des données entre les pages
+                        // C'est une alternative aux paramètres d'URL quand il y a des problèmes avec la navigation côté client de Next.js
+                        
+                        // Stocke un indicateur que le mode d'édition est actif
+                        localStorage.setItem('editArticleMode', 'true');
+                        
+                        // Stocke l'ID de l'article à éditer pour vérification
+                        localStorage.setItem('editArticleId', post.id.toString());
+                        
+                        // Redirige vers la page de l'article (navigation complète)
+                        window.location.href = `/article/${post.id}`;
+                      }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                      </svg>
+                    </button>
+                    <button 
+                      className="delete-article-button"
+                      onClick={() => {
+                        if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
+                          deletePost(post.id)
+                            .then(() => {
+                              // Supprimer l'article de la liste locale
+                              setMyPosts(myPosts.filter(p => p.id !== post.id));
+                            })
+                            .catch(err => {
+                              console.error("Erreur lors de la suppression:", err);
+                              alert("Erreur lors de la suppression de l'article");
+                            });
+                        }
+                      }}
+                    >
+                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                        <path d="M3 6h18"></path>
+                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                        <line x1="10" y1="11" x2="10" y2="17"></line>
+                        <line x1="14" y1="11" x2="14" y2="17"></line>
+                      </svg>
+                    </button>
                   </div>
                 </li>
               ))}

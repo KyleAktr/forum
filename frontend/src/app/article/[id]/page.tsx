@@ -13,7 +13,7 @@ import { Post } from "@/types";
 import Footer from "@/components/Footer";
 import { getUser } from "@/services/auth";
 import TiptapEditor from "@/components/TiptapEditor";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 
 type Props = {
   params: { id: string };
@@ -35,6 +35,8 @@ export default function ArticlePage({ params }: Props) {
   
   const currentUser = getUser();
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const editMode = searchParams.get("edit") === "true";
   
   useEffect(() => {
     const fetchArticle = async () => {
@@ -58,6 +60,35 @@ export default function ArticlePage({ params }: Props) {
 
     fetchArticle();
   }, [params.id]);
+
+  useEffect(() => {
+    if (editMode && article) {
+      setIsEditing(true);
+    }
+  }, [editMode, article]);
+
+  // Vérifier également le localStorage pour le mode édition
+  useEffect(() => {
+    if (typeof window !== 'undefined') {
+      // Récupère les données stockées dans la page de profil
+      const editMode = localStorage.getItem('editArticleMode') === 'true';
+      const editArticleId = localStorage.getItem('editArticleId');
+      
+      // Vérifie si on doit passer en mode édition :
+      // 1. Le mode édition est activé dans localStorage
+      // 2. L'ID de l'article correspond à celui qu'on veut éditer
+      // 3. L'article a bien été chargé
+      if (editMode && editArticleId === params.id && article) {
+        // Active le mode édition
+        setIsEditing(true);
+        
+        // Nettoie le localStorage pour éviter de réactiver le mode édition
+        // lors d'une visite ultérieure de la page
+        localStorage.removeItem('editArticleMode');
+        localStorage.removeItem('editArticleId');
+      }
+    }
+  }, [article, params.id]);
 
   const handleCommentAdded = () => {
     setCommentsRefreshKey(prevKey => prevKey + 1);

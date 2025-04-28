@@ -1,9 +1,10 @@
 import { useEffect, useState } from "react";
 import { Comment } from "@/types/post.types";
-import { getComments, updateComment } from "@/services/comments";
+import { getComments, updateComment, deleteComment } from "@/services/comments";
 import Image from "next/image";
 import Link from "next/link";
 import { getUser } from "@/services/auth";
+
 
 interface CommentListProps {
   postId: string | number;
@@ -55,6 +56,18 @@ export default function CommentList({ postId }: CommentListProps) {
       alert("Erreur lors de la modification du commentaire");
     } finally {
       setIsSaving(false);
+    }
+  };
+
+  const handleDeleteClick = async (commentId: number) => {
+    if (window.confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?")) {
+      try {
+        await deleteComment(commentId);
+        setComments(comments.filter(c => c.id !== commentId));
+      } catch (err) {
+        console.error("Erreur lors de la suppression du commentaire:", err);
+        alert("Erreur lors de la suppression du commentaire");
+      }
     }
   };
 
@@ -126,6 +139,7 @@ export default function CommentList({ postId }: CommentListProps) {
                   {currentUser && currentUser.id === comment.user.id && (
                     <div className="comment-actions">
                       <button onClick={() => handleEditClick(comment)}>Modifier</button>
+                      <button onClick={() => handleDeleteClick(comment.id)}>Supprimer</button>
                     </div>
                   )}
                 </>
