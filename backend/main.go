@@ -60,15 +60,17 @@ func main() {
 		}
 
 		posts := api.Group("/posts")
-		posts.GET("", controllers.GetPosts)
-		posts.GET("/:id", controllers.GetPostByID)
-		posts.GET("/:id/comments", controllers.GetComments)
+		{
+			posts.GET("", controllers.GetPosts)
+			posts.GET("/:id", controllers.GetPostByID)
+			posts.GET("/:id/comments", controllers.GetComments)
+			posts.POST("/:id/comments", middleware.AuthMiddleware(), controllers.AddComment)
+		}
 
 		postsAuth := posts.Group("/", middleware.AuthMiddleware())
 		{
 			postsAuth.POST("/:id/reactions", controllers.AddReaction)
 			postsAuth.DELETE("/:id/reactions/:reactionId", controllers.RemoveReaction)
-			postsAuth.POST("/:id/comments", controllers.AddComment)
 			postsAuth.PUT("/:id", controllers.UpdatePost)
 		}
 
@@ -79,9 +81,16 @@ func main() {
 			user.GET("/:id", controllers.GetUserByID)
 
 			userPosts := user.Group("/posts")
-			userPosts.GET("", controllers.GetUserPosts)
-			userPosts.POST("", controllers.CreatePost)
-			userPosts.DELETE("/:id", controllers.DeletePost)
+			{
+				userPosts.GET("", controllers.GetUserPosts)
+				userPosts.POST("", controllers.CreatePost)
+				userPosts.DELETE("/:id", controllers.DeletePost)
+			}
+		}
+
+		comments := api.Group("/comments")
+		{
+			comments.PUT("/:id", middleware.AuthMiddleware(), controllers.UpdateComment)
 		}
 	}
 

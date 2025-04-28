@@ -94,3 +94,74 @@ func GetComments(c *gin.Context) {
 		"data": comments,
 	})
 }
+
+// -----------UpdateComment-----------
+
+func UpdateComment(c *gin.Context) {
+	db := database.DB
+	commentID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de commentaire invalide"})
+		return
+	}
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+	var comment models.Comment
+	if err := db.Where("id = ? AND user_id = ?", commentID, userID).First(&comment).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Commentaire non trouvé ou non autorisé"})
+		return
+	}
+	var input struct{ Content string }
+	if err := c.ShouldBindJSON(&input); err != nil || input.Content == "" {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Contenu invalide"})
+		return
+	}
+	comment.Content = input.Content
+	comment.UpdatedAt = time.Now()
+	if err := db.Save(&comment).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la mise à jour"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": comment})
+}
+
+func DeleteComment(c *gin.Context) {
+	db := database.DB
+	commentID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de commentaire invalide"})
+		return
+	}
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+	var comment models.Comment
+	if err := db.Where("id = ? AND user_id = ?", commentID, userID).First(&comment).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Commentaire non trouvé ou non autorisé"})
+		return
+	}
+	if err := db.Delete(&comment).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"message": "Commentaire supprimé avec succès"})
+}
+
+func GetUserComments(c *gin.Context) {
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+	var comments []models.Comment
+	if err := database.DB.Where("user_id = ?", userID).Preload("User").Find(&comments).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la récupération des commentaires"})
+		return
+	}
+	c.JSON(http.StatusOK, gin.H{"data": comments})
+}

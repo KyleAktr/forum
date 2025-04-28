@@ -49,3 +49,18 @@ export async function addComment(postId: string | number, content: string): Prom
     throw error;
   }
 } 
+
+export const updateComment = async (commentId: number, content: string) => {
+  const token = localStorage.getItem("token");
+  if (!token) throw new Error("Utilisateur non authentifié");
+  const response = await fetch(`http://localhost:8080/api/comments/${commentId}`, {
+    method: "PUT",
+    headers: {
+      "Content-Type": "application/json",
+      Authorization: `Bearer ${token}`,
+    },
+    body: JSON.stringify({ content }),
+  });
+  if (!response.ok) throw new Error(await response.text());
+  return (await response.json()).data;
+};
