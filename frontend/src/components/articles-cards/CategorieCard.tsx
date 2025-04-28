@@ -1,4 +1,3 @@
-import { getPosts } from "@/services/post";
 import { Post } from "@/types";
 import Image from "next/image";
 import Link from "next/link";
