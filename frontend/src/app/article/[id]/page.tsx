@@ -12,6 +12,7 @@ import LikeButton from "@/components/LikeButton";
 import { Post } from "@/types";
 import Footer from "@/components/Footer";
 import { getUser } from "@/services/auth";
+import TiptapEditor from "@/components/TiptapEditor";
 
 type Props = {
   params: { id: string };
@@ -156,13 +157,9 @@ export default function ArticlePage({ params }: Props) {
             
             <div className="form-group">
               <label htmlFor="content">Contenu</label>
-              <textarea
-                id="content"
-                value={editForm.content}
-                onChange={(e) => setEditForm({...editForm, content: e.target.value})}
-                required
-                rows={15}
-                className="edit-content-textarea"
+              <TiptapEditor 
+                content={editForm.content}
+                onChange={(newContent) => setEditForm({...editForm, content: newContent})}
               />
             </div>
             
