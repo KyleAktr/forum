@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import { getArticleById } from "@/services/article";
+import { updatePost } from "@/services/post";
 import Link from "next/link";
 import Navbar from "@/components/Navbar";
 import Image from "next/image";
@@ -10,8 +11,7 @@ import CommentForm from "@/components/CommentForm";
 import LikeButton from "@/components/LikeButton";
 import { Post } from "@/types";
 import Footer from "@/components/Footer";
-import EditPost from '@/components/EditPost';
-import { getUser } from '@/services/auth';
+import { getUser } from "@/services/auth";
 
 type Props = {
   params: { id: string };
@@ -22,15 +22,29 @@ export default function ArticlePage({ params }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [commentsRefreshKey, setCommentsRefreshKey] = useState(0);
-  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  
+  const [isEditing, setIsEditing] = useState(false);
+  const [editForm, setEditForm] = useState({
+    title: "",
+    content: "",
+    category_id: 1
+  });
+  const [isSaving, setIsSaving] = useState(false);
+  
   const currentUser = getUser();
-
+  
   useEffect(() => {
     const fetchArticle = async () => {
       try {
         setLoading(true);
         const data = await getArticleById(params.id);
         setArticle(data);
+        
+        setEditForm({
+          title: data.title,
+          content: data.content,
+          category_id: data.category_id
+        });
       } catch (err) {
         console.error("Erreur lors de la récupération de l'article :", err);
         setError("Impossible de charger l'article.");
@@ -43,17 +57,44 @@ export default function ArticlePage({ params }: Props) {
   }, [params.id]);
 
   const handleCommentAdded = () => {
-    // Déclencher le rechargement des commentaires en changeant la clé
-    setCommentsRefreshKey((prevKey) => prevKey + 1);
+    setCommentsRefreshKey(prevKey => prevKey + 1);
   };
 
   const handlePostUpdate = (updatedPost: Post) => {
     setArticle(updatedPost);
   };
-
-  const handlePostSaved = (updatedPost: Post) => {
-    setArticle(updatedPost);
-    setEditingPost(null);
+  
+  const handleEdit = () => {
+    setIsEditing(true);
+  };
+  
+  // Annuler l'édition
+  const handleCancelEdit = () => {
+    // Réinitialiser le formulaire avec les données actuelles de l'article
+    if (article) {
+      setEditForm({
+        title: article.title,
+        content: article.content,
+        category_id: article.category_id
+      });
+    }
+    setIsEditing(false);
+  };
+  
+  const handleSaveEdit = async () => {
+    if (!article) return;
+    
+    setIsSaving(true);
+    try {
+      const updatedArticle = await updatePost(article.id, editForm);
+      setArticle(updatedArticle);
+      setIsEditing(false);
+    } catch (err) {
+      console.error("Erreur lors de la mise à jour de l'article :", err);
+      setError("Impossible de sauvegarder les modifications.");
+    } finally {
+      setIsSaving(false);
+    }
   };
 
   if (loading) {
@@ -67,23 +108,19 @@ export default function ArticlePage({ params }: Props) {
   if (!article) {
     return <p>Aucun article trouvé.</p>;
   }
+  
+  const isAuthor = currentUser && currentUser.id === article.user_id;
 
   return (
     <div>
       <Navbar />
       <div className="article">
-        <h1>{article.title}</h1>
-        <div
-          className="article-content"
-          dangerouslySetInnerHTML={{ __html: article.content }}
-        />
-
         <p className="author">
           <Image
             src={
               article.user.profilePicture?.startsWith("http")
                 ? article.user.profilePicture
-                : `http://localhost:8080${article.user.profilePicture || ""}`
+                : `http://localhost:8080${article.user.profilePicture || ''}`
             }
             alt="Photo de profil"
             width={150}
@@ -103,33 +140,101 @@ export default function ArticlePage({ params }: Props) {
           })}
         </p>
 
+        {isEditing ? (
+          <div className="article-edit-form">
+            <div className="form-group">
+              <label htmlFor="title">Titre</label>
+              <input
+                type="text"
+                id="title"
+                value={editForm.title}
+                onChange={(e) => setEditForm({...editForm, title: e.target.value})}
+                required
+                className="edit-title-input"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="content">Contenu</label>
+              <textarea
+                id="content"
+                value={editForm.content}
+                onChange={(e) => setEditForm({...editForm, content: e.target.value})}
+                required
+                rows={15}
+                className="edit-content-textarea"
+              />
+            </div>
+            
+            <div className="form-group">
+              <label htmlFor="category">Catégorie</label>
+              <select
+                id="category"
+                value={editForm.category_id}
+                onChange={(e) => setEditForm({...editForm, category_id: parseInt(e.target.value)})}
+                required
+                className="edit-category-select"
+              >
+                <option value="1">Travail hybride et télétravail</option>
+                <option value="2">Minimalisme et frugalité</option>
+                <option value="3">Santé mentale et digitale</option>
+                <option value="4">Lifestyle durable</option>
+              </select>
+            </div>
+            
+            <div className="edit-actions">
+              <button 
+                onClick={handleSaveEdit} 
+                className="save-button"
+                disabled={isSaving}
+              >
+                {isSaving ? "Enregistrement..." : "Enregistrer"}
+              </button>
+              <button 
+                onClick={handleCancelEdit} 
+                className="cancel-button"
+                disabled={isSaving}
+              >
+                Annuler
+              </button>
+            </div>
+          </div>
+        ) : (
+          <>
+            <h2>{article.title}</h2>
+            <div className="article-content" dangerouslySetInnerHTML={{__html: article.content}} />
+          </>
+        )}
+        
         <div className="article-actions">
-          <LikeButton post={article} onReactionUpdate={handlePostUpdate} />
+          <LikeButton 
+            post={article} 
+            onReactionUpdate={handlePostUpdate} 
+          />
           
-          {currentUser && currentUser.id === article.user.id && (
+          {isAuthor && !isEditing && (
             <button 
               className="edit-button"
-              onClick={() => setEditingPost(article)}
+              onClick={handleEdit}
             >
               Modifier
             </button>
           )}
         </div>
-
+        
         <div className="comments-container">
-          <CommentForm postId={params.id} onCommentAdded={handleCommentAdded} />
-
-          <CommentList key={commentsRefreshKey} postId={params.id} />
+          <CommentForm 
+            postId={params.id} 
+            onCommentAdded={handleCommentAdded} 
+          />
+          
+          <CommentList 
+            key={commentsRefreshKey} 
+            postId={params.id} 
+          />
         </div>
       </div>
       <Footer />
-      {editingPost && (
-        <EditPost
-          post={editingPost}
-          onClose={() => setEditingPost(null)}
-          onSave={handlePostSaved}
-        />
-      )}
     </div>
   );
 }
