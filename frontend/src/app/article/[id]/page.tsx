@@ -10,6 +10,8 @@ import CommentForm from "@/components/CommentForm";
 import LikeButton from "@/components/LikeButton";
 import { Post } from "@/types";
 import Footer from "@/components/Footer";
+import EditPost from '@/components/EditPost';
+import { getUser } from '@/services/auth';
 
 type Props = {
   params: { id: string };
@@ -20,6 +22,8 @@ export default function ArticlePage({ params }: Props) {
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState<string | null>(null);
   const [commentsRefreshKey, setCommentsRefreshKey] = useState(0);
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
+  const currentUser = getUser();
 
   useEffect(() => {
     const fetchArticle = async () => {
@@ -45,6 +49,11 @@ export default function ArticlePage({ params }: Props) {
 
   const handlePostUpdate = (updatedPost: Post) => {
     setArticle(updatedPost);
+  };
+
+  const handlePostSaved = (updatedPost: Post) => {
+    setArticle(updatedPost);
+    setEditingPost(null);
   };
 
   if (loading) {
@@ -96,6 +105,15 @@ export default function ArticlePage({ params }: Props) {
 
         <div className="article-actions">
           <LikeButton post={article} onReactionUpdate={handlePostUpdate} />
+          
+          {currentUser && currentUser.id === article.user.id && (
+            <button 
+              className="edit-button"
+              onClick={() => setEditingPost(article)}
+            >
+              Modifier
+            </button>
+          )}
         </div>
 
         <div className="comments-container">
@@ -105,6 +123,13 @@ export default function ArticlePage({ params }: Props) {
         </div>
       </div>
       <Footer />
+      {editingPost && (
+        <EditPost
+          post={editingPost}
+          onClose={() => setEditingPost(null)}
+          onSave={handlePostSaved}
+        />
+      )}
     </div>
   );
 }
