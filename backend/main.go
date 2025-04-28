@@ -69,6 +69,7 @@ func main() {
 			postsAuth.POST("/:id/reactions", controllers.AddReaction)
 			postsAuth.DELETE("/:id/reactions/:reactionId", controllers.RemoveReaction)
 			postsAuth.POST("/:id/comments", controllers.AddComment)
+			postsAuth.PUT("/:id", controllers.UpdatePost)
 		}
 
 		user := api.Group("/user", middleware.AuthMiddleware())

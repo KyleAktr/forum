@@ -5,6 +5,7 @@ import (
 	"forum/models"
 	"net/http"
 	"strconv"
+	"time"
 
 	"github.com/gin-gonic/gin"
 )
@@ -152,3 +153,54 @@ func GetPostByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": post})
 }
+
+// -----------UpdatePost-----------
+
+func UpdatePost(c *gin.Context) {
+	db := database.DB
+
+	postID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID de post invalide"})
+		return
+	}
+
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+
+	var post models.Post
+	if err := db.Where("id = ? AND user_id = ?", postID, userID).First(&post).Error; err != nil {
+		c.JSON(http.StatusNotFound, gin.H{"error": "Post non trouvé ou vous n'êtes pas autorisé à le modifier"})
+		return
+	}
+
+	var input models.Post
+	if err := c.ShouldBindJSON(&input); err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Données invalides"})
+		return
+	}
+
+	if input.Title == "" || input.Content == "" || input.CategoryID == 0 {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Tous les champs sont obligatoires"})
+		return
+	}
+
+	post.Title = input.Title
+	post.Content = input.Content
+	post.CategoryID = input.CategoryID
+	post.UpdatedAt = time.Now()
+
+	if err := db.Save(&post).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la mise à jour du post"})
+		return
+	}
+
+	db.Preload("User").Preload("Category").Preload("Comments").Preload("Reactions").First(&post, post.ID)
+
+	c.JSON(http.StatusOK, gin.H{"data": post})
+}
+
+// -----------DeletePost-----------

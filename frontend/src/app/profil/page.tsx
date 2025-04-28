@@ -11,6 +11,7 @@ import { getPosts } from "@/services/post";
 import Link from "next/link";
 import Footer from "@/components/Footer";
 import TiptapEditor from "@/components/TiptapEditor";
+import EditPost from "@/components/EditPost";
 
 interface UserProfile {
   id: number;
@@ -35,6 +36,7 @@ export default function Page() {
     bio: "",
   });
   const [error, setError] = useState("");
+  const [editingPost, setEditingPost] = useState<Post | null>(null);
 
   const fetchUserPosts = useCallback(async () => {
     const token = localStorage.getItem("token");
@@ -129,6 +131,17 @@ export default function Page() {
       </div>
     );
   }
+
+  const handlePostEdit = (post: Post) => {
+    setEditingPost(post);
+  };
+
+  const handlePostSaved = (updatedPost: Post) => {
+    setMyPosts(
+      myPosts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
+    );
+    setEditingPost(null);
+  };
 
   const getFirstBlockFromHTML = (htmlString: string) => {
     if (typeof window === "undefined") return ""; // sécurité SSR
@@ -363,12 +376,28 @@ export default function Page() {
                         Voir l'article
                       </button>
                     </Link>
+                    <button 
+                      className="edit-button"
+                      onClick={(e) => {
+                        e.preventDefault();
+                        handlePostEdit(post);
+                      }}
+                    >
+                      Modifier
+                    </button>
                   </div>
                 </li>
               ))}
           </ul>
         )}
       </div>
+      {editingPost && (
+        <EditPost
+          post={editingPost}
+          onClose={() => setEditingPost(null)}
+          onSave={handlePostSaved}
+        />
+      )}
       <Footer />
     </div>
   );

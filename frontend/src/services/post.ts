@@ -65,3 +65,37 @@ export async function getPosts() {
   const data = await res.json();
   return data.data; // tableau de post
 }
+
+export async function updatePost(postId: number, data: {
+  title: string;
+  content: string;
+  category_id: number;
+}): Promise<Post> {
+  const token = localStorage.getItem("token");
+  if (!token) {
+    throw new Error("Utilisateur non authentifié");
+  }
+
+  try {
+    const response = await fetch(`http://localhost:8080/api/posts/${postId}`, {
+      method: "PUT",
+      headers: {
+        "Content-Type": "application/json",
+        Authorization: `Bearer ${token}`,
+      },
+      body: JSON.stringify(data),
+    });
+
+    if (!response.ok) {
+      const errorText = await response.text();
+      console.error("Erreur serveur:", errorText);
+      throw new Error(errorText || "Erreur lors de la mise à jour du post");
+    }
+
+    const result = await response.json();
+    return result.data;
+  } catch (err) {
+    console.error("Erreur détaillée:", err);
+    throw err;
+  }
+}
