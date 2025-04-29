@@ -289,3 +289,34 @@ func GetUserByID(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"data": user})
 }
+
+func DeleteAccount(c *gin.Context) {
+	db := database.DB
+	userID, exists := c.Get("userID")
+	if !exists {
+		c.JSON(http.StatusUnauthorized, gin.H{"error": "Utilisateur non authentifié"})
+		return
+	}
+
+	if err := db.Where("user_id = ?", userID).Delete(&models.Reaction{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression des réactions"})
+		return
+	}
+
+	if err := db.Where("user_id = ?", userID).Delete(&models.Comment{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression des commentaires"})
+		return
+	}
+
+	if err := db.Where("user_id = ?", userID).Delete(&models.Post{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression des posts"})
+		return
+	}
+
+	if err := db.Where("id = ?", userID).Delete(&models.User{}).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la suppression du compte"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"message": "Compte supprimé avec succès"})
+}
