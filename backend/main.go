@@ -95,6 +95,8 @@ func main() {
 			comments.PUT("/:id", middleware.AuthMiddleware(), controllers.UpdateComment)
 			comments.DELETE("/:id", middleware.AuthMiddleware(), controllers.DeleteComment)
 		}
+
+		api.GET("/search/suggestions", controllers.GetSearchSuggestions)
 	}
 
 	// Démarrage du serveur
