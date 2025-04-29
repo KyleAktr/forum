@@ -1,11 +1,12 @@
 .posts-list {
-  width: 60%;
+  width: 70%;
   list-style: none;
+  margin-top: 0;
 
   .post-item {
     border: 1px solid #afafaf4c;
     border-radius: 20px;
-    margin: 50px 0 auto 50px;
+    margin: 50px 0 auto 0px;
     min-width: 300px;
     padding: 10px;
 
@@ -32,6 +33,20 @@
     .post-actions {
       display: flex;
       justify-content: space-between;
+
+      .post-reactions {
+        display: flex;
+        align-items: center;
+
+        button {
+          border: none;
+        }
+
+        button:hover {
+          background: rgb(255, 255, 255);
+          color: black;
+        }
+      }
 
       button {
         margin-left: 0;

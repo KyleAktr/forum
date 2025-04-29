@@ -36,11 +36,26 @@
   display: flex;
 
   .filtres {
+    position: sticky;
+    top: 130px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
     width: 15%;
-    border: 1px solid #afafaf;
+    border: 1px solid #afafaf4c;
     border-radius: 20px;
     margin: 50px 0 auto 50px;
-    padding: 60px 20px;
+    padding: 30px 20px;
+
+    button {
+      width: 200px;
+      margin-bottom: 20px;
+      margin-left: 0;
+    }
+    button:focus {
+      background: black;
+      color: rgb(255, 255, 255);
+    }
 
     li {
       list-style: none;
@@ -49,9 +64,6 @@
 }
 
 .posts-list {
-  width: 60%;
-  margin-top: 0;
-
   .post-item p {
     margin: 0;
   }

@@ -29,10 +29,26 @@ func GetPosts(c *gin.Context) {
 		query = query.Where("title LIKE ? OR content LIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
+	sort := c.Query("sort")
+
+	switch sort {
+	case "likes":
+		query = query.Order("(SELECT COUNT(*) FROM reactions WHERE reactions.post_id = posts.id) DESC")
+	case "comments":
+		query = query.Order("(SELECT COUNT(*) FROM comments WHERE comments.post_id = posts.id) DESC")
+	default:
+		query = query.Order("created_at DESC")
+	}
+
 	// Exécution de la requête avec pagination
 	if err := query.Offset(offset).Limit(limit).Find(&posts).Error; err != nil {
 		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la récupération des posts"})
 		return
+	}
+
+	for i := range posts {
+		posts[i].CommentsCount = len(posts[i].Comments)
+		posts[i].Comments = nil
 	}
 
 	// Récupération du nombre total de posts pour la pagination

@@ -3,6 +3,7 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
+import { FaRegComment, FaComment } from "react-icons/fa";
 
 type Props = {
   categoryId: number;
@@ -10,12 +11,13 @@ type Props = {
 
 export default function CategorieCard({ categoryId }: Props) {
   const [posts, setPosts] = useState<Post[]>([]);
+  const [sort, setSort] = useState<string>("recent");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
         const res = await fetch(
-          `http://localhost:8080/api/posts?category_id=${categoryId}`
+          `http://localhost:8080/api/posts?category_id=${categoryId}&sort=${sort}`
         );
         const data = await res.json();
         setPosts(data.data);
@@ -25,7 +27,13 @@ export default function CategorieCard({ categoryId }: Props) {
     };
 
     fetchPosts();
-  }, [categoryId]);
+  }, [categoryId, sort]);
+
+  const sortLabels = {
+    recent: "Plus récents",
+    likes: "Les plus likés",
+    comments: "Les plus commentés",
+  };
 
   const handlePostUpdate = (updatedPost: Post) => {
     setPosts(
@@ -45,63 +53,61 @@ export default function CategorieCard({ categoryId }: Props) {
     // <div>
     <div className="body-categorie">
       <div className="filtres">
-        <h2>Filtres</h2>
-        <ul className="filtres-list">
-          <li>Filtres 1</li>
-          <li>Filtres 2</li>
-          <li>Filtres 3</li>
-        </ul>
+        <h3>Flitres</h3>
+        {Object.entries(sortLabels).map(([type, label]) => (
+          <button
+            key={type}
+            onClick={() => setSort(type === sort ? "none" : type)}
+            className={sort === type ? "active" : ""}
+          >
+            {label}
+          </button>
+        ))}
       </div>
-      <ul className="posts-list">
-        {[...posts]
-          .sort(
-            (a, b) =>
-              new Date(b.created_at).getTime() -
-              new Date(a.created_at).getTime()
-          )
-          .map((post: any) => (
-            <li key={post.id} className="post-item">
-              <h3>{post.title}</h3>
 
-              <div
-                className="article-content"
-                dangerouslySetInnerHTML={{
-                  __html: getFirstBlockFromHTML(post.content),
-                }}
-              />
-              <p className="meta">
-                Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
-                {post.user && (
-                  <Link
-                    href={`/profil/${post.user.id}`}
-                    className="author-link"
-                  >
-                    {post.user ? post.user.username : "Inconnu"}{" "}
-                  </Link>
-                )}
-                <Image
-                  src={
-                    post.user.profilePicture.startsWith("http")
-                      ? post.user.profilePicture
-                      : `http://localhost:8080${post.user.profilePicture}`
-                  }
-                  alt="Photo de profil"
-                  width={150}
-                  height={150}
-                  className="profile-picture"
-                  unoptimized
-                />
-              </p>
-              <div className="post-actions">
-                <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
-                <Link href={`/article/${post.id}`}>
-                  <button className="view-article-button">
-                    Voir l'article
-                  </button>
+      <ul className="posts-list">
+        {posts.map((post: any) => (
+          <li key={post.id} className="post-item">
+            <h3>{post.title}</h3>
+
+            <div
+              className="article-content"
+              dangerouslySetInnerHTML={{
+                __html: getFirstBlockFromHTML(post.content),
+              }}
+            />
+            <p className="meta">
+              Posté le {new Date(post.created_at).toLocaleDateString()} par{" "}
+              {post.user && (
+                <Link href={`/profil/${post.user.id}`} className="author-link">
+                  {post.user ? post.user.username : "Inconnu"}{" "}
                 </Link>
+              )}
+              <Image
+                src={
+                  post.user.profilePicture.startsWith("http")
+                    ? post.user.profilePicture
+                    : `http://localhost:8080${post.user.profilePicture}`
+                }
+                alt="Photo de profil"
+                width={150}
+                height={150}
+                className="profile-picture"
+                unoptimized
+              />
+            </p>
+            <div className="post-actions">
+              <div className="post-reactions">
+                <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
+                <FaRegComment />
+                <p>{post.commentsCount}</p>
               </div>
-            </li>
-          ))}
+              <Link href={`/article/${post.id}`}>
+                <button className="view-article-button">Voir l'article</button>
+              </Link>
+            </div>
+          </li>
+        ))}
       </ul>
     </div>
   );
