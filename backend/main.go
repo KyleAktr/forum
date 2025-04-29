@@ -32,6 +32,7 @@ func main() {
 	r := gin.Default()
 
 	r.Static("/uploads", "./uploads")
+	r.Static("/assets", "./assets")
 
 	// Configuration CORS
 	config := cors.DefaultConfig()

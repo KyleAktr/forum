@@ -5,6 +5,7 @@ import (
 	"forum/database"
 	"forum/models"
 	"forum/utils"
+	"math/rand"
 	"net/http"
 	"os"
 	"path/filepath"
@@ -63,10 +64,20 @@ func Register(c *gin.Context) {
 		return
 	}
 
+	defaultPictures := []string{
+		"/assets/default_profiles/pp-default-1.jpg",
+		"/assets/default_profiles/pp-default-2.jpg",
+		"/assets/default_profiles/pp-default-3.jpg",
+		"/assets/default_profiles/pp-default-4.jpg",
+	}
+	rand.Seed(time.Now().UnixNano())
+	randomPic := defaultPictures[rand.Intn(len(defaultPictures))]
+
 	user := models.User{
-		Username: input.Username,
-		Email:    input.Email,
-		Password: string(hashedPassword),
+		Username:       input.Username,
+		Email:          input.Email,
+		Password:       string(hashedPassword),
+		ProfilePicture: randomPic,
 	}
 
 	if err := database.DB.Create(&user).Error; err != nil {
