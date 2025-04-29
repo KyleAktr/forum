@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useRef } from "react";
 import { getSearchSuggestions } from "@/services/search";
 
 export default function SearchBar({
@@ -10,6 +10,8 @@ export default function SearchBar({
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
 
+  const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
+
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     onSearch(input);
@@ -17,13 +19,18 @@ export default function SearchBar({
     setShowSuggestions(false);
   };
 
-  const handleChange = async (e: React.ChangeEvent<HTMLInputElement>) => {
+  const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const value = e.target.value;
     setInput(value);
+
+    if (debounceTimeout.current) clearTimeout(debounceTimeout.current);
+
     if (value.length > 1) {
-      const results = await getSearchSuggestions(value);
-      setSuggestions(results);
-      setShowSuggestions(true);
+      debounceTimeout.current = setTimeout(async () => {
+        const results = await getSearchSuggestions(value);
+        setSuggestions(results);
+        setShowSuggestions(true);
+      }, 300); // 300 ms de délai
     } else {
       setSuggestions([]);
       setShowSuggestions(false);
