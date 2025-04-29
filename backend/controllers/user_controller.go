@@ -115,8 +115,8 @@ func Login(c *gin.Context) {
 	}
 
 	var user models.User
-	if err := database.DB.Where("email = ?", input.Email).First(&user).Error; err != nil {
-		c.JSON(http.StatusBadRequest, gin.H{"error": "Email ou mot de passe incorrect"})
+	if err := database.DB.Where("email = ? OR username = ?", input.Identifier, input.Identifier).First(&user).Error; err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Identifiants ou mot de passe incorrect"})
 		return
 	}
 

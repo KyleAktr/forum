@@ -6,6 +6,7 @@ import { FcGoogle } from "react-icons/fc";
 
 export default function Login() {
   const [error, setError] = useState("");
+  const [loginInput, setLoginInput] = useState("");
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
@@ -13,7 +14,7 @@ export default function Login() {
 
     try {
       await login(
-        formData.get("email") as string,
+        loginInput,
         formData.get("password") as string
       );
       window.location.href = "/";
@@ -31,7 +32,13 @@ export default function Login() {
         <form onSubmit={handleSubmit}>
           {error && <div style={{ color: "red" }}>{error}</div>}
           <div>
-            <input name="email" type="email" placeholder="Email" required />
+            <input
+              type="text"
+              value={loginInput}
+              onChange={e => setLoginInput(e.target.value)}
+              placeholder="Email ou nom d'utilisateur"
+              required
+            />
           </div>
           <div>
             <input
