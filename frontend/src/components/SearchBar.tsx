@@ -1,4 +1,4 @@
-import { useState, useRef } from "react";
+import { useState, useRef, useEffect } from "react";
 import { getSearchSuggestions } from "@/services/search";
 
 export default function SearchBar({
@@ -9,6 +9,7 @@ export default function SearchBar({
   const [input, setInput] = useState("");
   const [suggestions, setSuggestions] = useState<string[]>([]);
   const [showSuggestions, setShowSuggestions] = useState(false);
+  const containerRef = useRef<HTMLDivElement>(null);
 
   const debounceTimeout = useRef<NodeJS.Timeout | null>(null);
 
@@ -43,8 +44,20 @@ export default function SearchBar({
     onSearch(suggestion);
   };
 
+  useEffect(() => {
+    function handleClickOutside(event: MouseEvent) {
+      if (containerRef.current && !containerRef.current.contains(event.target as Node)) {
+        setShowSuggestions(false);
+      }
+    }
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, []);
+
   return (
-    <div style={{ position: "relative" }}>
+    <div ref={containerRef} style={{ position: "relative" }}>
       <form className="search-bar" onSubmit={handleSubmit} autoComplete="off">
         <input
           type="text"
