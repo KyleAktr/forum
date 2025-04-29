@@ -32,6 +32,7 @@ func main() {
 	r := gin.Default()
 
 	r.Static("/uploads", "./uploads")
+	r.Static("/assets", "./assets")
 
 	// Configuration CORS
 	config := cors.DefaultConfig()
@@ -79,6 +80,7 @@ func main() {
 			user.PUT("/profile", controllers.UpdateProfile)
 			user.POST("/profile-picture", controllers.UploadProfilePicture)
 			user.GET("/:id", controllers.GetUserByID)
+			user.DELETE("/delete", controllers.DeleteAccount)
 
 			userPosts := user.Group("/posts")
 			{
@@ -93,6 +95,8 @@ func main() {
 			comments.PUT("/:id", middleware.AuthMiddleware(), controllers.UpdateComment)
 			comments.DELETE("/:id", middleware.AuthMiddleware(), controllers.DeleteComment)
 		}
+
+		api.GET("/search/suggestions", controllers.GetSearchSuggestions)
 	}
 
 	// Démarrage du serveur

@@ -2,7 +2,7 @@
 
 import { useEffect, useState, useCallback } from "react";
 import Navbar from "@/components/Navbar";
-import { getUser, updateProfile, uploadProfilePicture } from "@/services/auth";
+import { getUser, updateProfile, uploadProfilePicture, deleteAccount } from "@/services/auth";
 import Image from "next/image";
 import { getMyPosts, deletePost } from "@/services/post";
 import { Post } from "@/types";
@@ -117,6 +117,18 @@ export default function Page() {
     );
   };
 
+  const handleDeleteAccount = async () => {
+    if (!window.confirm("Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible.")) return;
+    try {
+      await deleteAccount();
+      localStorage.removeItem("token");
+      localStorage.removeItem("user");
+      window.location.href = "/"; 
+    } catch {
+      alert("Erreur lors de la suppression du compte");
+    }
+  };
+
   if (!profile) {
     return (
       <div>
@@ -210,6 +222,12 @@ export default function Page() {
               >
                 Modifier le profil
               </button>
+              <button
+          className="delete-account-btn"
+          onClick={handleDeleteAccount}
+        >
+          Supprimer mon compte
+        </button>
             </>
           ) : (
             <form onSubmit={handleEditSubmit} className="edit-form">

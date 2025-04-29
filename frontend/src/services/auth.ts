@@ -107,3 +107,19 @@ export const uploadProfilePicture = async (file: File): Promise<string> => {
     
     return data.profilePicture;
 };
+
+export const deleteAccount = async () => {
+    const token = localStorage.getItem('token');
+    if (!token) {
+        throw new Error('Non authentifié');
+    }
+
+    const response = await fetch('http://localhost:8080/api/user/delete', {
+        method: 'DELETE',
+        headers: {
+            'Authorization': `Bearer ${token}`
+        }
+    });
+    if (!response.ok) throw new Error (await response.text())
+    
+};
