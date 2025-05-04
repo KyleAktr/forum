@@ -5,7 +5,8 @@ import Navbar from "@/components/Navbar";
 import { getUser, updateProfile, uploadProfilePicture, deleteAccount } from "@/services/auth";
 import Image from "next/image";
 import { getMyPosts, deletePost } from "@/services/post";
-import { Post } from "@/types";
+import { Post, Comment } from "@/types";
+import { getUserComments, deleteComment } from "@/services/comments";
 import LikeButton from "@/components/LikeButton";
 import Link from "next/link";
 import Footer from "@/components/Footer";
@@ -24,6 +25,7 @@ export default function Page() {
   const [profile, setProfile] = useState<UserProfile | null>(null);
   const [isEditing, setIsEditing] = useState(false);
   const [myPosts, setMyPosts] = useState<Post[]>([]);
+  const [myComments, setMyComments] = useState<Comment[]>([]);
   const [editForm, setEditForm] = useState({
     username: "",
     email: "",
@@ -48,6 +50,19 @@ export default function Page() {
     }
   }, [profile]);
 
+  const fetchUserComments = useCallback(async () => {
+    const token = localStorage.getItem("token");
+    if (!token || !profile) return;
+
+    try {
+      const comments = await getUserComments(token);
+      setMyComments(comments);
+    } catch (err) {
+      console.error("Erreur lors de la récupération des commentaires:", err);
+      setError("Impossible de charger vos commentaires");
+    }
+  }, [profile]);
+
   useEffect(() => {
     const user = getUser();
     if (user) {
@@ -66,8 +81,9 @@ export default function Page() {
   useEffect(() => {
     if (profile) {
       fetchUserPosts();
+      fetchUserComments();
     }
-  }, [profile, fetchUserPosts]);
+  }, [profile, fetchUserPosts, fetchUserComments]);
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
@@ -324,115 +340,166 @@ export default function Page() {
           )}
         </div>
       </div>
-      <div className="user-posts">
-        <h2>Mes publications</h2>
-        {myPosts.length === 0 ? (
-          <p>Vous n&apos;avez pas encore publié d&apos;article.</p>
-        ) : (
-          <ul className="posts-list">
-            {[...myPosts]
-              .sort(
-                (a, b) =>
-                  new Date(b.created_at).getTime() -
-                  new Date(a.created_at).getTime()
-              )
-              .map((post: Post) => (
-                <li key={post.id} className="post-item">
-                  <h3>{post.title}</h3>
+      
+      <div className="user-content-container">
+        <div className="user-posts">
+          <h2>Mes publications</h2>
+          {myPosts.length === 0 ? (
+            <p>Vous n&apos;avez pas encore publié d&apos;article.</p>
+          ) : (
+            <ul className="posts-list">
+              {[...myPosts]
+                .sort(
+                  (a, b) =>
+                    new Date(b.created_at).getTime() -
+                    new Date(a.created_at).getTime()
+                )
+                .map((post: Post) => (
+                  <li key={post.id} className="post-item">
+                    <h3>{post.title}</h3>
 
-                  <div
-                    className="article-content"
-                    dangerouslySetInnerHTML={{
-                      __html: getFirstBlockFromHTML(post.content),
-                    }}
-                  />
-                  <p className="meta">
-                    Posté le {new Date(post.created_at).toLocaleDateString()}{" "}
-                    par{" "}
-                    {post.user && (
-                      <Link
-                        href={`/profil/${post.user.id}`}
-                        className="author-link"
-                      >
-                        {post.user ? post.user.username : "Inconnu"}{" "}
-                      </Link>
-                    )}
-                    <Image
-                      src={
-                        post.user?.profilePicture?.startsWith("http")
-                          ? post.user.profilePicture
-                          : post.user?.profilePicture
-                          ? `http://localhost:8080${post.user.profilePicture}`
-                          : "/default-avatar.png"
-                      }
-                      alt="Photo de profil"
-                      width={150}
-                      height={150}
-                      className="profile-picture"
-                      unoptimized
-                    />
-                  </p>
-                  <div className="post-actions">
-                    <LikeButton
-                      post={post}
-                      onReactionUpdate={handlePostUpdate}
-                    />
-                    <Link href={`/article/${post.id}`}>
-                      <button className="view-article-button">
-                        Voir l&apos;article
-                      </button>
-                    </Link>
-                    <button 
-                      className="edit-article-button"
-                      onClick={() => {
-                        // Utilisation du localStorage pour passer des données entre les pages
-                        // C'est une alternative aux paramètres d'URL quand il y a des problèmes avec la navigation côté client de Next.js
-                        
-                        // Stocke un indicateur que le mode d'édition est actif
-                        localStorage.setItem('editArticleMode', 'true');
-                        
-                        // Stocke l'ID de l'article à éditer pour vérification
-                        localStorage.setItem('editArticleId', post.id.toString());
-                        
-                        // Redirige vers la page de l'article (navigation complète)
-                        window.location.href = `/article/${post.id}`;
+                    <div
+                      className="article-content"
+                      dangerouslySetInnerHTML={{
+                        __html: getFirstBlockFromHTML(post.content),
                       }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
-                        <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
-                      </svg>
-                    </button>
-                    <button 
-                      className="delete-article-button"
-                      onClick={() => {
-                        if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
-                          deletePost(post.id)
-                            .then(() => {
-                              // Supprimer l'article de la liste locale
-                              setMyPosts(myPosts.filter(p => p.id !== post.id));
-                            })
-                            .catch(err => {
-                              console.error("Erreur lors de la suppression:", err);
-                              alert("Erreur lors de la suppression de l'article");
-                            });
+                    />
+                    <p className="meta">
+                      Posté le {new Date(post.created_at).toLocaleDateString()}{" "}
+                      par{" "}
+                      {post.user && (
+                        <Link
+                          href={`/profil/${post.user.id}`}
+                          className="author-link"
+                        >
+                          {post.user ? post.user.username : "Inconnu"}{" "}
+                        </Link>
+                      )}
+                      <Image
+                        src={
+                          post.user?.profilePicture?.startsWith("http")
+                            ? post.user.profilePicture
+                            : post.user?.profilePicture
+                            ? `http://localhost:8080${post.user.profilePicture}`
+                            : "/default-avatar.png"
                         }
-                      }}
-                    >
-                      <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
-                        <path d="M3 6h18"></path>
-                        <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
-                        <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
-                        <line x1="10" y1="11" x2="10" y2="17"></line>
-                        <line x1="14" y1="11" x2="14" y2="17"></line>
-                      </svg>
-                    </button>
-                  </div>
-                </li>
-              ))}
-          </ul>
-        )}
+                        alt="Photo de profil"
+                        width={150}
+                        height={150}
+                        className="profile-picture"
+                        unoptimized
+                      />
+                    </p>
+                    <div className="post-actions">
+                      <LikeButton
+                        post={post}
+                        onReactionUpdate={handlePostUpdate}
+                      />
+                      <Link href={`/article/${post.id}`}>
+                        <button className="view-article-button">
+                          Voir l&apos;article
+                        </button>
+                      </Link>
+                      <button 
+                        className="edit-article-button"
+                        onClick={() => {
+                          localStorage.setItem('editArticleMode', 'true');
+                          localStorage.setItem('editArticleId', post.id.toString());
+                          window.location.href = `/article/${post.id}`;
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M11 4H4a2 2 0 0 0-2 2v14a2 2 0 0 0 2 2h14a2 2 0 0 0 2-2v-7"></path>
+                          <path d="M18.5 2.5a2.121 2.121 0 0 1 3 3L12 15l-4 1 1-4 9.5-9.5z"></path>
+                        </svg>
+                      </button>
+                      <button 
+                        className="delete-article-button"
+                        onClick={() => {
+                          if (window.confirm("Êtes-vous sûr de vouloir supprimer cet article ?")) {
+                            deletePost(post.id)
+                              .then(() => {
+                                setMyPosts(myPosts.filter(p => p.id !== post.id));
+                              })
+                              .catch(err => {
+                                console.error("Erreur lors de la suppression:", err);
+                                alert("Erreur lors de la suppression de l'article");
+                              });
+                          }
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 6h18"></path>
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
+        
+        <div className="user-comments">
+          <h2>Mes commentaires</h2>
+          {myComments.length === 0 ? (
+            <p>Vous n&apos;avez pas encore publié de commentaire.</p>
+          ) : (
+            <ul className="posts-list">
+              {[...myComments]
+                .sort(
+                  (a, b) =>
+                    new Date(b.created_at).getTime() -
+                    new Date(a.created_at).getTime()
+                )
+                .map((comment) => (
+                  <li key={comment.id} className="post-item">
+                    <h3>Commentaire</h3>
+                    <div className="article-content">
+                      {comment.content}
+                    </div>
+                    <p className="meta">
+                      Commenté le {new Date(comment.created_at).toLocaleDateString()}
+                    </p>
+                    <div className="post-actions">
+                      <Link href={`/article/${comment.post_id}`}>
+                        <button className="view-article-button">
+                          Voir l&apos;article
+                        </button>
+                      </Link>
+                      <button 
+                        className="delete-article-button"
+                        onClick={async () => {
+                          if (window.confirm("Êtes-vous sûr de vouloir supprimer ce commentaire ?")) {
+                            try {
+                              await deleteComment(comment.id);
+                              setMyComments(myComments.filter(c => c.id !== comment.id));
+                            } catch (err) {
+                              console.error("Erreur lors de la suppression:", err);
+                              setError("Impossible de supprimer le commentaire");
+                            }
+                          }
+                        }}
+                      >
+                        <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round">
+                          <path d="M3 6h18"></path>
+                          <path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"></path>
+                          <path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"></path>
+                          <line x1="10" y1="11" x2="10" y2="17"></line>
+                          <line x1="14" y1="11" x2="14" y2="17"></line>
+                        </svg>
+                      </button>
+                    </div>
+                  </li>
+                ))}
+            </ul>
+          )}
+        </div>
       </div>
+      
       <Footer />
     </div>
   );

@@ -17,6 +17,24 @@ export async function getComments(postId: string | number): Promise<Comment[]> {
   return data.data;
 }
 
+export async function getUserComments(token: string): Promise<Comment[]> {
+  const res = await fetch("http://localhost:8080/api/user/comments", {
+    headers: {
+      Authorization: `Bearer ${token}`,
+      "Content-Type": "application/json",
+    },
+  });
+
+  if (!res.ok) {
+    const errorText = await res.text();
+    console.error("Erreur serveur:", errorText);
+    throw new Error("Impossible de récupérer vos commentaires");
+  }
+
+  const data = await res.json();
+  return data.data;
+}
+
 export async function addComment(postId: string | number, content: string): Promise<Comment> {
   const token = localStorage.getItem('token');
   if (!token) {

@@ -81,6 +81,7 @@ func main() {
 			user.POST("/profile-picture", controllers.UploadProfilePicture)
 			user.GET("/:id", controllers.GetUserByID)
 			user.DELETE("/delete", controllers.DeleteAccount)
+			user.GET("/comments", controllers.GetUserComments)
 
 			userPosts := user.Group("/posts")
 			{

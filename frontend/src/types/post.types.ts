@@ -25,6 +25,7 @@ export interface Comment {
     content: string;
     user: User;
     created_at: string;
+    post_id: number;
 }
 
 export interface Reaction {
