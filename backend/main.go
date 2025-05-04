@@ -77,9 +77,12 @@ func main() {
 
 		user := api.Group("/user", middleware.AuthMiddleware())
 		{
+			user.GET("/:id", controllers.GetUserByID)
+			user.GET("/:id/posts", controllers.GetUserPostsByID)
+			user.GET("/:id/comments", controllers.GetUserCommentsByID)
+
 			user.PUT("/profile", controllers.UpdateProfile)
 			user.POST("/profile-picture", controllers.UploadProfilePicture)
-			user.GET("/:id", controllers.GetUserByID)
 			user.DELETE("/delete", controllers.DeleteAccount)
 			user.GET("/comments", controllers.GetUserComments)
 

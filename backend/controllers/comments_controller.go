@@ -165,3 +165,19 @@ func GetUserComments(c *gin.Context) {
 	}
 	c.JSON(http.StatusOK, gin.H{"data": comments})
 }
+
+func GetUserCommentsByID(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID d'utilisateur invalide"})
+		return
+	}
+
+	var comments []models.Comment
+	if err := database.DB.Where("user_id = ?", userID).Preload("User").Find(&comments).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la récupération des commentaires"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": comments})
+}

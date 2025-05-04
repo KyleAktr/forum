@@ -258,3 +258,33 @@ func DeletePost(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Post supprimé avec succès"})
 }
+
+func GetUserPostsByID(c *gin.Context) {
+	userID, err := strconv.Atoi(c.Param("id"))
+	if err != nil {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "ID d'utilisateur invalide"})
+		return
+	}
+
+	var posts []models.Post
+	query := database.DB.
+		Where("user_id = ?", userID).
+		Preload("User").
+		Preload("Category").
+		Preload("Comments").
+		Preload("Reactions")
+
+	if err := query.Find(&posts).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la récupération des posts"})
+		return
+	}
+
+	for i := range posts {
+		posts[i].CommentsCount = len(posts[i].Comments)
+		posts[i].Comments = nil
+	}
+
+	c.JSON(http.StatusOK, gin.H{
+		"data": posts,
+	})
+}
