@@ -7,6 +7,13 @@
   overflow: hidden;
   color: white;
   margin-top: 100px;
+
+  @media screen and (max-width: 1200px) {
+    height: 60vh;
+  }
+  @media screen and (max-width: 760px) {
+    height: 40vh;
+  }
 }
 
 .header-img {
@@ -26,6 +33,13 @@
     width: fit-content;
     color: rgb(255, 255, 255);
     background-color: rgba(227, 227, 227, 0.75);
+
+    @media screen and (max-width: 1200px) {
+      font-size: 5rem;
+    }
+    @media screen and (max-width: 600px) {
+      font-size: 3rem;
+    }
   }
 
   h2 {
@@ -34,6 +48,16 @@
     margin: 0;
     width: fit-content;
     background-color: rgba(227, 227, 227, 0.75);
+
+    @media screen and (max-width: 1200px) {
+      font-size: 3.5rem;
+    }
+    @media screen and (max-width: 760px) {
+      font-size: 2.5rem;
+    }
+    @media screen and (max-width: 600px) {
+      font-size: 2rem;
+    }
   }
 
   p {
@@ -67,6 +91,11 @@
     text-align: center;
     margin: 100px auto;
     font-size: 1.5rem;
+
+    @media screen and (max-width: 750px) {
+      font-size: 1rem;
+      margin: 60px auto;
+    }
   }
 
   .explain-cards {
@@ -74,9 +103,25 @@
     width: 60%;
     justify-content: space-between;
 
+    @media screen and (max-width: 1000px) {
+      width: 80%;
+    }
+    @media screen and (max-width: 700px) {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+    }
+
     .explain-card {
       width: 20%;
       text-align: center;
+
+      @media screen and (max-width: 1000px) {
+        width: 30%;
+      }
+      @media screen and (max-width: 700px) {
+        width: 70%;
+      }
     }
   }
 
@@ -84,6 +129,12 @@
     font-size: 4rem;
     font-weight: 700;
     margin: 50px 0;
+
+    @media screen and (max-width: 700px) {
+      font-size: 3rem;
+      padding: 0 70px;
+      text-align: center;
+    }
   }
 
   .category-cards {
@@ -92,10 +143,27 @@
     justify-content: space-between;
     width: 80%;
 
+    @media screen and (max-width: 1200px) {
+      display: grid;
+      grid-template-columns: repeat(2, 1fr);
+      grid-template-row: repeat(2, 1fr);
+      gap: 20px;
+    }
+
+    @media screen and (max-width: 590px) {
+      grid-template-columns: repeat(1, 1fr);
+      grid-template-row: repeat(4, 1fr);
+    }
     .category-card {
       border-radius: 30px;
       border: 0.5px solid rgb(137, 137, 137);
       margin-bottom: 200px;
+      align-content: center;
+
+      @media screen and (max-width: 1200px) {
+        width: 230px;
+        margin: 0 auto;
+      }
 
       .category-image {
         border-radius: 20px;
