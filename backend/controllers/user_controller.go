@@ -191,6 +191,13 @@ func UpdateProfile(c *gin.Context) {
 		}
 	}
 
+	if input.Password != "" {
+		if !isStrongPassword(input.Password) {
+			c.JSON(http.StatusBadRequest, gin.H{"error": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"})
+			return
+		}
+	}
+
 	// Mettre à jour les champs si fournis
 	if input.Username != "" {
 		user.Username = input.Username

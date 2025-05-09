@@ -10,6 +10,7 @@ import { getUserComments, deleteComment } from "@/services/comments";
 import LikeButton from "@/components/LikeButton";
 import Link from "next/link";
 import Footer from "@/components/Footer";
+import { validatePassword, getPasswordErrorMessage } from "@/utils/validation";
 
 interface UserProfile {
   id: number;
@@ -35,6 +36,7 @@ export default function Page() {
     bio: "",
   });
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
 
 
   const fetchUserPosts = useCallback(async () => {
@@ -87,6 +89,12 @@ export default function Page() {
 
   const handleEditSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
+    
+    if (editForm.password && !validatePassword(editForm.password)) {
+      setPasswordError(getPasswordErrorMessage());
+      return; 
+    }
+    
     try {
       const updatedUser = await updateProfile({
         username: editForm.username || undefined,
@@ -273,14 +281,28 @@ export default function Page() {
                 <label htmlFor="password">
                   Nouveau mot de passe (laisser vide pour ne pas changer)
                 </label>
+                <div className="password-field">
                 <input
                   type="password"
                   id="password"
                   value={editForm.password}
-                  onChange={(e) =>
-                    setEditForm({ ...editForm, password: e.target.value })
-                  }
+                  onChange={(e) => {
+                    const newPassword = e.target.value;
+                    setEditForm({ ...editForm, password: newPassword });
+                    
+                    if (newPassword && !validatePassword(newPassword)) {
+                      setPasswordError(getPasswordErrorMessage());
+                    } else {
+                      setPasswordError("");
+                    }
+                  }}
                 />
+                {passwordError && (
+                  <div className="password-error">
+                    {passwordError}
+                  </div>
+                )}
+                </div>
               </div>
               <div className="form-group">
                 <label htmlFor="city">Ville</label>
