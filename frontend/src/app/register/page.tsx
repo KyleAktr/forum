@@ -3,19 +3,32 @@ import { useState } from "react";
 import { register } from "@/services/auth";
 import Navbar from "@/components/Navbar";
 import { FcGoogle } from "react-icons/fc";
-import { getPasswordErrorMessage } from "@/utils/validation";
-import { validatePassword } from "@/utils/validation";
+import { getPasswordErrorMessage, validatePassword } from "@/utils/validation";
 
 export default function Register() {
   const [error, setError] = useState("");
   const [passwordError, setPasswordError] = useState("");
+  const [confirmPasswordError, setConfirmPasswordError] = useState("");
+  const [password, setPassword] = useState("");
 
   const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
-    const password = e.target.value;
-    if (password && !validatePassword(password)) {
+    const newPassword = e.target.value;
+    setPassword(newPassword);
+    
+    if (newPassword && !validatePassword(newPassword)) {
       setPasswordError(getPasswordErrorMessage());
     } else {
       setPasswordError("");
+    }
+  };
+
+  const handleConfirmPasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const confirmPassword = e.target.value;
+    
+    if (confirmPassword !== password) {
+      setConfirmPasswordError("Les mots de passe ne correspondent pas");
+    } else {
+      setConfirmPasswordError("");
     }
   };
 
@@ -24,9 +37,15 @@ export default function Register() {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
     const password = formData.get("password") as string;
+    const confirmPassword = formData.get("confirmPassword") as string;
 
     if (!validatePassword(password)) {
       setPasswordError(getPasswordErrorMessage());
+      return;
+    }
+
+    if (password !== confirmPassword) {
+      setConfirmPasswordError("Les mots de passe ne correspondent pas");
       return;
     }
 
@@ -34,7 +53,7 @@ export default function Register() {
       await register(
         formData.get("username") as string,
         formData.get("email") as string,
-        formData.get("password") as string
+        password
       );
       window.location.href = "/";
     } catch {
@@ -48,8 +67,8 @@ export default function Register() {
       <div className="login-container">
         <h1>Inscription</h1>
         <a href="/login">Déjà inscrit ?</a>
+        
         <form onSubmit={handleSubmit}>
-          {error && <div style={{ color: "red" }}>{error}</div>}
           <div>
             <input
               name="username"
@@ -70,8 +89,24 @@ export default function Register() {
               required
               style={passwordError ? { borderColor: "red" } : {}}
             />
-            {passwordError && <div className="password-error">{passwordError}</div>}
           </div>
+          <div className="password-field">
+            <input
+              name="confirmPassword"
+              type="password"
+              placeholder="Confirmer le mot de passe"
+              onChange={handleConfirmPasswordChange}
+              required
+              style={confirmPasswordError ? { borderColor: "red" } : {}}
+            />
+          </div>
+          
+          <div className="error-messages">
+            {error && <div className="global-error">{error}</div>}
+            {passwordError && <div className="field-error">{passwordError}</div>}
+            {confirmPasswordError && <div className="field-error">{confirmPasswordError}</div>}
+          </div>
+          
           <button type="submit">S&apos;inscrire</button>
           <div className="google">
             <a href="http://localhost:8080/api/auth/google" className="google-btn">

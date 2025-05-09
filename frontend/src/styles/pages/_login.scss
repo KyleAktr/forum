@@ -54,18 +54,21 @@
   }
 }
 
-.password-field {
-  position: relative;
-  margin-bottom: 30px;
+
+.error-messages {
+  width: 80%;
+  margin: 10px auto;
+  text-align: center;
   
-  input {
-    width: 100%;
+  .global-error {
+    color: #ff3860;
+    font-weight: bold;
+    margin-bottom: 10px;
   }
   
-  .password-error {
-    position: absolute;
-    text-align: center;
+  .field-error {
     color: #ff3860;
     font-size: 0.8rem;
+    margin-bottom: 5px;
   }
 }
