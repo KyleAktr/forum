@@ -1,0 +1,20 @@
+.network-list {
+  margin-top: 100px;
+
+  a {
+    color: grey;
+  }
+  .network-card {
+    display: flex;
+    align-items: center;
+    margin-bottom: 20px;
+  }
+  .profile-picture {
+    width: 30px;
+    height: 30px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+    margin-left: 10px;
+  }
+}

@@ -19,6 +19,7 @@ export default function Footer() {
             <a href="/creation-article">Créer un article</a>
             <a href="/categories">Catégories</a>
             <a href="/profil">Voir mon profil</a>
+            <a href="/network">Réseau</a>
           </div>
           <div className="infos">
             <h3>Informations</h3>

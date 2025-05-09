@@ -101,6 +101,8 @@ func main() {
 		}
 
 		api.GET("/search/suggestions", controllers.GetSearchSuggestions)
+		api.GET("/users", controllers.GetUsers)
+
 	}
 
 	// Démarrage du serveur

@@ -320,3 +320,14 @@ func DeleteAccount(c *gin.Context) {
 
 	c.JSON(http.StatusOK, gin.H{"message": "Compte supprimé avec succès"})
 }
+
+func GetUsers(c *gin.Context) {
+	var users []models.User
+
+	if err := database.DB.Find(&users).Error; err != nil {
+		c.JSON(http.StatusInternalServerError, gin.H{"error": "Erreur lors de la récupération des utilisateurs"})
+		return
+	}
+
+	c.JSON(http.StatusOK, gin.H{"data": users})
+}
