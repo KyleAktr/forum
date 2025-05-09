@@ -1,0 +1,56 @@
+@font-face {
+  font-family: "brightglamore";
+  src: url(../../static/fonts/brightglamore-italic.otf);
+}
+
+.contact {
+  margin-top: 100px;
+  min-height: 90vh;
+
+  h1,
+  p {
+    text-align: center;
+  }
+
+  h1 {
+    font-family: "brightglamore", sans-serif;
+    letter-spacing: 5px;
+    font-size: 4rem;
+  }
+
+  p {
+    font-weight: 700;
+    margin-bottom: 50px;
+  }
+
+  .name,
+  .email,
+  .message {
+    display: flex;
+    flex-direction: column;
+
+    label {
+      text-align: center;
+    }
+
+    input {
+      margin-top: 10px;
+    }
+  }
+
+  .message {
+    label {
+      margin-bottom: 20px;
+    }
+
+    textarea {
+      min-width: 600px;
+      height: 200px;
+      padding: 20px 20px;
+      border-radius: 20px;
+      border: 1px solid #989898;
+      resize: none;
+      margin-bottom: 20px;
+    }
+  }
+}

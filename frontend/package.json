@@ -10,6 +10,7 @@
   },
   "dependencies": {
     "@algolia/autocomplete-js": "^1.19.0",
+    "@emailjs/browser": "^4.4.1",
     "@headlessui/react": "^2.2.2",
     "@tiptap/core": "^2.11.7",
     "@tiptap/react": "^2.11.7",
@@ -21,6 +22,7 @@
     "react": "^19.0.0",
     "react-dom": "^19.0.0",
     "react-icons": "^5.5.0",
+    "react-toastify": "^11.0.5",
     "sass": "^1.85.1",
     "string-strip-html": "^13.4.12"
   },
