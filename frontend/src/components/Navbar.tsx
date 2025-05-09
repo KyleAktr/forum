@@ -38,6 +38,7 @@ export default function Navbar() {
             <SearchBar onSearch={handleSearch} />
             <a href="/categories">Catégories</a>
             <a href="/creation-article">Créer</a>
+            <a href ="/network">Réseau</a>
             <a href="/contact">Contact</a>
             <a href="/profil">Profil</a>
             <button onClick={logout}>Déconnexion</button>
