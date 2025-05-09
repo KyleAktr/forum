@@ -3,7 +3,8 @@ import Image from "next/image";
 import Link from "next/link";
 import { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
-import { FaRegComment, FaComment } from "react-icons/fa";
+import { FaRegComment } from "react-icons/fa";
+import { TbArrowNarrowUp, TbArrowNarrowDown } from "react-icons/tb";
 
 type Props = {
   categoryId: number;
@@ -47,6 +48,15 @@ export default function CategorieCard({ categoryId }: Props) {
     );
   };
 
+  const handleSortClick = (type: string) => {
+    if (type === sort) {
+      setSortOrder(sortOrder === "asc" ? "desc" : "asc");
+    } else {
+      setSort(type);
+      setSortOrder("desc");
+    }
+  };
+
   const getFirstBlockFromHTML = (htmlString: string) => {
     if (typeof window === "undefined") return ""; // sécurité SSR
     const parser = new DOMParser();
@@ -59,25 +69,20 @@ export default function CategorieCard({ categoryId }: Props) {
     // <div>
     <div className="body-categorie">
       <div className="filtres">
-        <h3>Flitres</h3>
+        <h3>Filtres</h3>
         {Object.entries(sortLabels).map(([type, label]) => (
           <button
             key={type}
-            onClick={() => setSort(type === sort ? "none" : type)}
+            onClick={() => handleSortClick(type)}
             className={sort === type ? "active" : ""}
           >
-            {label}
+            {label} {sort === type && (sortOrder === "asc" ? <TbArrowNarrowUp /> : <TbArrowNarrowDown />)}
           </button>
         ))}
-        <button
-          onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
-        >
-          Ordre : {sortOrder === "asc" ? "Croissant ↑" : "Décroissant ↓"}
-        </button>
       </div>
 
       <ul className="posts-list">
-        {posts.map((post: any) => (
+        {posts.map((post) => (
           <li key={post.id} className="post-item">
             <h3>{post.title}</h3>
 
@@ -94,27 +99,29 @@ export default function CategorieCard({ categoryId }: Props) {
                   {post.user ? post.user.username : "Inconnu"}{" "}
                 </Link>
               )}
-              <Image
-                src={
-                  post.user.profilePicture.startsWith("http")
-                    ? post.user.profilePicture
-                    : `http://localhost:8080${post.user.profilePicture}`
-                }
-                alt="Photo de profil"
-                width={150}
-                height={150}
-                className="profile-picture"
-                unoptimized
-              />
+              {post.user && post.user.profilePicture && (
+                <Image
+                  src={
+                    post.user.profilePicture.startsWith("http")
+                      ? post.user.profilePicture
+                      : `http://localhost:8080${post.user.profilePicture}`
+                  }
+                  alt="Photo de profil"
+                  width={150}
+                  height={150}
+                  className="profile-picture"
+                  unoptimized
+                />
+              )}
             </p>
             <div className="post-actions">
               <div className="post-reactions">
                 <LikeButton post={post} onReactionUpdate={handlePostUpdate} />
                 <FaRegComment />
-                <p>{post.commentsCount}</p>
+                <p>{post.comments?.length || 0}</p>
               </div>
               <Link href={`/article/${post.id}`}>
-                <button className="view-article-button">Voir l'article</button>
+                <button className="view-article-button">Voir l&apos;article</button>
               </Link>
             </div>
           </li>
