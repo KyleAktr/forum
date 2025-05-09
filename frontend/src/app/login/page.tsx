@@ -44,7 +44,7 @@ export default function Login() {
             <input
               name="password"
               type="password"
-              placeholder="Password"
+              placeholder="Mot de passe"
               required
             />
           </div>

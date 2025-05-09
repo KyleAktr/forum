@@ -9,6 +9,7 @@ import (
 	"net/http"
 	"os"
 	"path/filepath"
+	"regexp"
 	"strings"
 	"time"
 
@@ -54,6 +55,11 @@ func Register(c *gin.Context) {
 	// Vérifier si l'email existe déjà
 	if err := database.DB.Where("email = ?", input.Email).First(&existingUser).Error; err == nil {
 		c.JSON(http.StatusBadRequest, gin.H{"error": "Cet email est déjà utilisé"})
+		return
+	}
+
+	if !isStrongPassword(input.Password) {
+		c.JSON(http.StatusBadRequest, gin.H{"error": "Le mot de passe doit contenir au moins 8 caractères, une majuscule, une minuscule, un chiffre et un caractère spécial"})
 		return
 	}
 
@@ -330,4 +336,17 @@ func GetUsers(c *gin.Context) {
 	}
 
 	c.JSON(http.StatusOK, gin.H{"data": users})
+}
+
+func isStrongPassword(password string) bool {
+	if len(password) < 8 {
+		return false
+	}
+
+	hasLower := regexp.MustCompile(`[a-z]`).MatchString(password)
+	hasUpper := regexp.MustCompile(`[A-Z]`).MatchString(password)
+	hasDigit := regexp.MustCompile(`[0-9]`).MatchString(password)
+	hasSpecial := regexp.MustCompile(`[@$!%*?&]`).MatchString(password)
+
+	return hasLower && hasUpper && hasDigit && hasSpecial
 }

@@ -53,3 +53,19 @@
     }
   }
 }
+
+.password-field {
+  position: relative;
+  margin-bottom: 30px;
+  
+  input {
+    width: 100%;
+  }
+  
+  .password-error {
+    position: absolute;
+    text-align: center;
+    color: #ff3860;
+    font-size: 0.8rem;
+  }
+}

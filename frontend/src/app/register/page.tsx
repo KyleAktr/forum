@@ -3,13 +3,32 @@ import { useState } from "react";
 import { register } from "@/services/auth";
 import Navbar from "@/components/Navbar";
 import { FcGoogle } from "react-icons/fc";
+import { getPasswordErrorMessage } from "@/utils/validation";
+import { validatePassword } from "@/utils/validation";
 
 export default function Register() {
   const [error, setError] = useState("");
+  const [passwordError, setPasswordError] = useState("");
+
+  const handlePasswordChange = (e: React.ChangeEvent<HTMLInputElement>) => {
+    const password = e.target.value;
+    if (password && !validatePassword(password)) {
+      setPasswordError(getPasswordErrorMessage());
+    } else {
+      setPasswordError("");
+    }
+  };
+
 
   const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
     e.preventDefault();
     const formData = new FormData(e.currentTarget);
+    const password = formData.get("password") as string;
+
+    if (!validatePassword(password)) {
+      setPasswordError(getPasswordErrorMessage());
+      return;
+    }
 
     try {
       await register(
@@ -35,20 +54,23 @@ export default function Register() {
             <input
               name="username"
               type="text"
-              placeholder="Username"
+              placeholder="Nom d'utilisateur"
               required
             />
           </div>
           <div>
             <input name="email" type="email" placeholder="Email" required />
           </div>
-          <div>
+          <div className="password-field">
             <input
               name="password"
               type="password"
-              placeholder="Password"
+              placeholder="Mot de passe"
+              onChange={handlePasswordChange}
               required
+              style={passwordError ? { borderColor: "red" } : {}}
             />
+            {passwordError && <div className="password-error">{passwordError}</div>}
           </div>
           <button type="submit">S&apos;inscrire</button>
           <div className="google">
