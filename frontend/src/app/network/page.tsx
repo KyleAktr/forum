@@ -38,9 +38,10 @@ export default function Page() {
       </div>
 
       <div className="network-list">
-        {filteredUsers.map((user) => (
-          <div key={user.id} className="network-card">
-            <Image
+        {filteredUsers.length > 0 ? (
+          filteredUsers.map((user) => (
+            <div key={user.id} className="network-card">
+              <Image
               src={
                 user.profilePicture?.startsWith("http")
                   ? user.profilePicture
@@ -56,7 +57,12 @@ export default function Page() {
               {user ? user.username : "Inconnu"}{" "}
             </Link>
           </div>
-        ))}
+        ))
+      ) : (
+        <div className="no-results">
+          <p>Aucun utilisateur ne correspond à votre recherche</p>
+        </div>
+      )}
       </div>
       <Footer />
     </div>
