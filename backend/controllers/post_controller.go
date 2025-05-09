@@ -5,6 +5,7 @@ import (
 	"forum/models"
 	"net/http"
 	"strconv"
+	"strings"
 	"time"
 
 	"github.com/gin-gonic/gin"
@@ -29,13 +30,25 @@ func GetPosts(c *gin.Context) {
 		query = query.Where("title LIKE ? OR content LIKE ?", "%"+search+"%", "%"+search+"%")
 	}
 
-	sort := c.Query("sort")
+	sortParam := c.Query("sort")
+	sortField := "created_at"
+	sortOrder := "desc"
 
-	switch sort {
+	if sortParam != "" {
+		parts := strings.Split(sortParam, ":")
+		sortField = parts[0]
+		if len(parts) > 1 && (parts[1] == "asc" || parts[1] == "desc") {
+			sortOrder = parts[1]
+		}
+	}
+
+	switch sortField {
 	case "likes":
-		query = query.Order("(SELECT COUNT(*) FROM reactions WHERE reactions.post_id = posts.id) DESC")
+		query = query.Order("(SELECT COUNT(*) FROM reactions WHERE reactions.post_id = posts.id) " + sortOrder)
 	case "comments":
-		query = query.Order("(SELECT COUNT(*) FROM comments WHERE comments.post_id = posts.id) DESC")
+		query = query.Order("(SELECT COUNT(*) FROM comments WHERE comments.post_id = posts.id) " + sortOrder)
+	case "created_at", "title":
+		query = query.Order(sortField + " " + sortOrder)
 	default:
 		query = query.Order("created_at DESC")
 	}

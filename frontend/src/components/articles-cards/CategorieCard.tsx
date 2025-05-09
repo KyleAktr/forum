@@ -12,13 +12,19 @@ type Props = {
 export default function CategorieCard({ categoryId }: Props) {
   const [posts, setPosts] = useState<Post[]>([]);
   const [sort, setSort] = useState<string>("recent");
+  const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
   useEffect(() => {
     const fetchPosts = async () => {
       try {
+        const sortParam =
+          sort === "recent"
+            ? `created_at:${sortOrder}`
+            : `${sort}:${sortOrder}`;
         const res = await fetch(
-          `http://localhost:8080/api/posts?category_id=${categoryId}&sort=${sort}`
+          `http://localhost:8080/api/posts?category_id=${categoryId}&sort=${sortParam}`
         );
+
         const data = await res.json();
         setPosts(data.data);
       } catch (err) {
@@ -27,12 +33,12 @@ export default function CategorieCard({ categoryId }: Props) {
     };
 
     fetchPosts();
-  }, [categoryId, sort]);
+  }, [categoryId, sort, sortOrder]);
 
   const sortLabels = {
-    recent: "Plus récents",
-    likes: "Les plus likés",
-    comments: "Les plus commentés",
+    recent: "Date",
+    likes: "Nombre de likes",
+    comments: "Nombre de commentaires",
   };
 
   const handlePostUpdate = (updatedPost: Post) => {
@@ -63,6 +69,11 @@ export default function CategorieCard({ categoryId }: Props) {
             {label}
           </button>
         ))}
+        <button
+          onClick={() => setSortOrder(sortOrder === "asc" ? "desc" : "asc")}
+        >
+          Ordre : {sortOrder === "asc" ? "Croissant ↑" : "Décroissant ↓"}
+        </button>
       </div>
 
       <ul className="posts-list">
