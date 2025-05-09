@@ -15,7 +15,6 @@ export default function CategorieCard({ categoryId }: Props) {
   const [sort, setSort] = useState<string>("recent");
   const [sortOrder, setSortOrder] = useState<"asc" | "desc">("desc");
 
-  useEffect(() => {
     const fetchPosts = async () => {
       try {
         const sortParam =
@@ -33,6 +32,7 @@ export default function CategorieCard({ categoryId }: Props) {
       }
     };
 
+  useEffect(() => {
     fetchPosts();
   }, [categoryId, sort, sortOrder]);
 
@@ -42,10 +42,13 @@ export default function CategorieCard({ categoryId }: Props) {
     comments: "Nombre de commentaires",
   };
 
-  const handlePostUpdate = (updatedPost: Post) => {
+  const handlePostUpdate = async (updatedPost: Post) => {
     setPosts(
       posts.map((post) => (post.id === updatedPost.id ? updatedPost : post))
     );
+    if (sort === "likes") {
+      await fetchPosts();
+    }
   };
 
   const handleSortClick = (type: string) => {
