@@ -1,10 +1,8 @@
 import "@/styles/index.scss";
 import type { Metadata } from "next";
+import { defaultMetadata } from "./metadata";
 
-export const metadata: Metadata = {
-  title: "Forum",
-  description: "Forum de discussion",
-};
+export const metadata: Metadata = defaultMetadata;
 
 export default function RootLayout({
   children,

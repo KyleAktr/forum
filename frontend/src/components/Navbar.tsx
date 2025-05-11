@@ -47,7 +47,7 @@ export default function Navbar() {
       ) : (
         <nav>
           <div className="logo">
-            <a href="/">Haven°</a>
+            <a href="/">HAVEN</a>
           </div>
           <div className="ancres">
             <a href="/categories">Catégories</a>

@@ -65,7 +65,7 @@ export default function Register() {
     <div className="login">
       <Navbar />
       <div className="login-container">
-        <h1>Inscription</h1>
+        <h1>INSCRIPTION</h1>
         <a href="/login">Déjà inscrit ?</a>
         
         <form onSubmit={handleSubmit}>

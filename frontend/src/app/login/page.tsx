@@ -27,7 +27,7 @@ export default function Login() {
     <div className="login">
       <Navbar />
       <div className="login-container">
-        <h1>Connexion</h1>
+        <h1>CONNEXION</h1>
         <a href="/register">Pas encore inscrit ?</a>
         <form onSubmit={handleSubmit}>
           {error && <div style={{ color: "red" }}>{error}</div>}

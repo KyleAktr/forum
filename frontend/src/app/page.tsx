@@ -1,5 +1,6 @@
+"use client";
+
 import Navbar from "@/components/Navbar";
-import type { Metadata } from "next";
 import lifestyle from "../static/img/lifestyle.png";
 import minimalisme from "../static/img/minimalisme.png";
 import santeDigitale from "../static/img/sante-digitale.png";
@@ -11,13 +12,58 @@ import { FaRegLightbulb } from "react-icons/fa";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import Footer from "@/components/Footer";
 import HeaderHome from "@/components/HeaderHome";
-
-export const metadata: Metadata = {
-  title: "Forum - Accueil",
-  description: "Page d'accueil",
-};
+import { useState, useEffect } from "react";
+import { Post } from "@/types";
 
 export default function Home() {
+  const [categoryPostCounts, setCategoryPostCounts] = useState({
+    teletravail: 0,
+    minimalisme: 0,
+    santeDigitale: 0,
+    lifestyle: 0
+  });
+
+  useEffect(() => {
+    const fetchCategoryCounts = async () => {
+      try {
+        const response = await fetch('http://localhost:8080/api/posts');
+        const data = await response.json();
+        
+        const counts = {
+          teletravail: 0,
+          minimalisme: 0,
+          santeDigitale: 0,
+          lifestyle: 0
+        };
+        
+        data.data.forEach((post: Post) => {
+          if (post.category) {
+            switch (post.category.id) {
+              case 1:
+                counts.teletravail++;
+                break;
+              case 2:
+                counts.minimalisme++;
+                break;
+              case 3:
+                counts.santeDigitale++;
+                break;
+              case 4:
+                counts.lifestyle++;
+                break;
+            }
+          }
+        });
+        
+        setCategoryPostCounts(counts);
+      } catch (error) {
+        console.error("Erreur lors de la récupération des posts:", error);
+      }
+    };
+
+    fetchCategoryCounts();
+  }, []);
+
   return (
     <div>
       <Navbar />
@@ -60,7 +106,7 @@ export default function Home() {
             <Image src={teletravail} alt="Image" className="category-image" />
             <h4>Travail hybride et télétravail</h4>
             <div className="card-footer">
-              <p>26 discussions</p>
+              <p>{categoryPostCounts.teletravail} discussion{categoryPostCounts.teletravail > 1 ? 's' : ''}</p>
               <a href="/categories/teletravail">
                 <FaArrowAltCircleRight size={30} className="arrow-icon" />
               </a>
@@ -71,7 +117,7 @@ export default function Home() {
             <Image src={minimalisme} alt="Image" className="category-image" />
             <h4>Minimalisme et frugalité</h4>
             <div className="card-footer">
-              <p>14 discussions</p>
+              <p>{categoryPostCounts.minimalisme} discussion{categoryPostCounts.minimalisme > 1 ? 's' : ''}</p>
               <a href="/categories/minimalisme">
                 <FaArrowAltCircleRight size={30} className="arrow-icon" />
               </a>
@@ -82,7 +128,7 @@ export default function Home() {
             <Image src={santeDigitale} alt="Image" className="category-image" />
             <h4>Santé mentale et digitale</h4>
             <div className="card-footer">
-              <p>19 discussions</p>
+              <p>{categoryPostCounts.santeDigitale} discussion{categoryPostCounts.santeDigitale > 1 ? 's' : ''}</p>
               <a href="/categories/santeDigitale">
                 <FaArrowAltCircleRight size={30} className="arrow-icon" />
               </a>
@@ -93,7 +139,7 @@ export default function Home() {
             <Image src={lifestyle} alt="Image" className="category-image" />
             <h4>Lifestyle durable</h4>
             <div className="card-footer">
-              <p>37 discussions</p>
+              <p>{categoryPostCounts.lifestyle} discussion{categoryPostCounts.lifestyle > 1 ? 's' : ''}</p>
               <a href="/categories/lifestyle">
                 <FaArrowAltCircleRight size={30} className="arrow-icon" />
               </a>

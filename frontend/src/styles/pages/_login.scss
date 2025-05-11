@@ -7,13 +7,18 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  background-color: #dcdcdc;
+  background-color: #ececec;
   height: 70vh;
   width: 50%;
   margin: auto;
   flex-direction: column;
   margin-top: 100px;
   border-radius: 20px;
+
+  h1 {
+    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-size: 2rem;
+  }
 
   form {
     display: flex;
@@ -22,7 +27,6 @@
     align-items: center;
     width: 100%;
     margin-top: 1.5rem;
-    background-color: #dcdcdc;
 
     input {
       width: 20rem;
@@ -40,7 +44,8 @@
       padding: 0.5rem;
       border: 1px solid rgb(183, 183, 183);
       border-radius: 20px;
-      background-color: #f0f0f0;
+      background-color: #E2BB8F;
+      color: #ffffff;
       margin-top: 1rem;
       cursor: pointer;
     }
