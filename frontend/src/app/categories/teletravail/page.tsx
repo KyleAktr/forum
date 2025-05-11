@@ -16,7 +16,7 @@ export default function page() {
           alt="Image représentant une femme dans l'eau"
           className="header-categorie-img"
         />
-        <h1>Travail hybride et télétravail</h1>
+        <h1>TRAVAIL HYBRIDE ET TÉLÉTRAVAIL</h1>
       </header>
       <CategorieCard categoryId={1} />
       <Footer />

@@ -13,9 +13,8 @@
   }
 
   h1 {
-    font-family: "brightglamore", sans-serif;
-    letter-spacing: 5px;
-    font-size: 4rem;
+    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-size: 3.5rem;
   }
 
   p {
@@ -52,5 +51,13 @@
       resize: none;
       margin-bottom: 20px;
     }
+  }
+
+  button {
+    background: #E2BB8F;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
   }
 }

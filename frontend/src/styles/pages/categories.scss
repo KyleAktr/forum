@@ -1,6 +1,8 @@
 @font-face {
-  font-family: "brightglamore";
-  src: url(../../static/fonts/brightglamore-italic.otf);
+  font-family: 'Agrandir-GrandHeavy';
+  src: url('../../static/fonts/Agrandir-GrandHeavy.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
 }
 
 .categories {
@@ -15,7 +17,7 @@
   gap: 10px;
   max-width: 600px;
   width: 100%;
-  margin-top: 100px;
+  margin-top: 170px;
 }
 
 .categorie-card {
@@ -65,11 +67,11 @@
 }
 
 .categorie-text {
-  font-family: "brightglamore", sans-serif;
+  font-family: "Agrandir-GrandHeavy", sans-serif;
   max-width: 80%;
   position: absolute;
-  color: rgb(247, 235, 145);
-  font-size: 3rem;
+  color: #E2BB8F;
+  font-size: 1.5rem;
   font-weight: 100;
   // text-transform: uppercase;
   letter-spacing: 0.1rem;

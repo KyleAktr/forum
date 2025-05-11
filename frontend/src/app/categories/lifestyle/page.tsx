@@ -16,7 +16,7 @@ export default function page() {
           alt="Image représentant une femme dans l'eau"
           className="header-categorie-img"
         />
-        <h1>Lifestyle durable</h1>
+        <h1>LIFESTYLE DURABLE</h1>
       </header>
       <CategorieCard categoryId={4} />
       <Footer />

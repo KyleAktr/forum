@@ -1,19 +1,51 @@
-.search-user {
+
+.network-header {
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  margin-bottom: 20px;
   margin-top: 100px;
+  width: 80%;
+  margin: 0 auto;
+  margin-top: 100px;
+  align-items: center;
+}
+
+h1 {
+  font-family: 'Agrandir-GrandHeavy', sans-serif;
+  font-size: 3.5rem;
+  margin-top: 50px;
+}
+
+p {
+  text-align: center;
+}
+
+
+.search-user {
   display: flex;
   justify-content: center;
 }
 
 .network-list {
-  margin-top: 100px;
+  width: 90%;
+  margin: 0 auto;
+  margin-top: 90px;
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
 
   a {
-    color: grey;
+    color: rgb(255, 255, 255);
   }
   .network-card {
     display: flex;
     align-items: center;
     margin-bottom: 20px;
+    background-color: #E2BB8F;
+    border-radius: 10px;
+    padding: 10px;
+    width: 80%;
+    margin: 0 10px 30px 10px;
   }
   .profile-picture {
     width: 30px;

@@ -1,3 +1,10 @@
+@font-face {
+  font-family: 'Agrandir-GrandHeavy';
+  src: url('../../static/fonts/Agrandir-GrandHeavy.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .navbar {
   position: fixed;
   top: 0;
@@ -12,12 +19,16 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  padding: 1rem 2rem;
+  width: 95%;
+  margin: 0 auto;
+  padding: 1rem 0;
 }
 
 .logo a {
+  
+  font-family: 'Agrandir-GrandHeavy', sans-serif;
   text-decoration: none;
-  color: black;
+  color: rgb(0, 0, 0);
   font-size: 1.2rem;
 }
 
@@ -25,7 +36,6 @@ nav {
   display: flex;
   justify-content: space-between;
   align-items: center;
-  // width: 25rem;
 
   a {
     text-decoration: none;
@@ -35,30 +45,27 @@ nav {
   }
 }
 
-button {
+.ancres button {
   margin-left: 20px;
   padding: 10px 15px;
   border-radius: 18px;
-  border: 1px solid rgb(137, 137, 137);
-  background-color: rgb(255, 255, 255);
+  border: none;
+  background: #E2BB8F;
+  color: #ffffff;
   cursor: pointer;
   font-weight: 300;
   transform: matrix(1, 0, 0, 1, 0, 0);
   transition: all 0.2s ease-in-out;
-
-  &:hover {
-    color: rgb(255, 255, 255);
-    background-color: black;
-  }
 }
 
 .search-bar {
+  background: rgba(228, 228, 228, 0.5);
   display: flex;
   flex-direction: row;
-  border: 1px solid #989898;
   border-radius: 18px;
 
   input {
+    background-color: transparent;
     margin: 0 auto;
     min-width: auto;
     width: 300px;
@@ -71,18 +78,27 @@ button {
   }
 
   button {
-    padding: 5px 20px;
-    margin-right: 15px;
+    margin: 0 10px;
+    background: transparent;
+    border: none;
+    box-shadow: none;
+    display: flex;
+    align-items: center;
+    cursor: pointer;
   }
 }
 
 .suggestions-list {
   position: absolute;
   background: white;
-  border: 1px solid #ccc;
+  border-radius: 18px;
   width: 100%;
   list-style: none;
   margin: 0;
   padding: 0;
 }
 
+.suggestions-list li {
+  padding: 10px 15px;
+  margin-left: 10px;
+}

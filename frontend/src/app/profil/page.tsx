@@ -219,7 +219,7 @@ export default function Page() {
         <div className="profile-info">
           {!isEditing ? (
             <>
-              <h2>Infos</h2>
+              <h2>Informations</h2>
               <div className="info-group">
                 <h3>
                   Email : <span>{profile.email}</span>

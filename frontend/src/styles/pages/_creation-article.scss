@@ -15,9 +15,8 @@
   align-items: center;
 
   h1 {
-    font-family: "brightglamore", sans-serif;
-    letter-spacing: 5px;
-    font-size: 4rem;
+    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-size: 3.5rem;
   }
 
   p {
@@ -31,7 +30,7 @@ body {
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
-    border: 1px solid #989898;
+    border: 1px solid #E2BB8F;
     border-radius: 20px;
     padding: 10px 20px;
     min-width: 400px;
@@ -42,7 +41,7 @@ body {
   select {
     margin-bottom: 30px;
     padding: 10px 20px;
-    border: 1px solid #989898;
+    border: 1px solid #E2BB8F;
     border-radius: 20px;
     cursor: pointer;
   }
@@ -87,5 +86,10 @@ form {
 
   .submit {
     margin-bottom: 30px;
+    background: #E2BB8F;
+    color: #ffffff;
+    border: none;
+    border-radius: 20px;
+    padding: 10px 20px;
   }
 }

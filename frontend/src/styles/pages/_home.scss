@@ -1,7 +1,14 @@
+@font-face {
+  font-family: 'Agrandir-GrandHeavy';
+  src: url('../../static/fonts/Agrandir-GrandHeavy.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
 .header {
   position: relative;
   width: 95%;
-  height: 75vh;
+  height: 80vh;
   margin: 0 auto;
   border-radius: 20px;
   overflow: hidden;
@@ -25,15 +32,24 @@
 .header-content {
   position: relative;
   z-index: 2;
-  margin: 70px 70px 0 70px;
+  height: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  background-color: hsla(32, 72%, 45%, 0.502);
+
+  h1, h2 {
+    text-align: center;
+    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    color: #FFFDD0;
+    margin: 0;
+  }
 
   h1 {
     font-size: 7rem;
-    letter-spacing: 1.5rem;
     width: fit-content;
-    color: rgb(255, 255, 255);
-    background-color: rgba(227, 227, 227, 0.75);
-
+    
     @media screen and (max-width: 1200px) {
       font-size: 5rem;
     }
@@ -43,20 +59,18 @@
   }
 
   h2 {
-    font-size: 6rem;
-    font-weight: 300;
-    margin: 0;
+    font-size: 2rem;
+    font-weight: 700;
     width: fit-content;
-    background-color: rgba(227, 227, 227, 0.75);
-
+    
     @media screen and (max-width: 1200px) {
-      font-size: 3.5rem;
+      font-size: 2rem;
     }
     @media screen and (max-width: 760px) {
-      font-size: 2.5rem;
+      font-size: 1.5rem;
     }
     @media screen and (max-width: 600px) {
-      font-size: 2rem;
+      font-size: 1.2rem;
     }
   }
 
@@ -68,14 +82,21 @@
   }
 
   button {
-    margin-top: 60px;
-    padding: 10px 30px;
-    border-radius: 18px;
-    border: 1px solid rgb(137, 137, 137);
-    background-color: rgb(255, 255, 255);
+    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    margin-top: 40px;
+    padding: 20px 40px;
+    border-radius: 27px;
+    background-color: #FFFDD0;
     cursor: pointer;
-    letter-spacing: 0.1rem;
-    font-weight: 700;
+    color: #8D8D8A;
+    box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.3);
+    transition: all 0.3s ease;
+    
+
+    &:hover {
+      transform: scale(1.05);
+      box-shadow: 0 0 50px 0 rgba(255, 255, 255, 0.4);
+    }
   }
 }
 
@@ -129,7 +150,8 @@
     font-size: 4rem;
     font-weight: 700;
     margin: 50px 0;
-
+    color: #252525;
+    
     @media screen and (max-width: 700px) {
       font-size: 3rem;
       padding: 0 70px;
@@ -155,8 +177,9 @@
       grid-template-row: repeat(4, 1fr);
     }
     .category-card {
+      padding: 10px;
       border-radius: 30px;
-      border: 0.5px solid rgb(137, 137, 137);
+      border: 2px solid #E2BB8F;
       margin-bottom: 200px;
       align-content: center;
 
@@ -166,20 +189,30 @@
       }
 
       .category-image {
-        border-radius: 20px;
+        width: 250px;
+        height: 300px;
+        object-fit: cover;
+        border-radius: 28px 28px 0 0;
+        display: block;
       }
       h4 {
         margin: 20px 7px;
       }
 
       .card-footer {
-        margin: 0 7px;
+        margin: 10px 7px;
         display: flex;
         justify-content: space-between;
         align-items: center;
 
         .arrow-icon {
+          margin-right: 10px;
           cursor: pointer;
+          color: #E2BB8F;
+        }
+
+        p {
+          margin-top: -20px;
         }
       }
     }

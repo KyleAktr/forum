@@ -1,5 +1,6 @@
 import { useState, useRef, useEffect } from "react";
 import { getSearchSuggestions } from "@/services/search";
+import { MdSearch } from "react-icons/md";
 
 export default function SearchBar({
   onSearch,
@@ -65,7 +66,9 @@ export default function SearchBar({
           onChange={handleChange}
           placeholder="Rechercher un article"
         />
-        <button type="submit">Rechercher</button>
+        <button type="submit" aria-label="Rechercher">
+          <MdSearch size={22} color="#9B9B9B" />
+        </button>
       </form>
       {showSuggestions && suggestions.length > 0 && (
         <ul className="suggestions-list"

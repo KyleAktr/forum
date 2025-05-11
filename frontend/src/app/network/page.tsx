@@ -27,6 +27,12 @@ export default function Page() {
   return (
     <div className="network">
       <Navbar />
+      <div className="network-header">
+        <h1>RÉSEAU</h1>
+        <p>
+          Découvrez les autres utilisateurs de notre site et connectez-vous avec eux.
+        </p>
+      </div>
       
       <div className="search-user">
         <input

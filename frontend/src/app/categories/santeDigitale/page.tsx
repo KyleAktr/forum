@@ -16,7 +16,7 @@ export default function page() {
           alt="Image représentant une femme dans l'eau"
           className="header-categorie-img"
         />
-        <h1>Santé mentale et digitale</h1>
+        <h1>SANTÉ MENTALE ET DIGITALE</h1>
       </header>
       <CategorieCard categoryId={3} />
       <Footer />

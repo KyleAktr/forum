@@ -1,3 +1,11 @@
+@font-face {
+  font-family: 'Agrandir-GrandHeavy';
+  src: url('../../static/fonts/Agrandir-GrandHeavy.otf') format('opentype');
+  font-weight: normal;
+  font-style: normal;
+}
+
+
 .header-categorie {
   position: relative;
   width: 95%;
@@ -10,15 +18,14 @@
   display: flex;
 
   h1 {
-    font-family: "brightglamore";
+    font-family: "Agrandir-GrandHeavy", sans-serif;
     display: flex;
     align-items: center;
     justify-content: center;
     margin: 0 auto;
-    font-size: 4rem;
-    letter-spacing: 0.7rem;
-    max-width: èàù;
-    color: rgb(247, 235, 145);
+    font-size: 3rem;
+    letter-spacing: 0.3rem;
+    color: #FFFDD0;
     text-align: center;
     z-index: 1;
   }
@@ -51,10 +58,13 @@
       width: 200px;
       margin-bottom: 20px;
       margin-left: 0;
+      background: #E2BB8F;
+      color: #ffffff;
     }
     button:focus {
-      background: black;
-      color: rgb(255, 255, 255);
+      background: transparent;
+      color: #E2BB8F;
+      border: 1px solid #E2BB8F;
     }
 
     li {
@@ -67,4 +77,12 @@
   .post-item p {
     margin: 0;
   }
+}
+
+.view-article-button {
+  background: #E2BB8F;
+  color: #ffffff;
+  border: none;
+  border-radius: 20px;
+  padding: 10px 20px;
 }

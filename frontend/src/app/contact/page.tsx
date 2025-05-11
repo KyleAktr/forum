@@ -62,7 +62,7 @@ function ContactForm() {
     <div>
       <Navbar />
       <div className="contact">
-        <h1>Contact</h1>
+        <h1>CONTACT</h1>
         <p>
           Une question, une suggestion, une remarque ? <br />
           N’hésite pas à nous écrire via ce formulaire. On te répondra au plus
@@ -72,7 +72,7 @@ function ContactForm() {
         </p>
         <form onSubmit={handleSubmit}>
           <div className="name">
-            <label>Nom</label>
+            <label>Nom et prénom</label>
             <input
               type="text"
               name="name"

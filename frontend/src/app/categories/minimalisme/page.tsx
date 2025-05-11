@@ -16,7 +16,7 @@ export default function page() {
           alt="Image représentant une femme dans l'eau"
           className="header-categorie-img"
         />
-        <h1>Minimalisme et frugalité</h1>
+        <h1>MINIMALISME ET FRAUGALITÉ</h1>
       </header>
       <CategorieCard categoryId={2} />
       <Footer />

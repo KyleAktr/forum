@@ -4,7 +4,7 @@ import Link from "next/link";
 import { useEffect, useState } from "react";
 import LikeButton from "../LikeButton";
 import { FaRegComment } from "react-icons/fa";
-import { TbArrowNarrowUp, TbArrowNarrowDown } from "react-icons/tb";
+import { TbChevronUp, TbChevronDown } from "react-icons/tb";
 
 type Props = {
   categoryId: number;
@@ -79,7 +79,7 @@ export default function CategorieCard({ categoryId }: Props) {
             onClick={() => handleSortClick(type)}
             className={sort === type ? "active" : ""}
           >
-            {label} {sort === type && (sortOrder === "asc" ? <TbArrowNarrowUp /> : <TbArrowNarrowDown />)}
+            {label} {sort === type && (sortOrder === "asc" ? <TbChevronUp /> : <TbChevronDown />)}
           </button>
         ))}
       </div>

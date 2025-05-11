@@ -3,7 +3,7 @@ export default function Footer() {
     <footer className="footer">
       <div className="footer-content">
         <div className="footer-logo">
-          <a href="/">Haven°</a>
+          <a href="/">HAVEN</a>
           <p>
             Chaque idée compte. Chaque voix construit demain. <br />
             Continuez à cultiver l’essentiel, ici et ailleurs.

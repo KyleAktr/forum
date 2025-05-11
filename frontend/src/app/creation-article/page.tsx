@@ -43,7 +43,7 @@ export default function Page() {
     <div>
       <Navbar />
       <header className="header-creation-article">
-        <h1>Espace Création</h1>
+        <h1>ESPACE CRÉATION</h1>
         <p>
           Cet espace est conçu pour vous permettre de vous exprimer librement et
           de partager vos idées de manière claire et structurée. L’objectif ici

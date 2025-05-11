@@ -1,6 +1,5 @@
 import Navbar from "@/components/Navbar";
 import type { Metadata } from "next";
-import homePageImage from "../static/img/home-page-image.png";
 import lifestyle from "../static/img/lifestyle.png";
 import minimalisme from "../static/img/minimalisme.png";
 import santeDigitale from "../static/img/sante-digitale.png";
@@ -11,6 +10,7 @@ import { FaRegCommentDots } from "react-icons/fa";
 import { FaRegLightbulb } from "react-icons/fa";
 import { FaArrowAltCircleRight } from "react-icons/fa";
 import Footer from "@/components/Footer";
+import HeaderHome from "@/components/HeaderHome";
 
 export const metadata: Metadata = {
   title: "Forum - Accueil",
@@ -22,22 +22,8 @@ export default function Home() {
     <div>
       <Navbar />
 
-      <header className="header">
-        {/* Image en arrière-plan */}
-        <Image
-          src={homePageImage}
-          alt="Image"
-          className="header-img"
-          layout="fill"
-          objectFit="cover"
-        />
-
-        {/* Contenu au-dessus de l'image */}
-        <div className="header-content">
-          <h1>Haven°</h1>
-          <h2>Un souffle nouveau sur nos manières de vivre.</h2>
-        </div>
-      </header>
+      <HeaderHome />
+      
       <div className="body">
         <h3>
           Votre mode de vie et votre environnement influent sur chaque élément

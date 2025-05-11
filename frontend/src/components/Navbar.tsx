@@ -32,7 +32,7 @@ export default function Navbar() {
       {authenticated ? (
         <nav>
           <div className="logo">
-            <a href="/">Haven°</a>
+            <a href="/">HAVEN</a>
           </div>
           <div className="ancres">
             <SearchBar onSearch={handleSearch} />
@@ -41,7 +41,7 @@ export default function Navbar() {
             <a href ="/network">Réseau</a>
             <a href="/contact">Contact</a>
             <a href="/profil">Profil</a>
-            <button onClick={logout}>Déconnexion</button>
+            <button onClick={logout}>DÉCONNEXION</button>
           </div>
         </nav>
       ) : (
@@ -50,6 +50,8 @@ export default function Navbar() {
             <a href="/">Haven°</a>
           </div>
           <div className="ancres">
+            <a href="/categories">Catégories</a>
+            <a href ="/network">Réseau</a>
             <a href="/contact">Contact</a>
             <a href="/login">connexion</a>
             <a href="/register">s'inscrire</a>
