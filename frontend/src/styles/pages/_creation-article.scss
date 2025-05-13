@@ -15,8 +15,9 @@
   align-items: center;
 
   h1 {
-    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-family: "Agrandir-GrandHeavy", sans-serif;
     font-size: 3.5rem;
+    text-align: center;
   }
 
   p {
@@ -30,18 +31,23 @@ body {
     text-align: center;
     margin-top: 30px;
     margin-bottom: 30px;
-    border: 1px solid #E2BB8F;
+    border: 1px solid #e2bb8f;
     border-radius: 20px;
     padding: 10px 20px;
     min-width: 400px;
     max-width: 600px;
     font-size: 1rem;
+
+    @media screen and (max-width: 800px) {
+      min-width: 0;
+      width: 60%;
+    }
   }
 
   select {
     margin-bottom: 30px;
     padding: 10px 20px;
-    border: 1px solid #E2BB8F;
+    border: 1px solid #e2bb8f;
     border-radius: 20px;
     cursor: pointer;
   }
@@ -86,7 +92,7 @@ form {
 
   .submit {
     margin-bottom: 30px;
-    background: #E2BB8F;
+    background: #e2bb8f;
     color: #ffffff;
     border: none;
     border-radius: 20px;

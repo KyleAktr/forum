@@ -5,6 +5,10 @@
   min-height: 300px;
   margin-bottom: 30px;
 
+  @media screen and (max-width: 650px) {
+    width: 90%;
+  }
+
   .tiptap {
     width: 100%;
     height: 100%;

@@ -5,13 +5,18 @@
   margin: 10px auto 0 10px;
   padding: 8px 12px;
   background-color: white;
-  border: 1px solid #E2BB8F;
+  border: 1px solid #e2bb8f;
   border-radius: 12px;
   margin-bottom: 12px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.05);
   position: sticky;
   top: 0;
   z-index: 10;
+
+  @media screen and (max-width: 600px) {
+    width: 350px;
+    padding: auto 0;
+  }
 }
 
 .toolbar button {
@@ -31,7 +36,6 @@
 }
 
 .toolbar button.active {
-
-  background-color: #E2BB8F;
-  color: #FFFDD0;
+  background-color: #e2bb8f;
+  color: #fffdd0;
 }
