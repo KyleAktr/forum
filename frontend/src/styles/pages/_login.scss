@@ -15,8 +15,12 @@
   margin-top: 100px;
   border-radius: 20px;
 
+  @media screen and (max-width: 1300px) {
+    width: 70%;
+  }
+
   h1 {
-    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-family: "Agrandir-GrandHeavy", sans-serif;
     font-size: 2rem;
   }
 
@@ -35,6 +39,10 @@
       padding: 0.5rem 1.5rem;
       border: 1px solid rgb(183, 183, 183);
       border-radius: 20px;
+      @media screen and (max-width: 800px) {
+        min-width: 0;
+        width: 80%;
+      }
     }
 
     button {
@@ -44,7 +52,7 @@
       padding: 0.5rem;
       border: 1px solid rgb(183, 183, 183);
       border-radius: 20px;
-      background-color: #E2BB8F;
+      background-color: #e2bb8f;
       color: #ffffff;
       margin-top: 1rem;
       cursor: pointer;
@@ -56,18 +64,17 @@
   }
 }
 
-
 .error-messages {
   width: 80%;
   margin: 10px auto;
   text-align: center;
-  
+
   .global-error {
     color: #ff3860;
     font-weight: bold;
     margin-bottom: 10px;
   }
-  
+
   .field-error {
     color: #ff3860;
     font-size: 0.8rem;

@@ -8,6 +8,11 @@
   justify-content: space-around;
   margin-top: 150px;
   align-items: flex-start;
+
+  @media screen and (max-width: 800px) {
+    flex-direction: column;
+    align-items: center;
+  }
 }
 
 .profile-picture-container {
@@ -16,6 +21,9 @@
   align-items: center;
   justify-content: center;
   width: 25%;
+  @media screen and (max-width: 800px) {
+    width: 55%;
+  }
 
   h3 {
     letter-spacing: 3px;
@@ -47,15 +55,15 @@
   .profile-picture-upload {
     .upload-button {
       background-color: #ffffff;
-      border: 1px solid #E2BB8F;
+      border: 1px solid #e2bb8f;
       padding: 10px 20px;
       border-radius: 20px;
       cursor: pointer;
       transform: matrix(1, 0, 0, 1, 0, 0);
       transition: all 0.1s ease-in-out;
-      
+
       &:hover {
-        background-color: #E2BB8F;
+        background-color: #e2bb8f;
         color: white;
       }
     }
@@ -71,10 +79,16 @@
   border: 1px solid #e7e7e7;
   padding: 30px 60px;
   border-radius: 20px;
-  width: 25%;
+  width: 45%;
+  @media screen and (max-width: 1200px) {
+    width: 45%;
+  }
+  @media screen and (max-width: 800px) {
+    width: 60%;
+  }
 
   button {
-    background: #E2BB8F;
+    background: #e2bb8f;
     color: #ffffff;
     border: none;
     border-radius: 20px;
@@ -113,7 +127,8 @@
         text-align: center;
       }
 
-      input, textarea {
+      input,
+      textarea {
         padding: 10px;
         border-radius: 5px;
         border: 1px solid #ccc;
@@ -143,15 +158,16 @@
   width: 90%;
   margin: 2rem auto 0;
   gap: 2rem;
-  
+
   @media (max-width: 1024px) {
     flex-direction: column;
   }
 }
 
-.user-posts, .user-comments {
+.user-posts,
+.user-comments {
   flex: 1;
-  
+
   h2 {
     font-family: "brightglamore", sans-serif;
     letter-spacing: 3px;
@@ -160,13 +176,14 @@
     text-align: center;
   }
 
-  .posts-list, .comments-list {
+  .posts-list,
+  .comments-list {
     margin: 0 auto;
 
     .post-item {
       margin: 50px 0;
       background-color: rgba(240, 240, 240, 0.5);
-      
+
       p {
         margin: 10px 0;
       }

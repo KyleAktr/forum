@@ -13,7 +13,7 @@
   }
 
   h1 {
-    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-family: "Agrandir-GrandHeavy", sans-serif;
     font-size: 3.5rem;
   }
 
@@ -54,10 +54,28 @@
   }
 
   button {
-    background: #E2BB8F;
+    background: #e2bb8f;
     color: #ffffff;
     border: none;
     border-radius: 20px;
     padding: 10px 20px;
+  }
+}
+
+@media screen and (max-width: 900px) {
+  .contact p {
+    margin: 50px 20px 50px 20px;
+  }
+
+  .contact .message textarea {
+    min-width: auto;
+  }
+
+  .contact input {
+    min-width: 0;
+  }
+
+  .message {
+    width: 80%;
   }
 }

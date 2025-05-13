@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Agrandir-GrandHeavy';
-  src: url('../../static/fonts/Agrandir-GrandHeavy.otf') format('opentype');
+  font-family: "Agrandir-GrandHeavy";
+  src: url("../../static/fonts/Agrandir-GrandHeavy.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -39,17 +39,18 @@
   justify-content: center;
   background-color: hsla(32, 72%, 45%, 0.502);
 
-  h1, h2 {
+  h1,
+  h2 {
     text-align: center;
-    font-family: 'Agrandir-GrandHeavy', sans-serif;
-    color: #FFFDD0;
+    font-family: "Agrandir-GrandHeavy", sans-serif;
+    color: #fffdd0;
     margin: 0;
   }
 
   h1 {
     font-size: 7rem;
     width: fit-content;
-    
+
     @media screen and (max-width: 1200px) {
       font-size: 5rem;
     }
@@ -62,7 +63,7 @@
     font-size: 2rem;
     font-weight: 700;
     width: fit-content;
-    
+
     @media screen and (max-width: 1200px) {
       font-size: 2rem;
     }
@@ -82,16 +83,15 @@
   }
 
   button {
-    font-family: 'Agrandir-GrandHeavy', sans-serif;
+    font-family: "Agrandir-GrandHeavy", sans-serif;
     margin-top: 40px;
     padding: 20px 40px;
     border-radius: 27px;
-    background-color: #FFFDD0;
+    background-color: #fffdd0;
     cursor: pointer;
-    color: #8D8D8A;
+    color: #8d8d8a;
     box-shadow: 0 0 50px 0 rgba(0, 0, 0, 0.3);
     transition: all 0.3s ease;
-    
 
     &:hover {
       transform: scale(1.05);
@@ -151,7 +151,7 @@
     font-weight: 700;
     margin: 50px 0;
     color: #252525;
-    
+
     @media screen and (max-width: 700px) {
       font-size: 3rem;
       padding: 0 70px;
@@ -179,7 +179,7 @@
     .category-card {
       padding: 10px;
       border-radius: 30px;
-      border: 2px solid #E2BB8F;
+      border: 2px solid #e2bb8f;
       margin-bottom: 200px;
       align-content: center;
 
@@ -189,7 +189,7 @@
       }
 
       .category-image {
-        width: 250px;
+        width: 240px;
         height: 300px;
         object-fit: cover;
         border-radius: 28px 28px 0 0;
@@ -208,7 +208,7 @@
         .arrow-icon {
           margin-right: 10px;
           cursor: pointer;
-          color: #E2BB8F;
+          color: #e2bb8f;
         }
 
         p {
