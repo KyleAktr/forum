@@ -1,6 +1,6 @@
 @font-face {
-  font-family: 'Agrandir-GrandHeavy';
-  src: url('../../static/fonts/Agrandir-GrandHeavy.otf') format('opentype');
+  font-family: "Agrandir-GrandHeavy";
+  src: url("../../static/fonts/Agrandir-GrandHeavy.otf") format("opentype");
   font-weight: normal;
   font-style: normal;
 }
@@ -25,11 +25,15 @@ nav {
 }
 
 .logo a {
-  
-  font-family: 'Agrandir-GrandHeavy', sans-serif;
+  font-family: "Agrandir-GrandHeavy", sans-serif;
   text-decoration: none;
   color: rgb(0, 0, 0);
   font-size: 1.2rem;
+}
+
+.hamburger {
+  display: none;
+  cursor: pointer;
 }
 
 .ancres {
@@ -50,7 +54,7 @@ nav {
   padding: 10px 15px;
   border-radius: 18px;
   border: none;
-  background: #E2BB8F;
+  background: #e2bb8f;
   color: #ffffff;
   cursor: pointer;
   font-weight: 300;
@@ -101,4 +105,43 @@ nav {
 .suggestions-list li {
   padding: 10px 15px;
   margin-left: 10px;
+}
+
+@media screen and (max-width: 1200px) {
+  nav {
+    // flex-direction: column;
+    // align-items: flex-start;
+
+    .hamburger {
+      display: block;
+    }
+
+    .ancres {
+      display: none;
+      flex-direction: column;
+      align-items: flex-start;
+      position: absolute;
+      top: 60px;
+      right: 0;
+      width: 100%;
+      background-color: white;
+      padding: 1rem;
+      z-index: 999;
+
+      &.open {
+        display: flex;
+        align-items: center;
+        box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+      }
+
+      a,
+      button {
+        margin: 10px 0;
+      }
+    }
+
+    .search-bar input {
+      width: 80%;
+    }
+  }
 }
